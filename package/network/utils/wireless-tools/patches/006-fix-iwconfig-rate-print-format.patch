@@ -2,7 +2,7 @@ Index: wireless_tools.29/iwlib.c
 ===================================================================
 --- wireless_tools.29.orig/iwlib.c	2007-06-30 07:43:31.000000000 +0800
 +++ wireless_tools.29/iwlib.c	2020-09-25 15:35:01.105434143 +0800
-@@ -1129,7 +1129,7 @@ iw_channel_to_freq(int				channel,
+@@ -1138,7 +1138,7 @@ iw_channel_to_freq(int				channel,
  void
  iw_print_bitrate(char *	buffer,
 		 int	buflen,
