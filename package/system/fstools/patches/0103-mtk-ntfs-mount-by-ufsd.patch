@@ -1,6 +1,6 @@
---- a/block.c	2017-11-07 11:13:11.502259230 +0800
-+++ b/block.c	2017-11-07 11:16:43.484684786 +0800
-@@ -859,6 +859,9 @@
+--- a/block.c
++++ b/block.c
+@@ -915,6 +915,9 @@ static int handle_mount(const char *sour
  		snprintf(_data, sizeof(_data), "%s", "iocharset=utf8,uid=65534,gid=65534");
  	}
  

@@ -1,6 +1,5 @@
-diff -Nurp a/boot_param.c b/boot_param.c
---- a/boot_param.c	2022-04-12 10:12:44.759119100 +0800
-+++ b/boot_param.c	2022-04-12 10:20:14.912922700 +0800
+--- a/boot_param.c
++++ b/boot_param.c
 @@ -9,6 +9,13 @@
  #include <sys/stat.h>
  #include <stdio.h>
@@ -335,9 +334,8 @@ diff -Nurp a/boot_param.c b/boot_param.c
 +
 +	return buf;
 +}
-diff -Nurp a/boot_param.h b/boot_param.h
---- a/boot_param.h	2022-04-12 10:12:44.766130100 +0800
-+++ b/boot_param.h	2022-04-12 10:20:12.131730700 +0800
+--- a/boot_param.h
++++ b/boot_param.h
 @@ -18,4 +18,27 @@ int write_boot_param_string(const char *
  char *blockdev_parse(const char *name);
  char *boot_param_get_dev(const char *name);
@@ -366,9 +364,8 @@ diff -Nurp a/boot_param.h b/boot_param.h
 +char *read_full_dm_mod_create(void);
 +
  #endif /* _BOOT_PARAM_H_ */
-diff -Nurp a/libfstools/rootdisk.c b/libfstools/rootdisk.c
---- a/libfstools/rootdisk.c	2022-04-12 10:12:44.779066200 +0800
-+++ b/libfstools/rootdisk.c	2022-04-12 10:20:01.667043800 +0800
+--- a/libfstools/rootdisk.c
++++ b/libfstools/rootdisk.c
 @@ -109,6 +109,54 @@ static int get_squashfs(struct squashfs_
  	return 0;
  }

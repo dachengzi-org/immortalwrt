@@ -1,8 +1,6 @@
-Index: fstools-2016-12-04-84b530a7/block.c
-===================================================================
---- fstools-2016-12-04-84b530a7.orig/block.c	2017-10-31 18:34:40.867026783 +0800
-+++ fstools-2016-12-04-84b530a7/block.c	2017-10-31 18:39:16.417175783 +0800
-@@ -854,9 +854,13 @@
+--- a/block.c
++++ b/block.c
+@@ -910,9 +910,13 @@ static int handle_mount(const char *sour
  	int i, err;
  	size_t mount_opts_len;
  	char *mount_opts = NULL, *ptr;

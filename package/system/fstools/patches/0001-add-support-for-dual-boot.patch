@@ -135,7 +135,7 @@
  	if (!strcmp(base, "swapon"))
  		return main_swapon(argc, argv);
  
---- a/boot_param.c
+--- /dev/null
 +++ b/boot_param.c
 @@ -0,0 +1,270 @@
 +/* SPDX-License-Identifier: BSD-3-Clause */
@@ -408,7 +408,7 @@
 +
 +	return blockdev_parse(partkey);
 +}
---- a/boot_param.h
+--- /dev/null
 +++ b/boot_param.h
 @@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: BSD-3-Clause

@@ -12,14 +12,14 @@ Signed-off-by: Qi Liu <liuqi_colin@msn.com>
 
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -75,9 +75,9 @@ INSTALL(TARGETS blockd RUNTIME DESTINATION sbin)
+@@ -79,9 +79,9 @@ INSTALL(TARGETS blockd RUNTIME DESTINATI
  ADD_EXECUTABLE(block block.c probe.c probe-libblkid.c)
  IF(DEFINED CMAKE_UBIFS_EXTROOT)
  	ADD_DEFINITIONS(-DUBIFS_EXTROOT)
--	TARGET_LINK_LIBRARIES(block blkid-tiny dl uci ubox ubus blobmsg_json ubi-utils ${json})
+-	TARGET_LINK_LIBRARIES(block blkid-tiny fstools-bootparam dl uci ubox ubus blobmsg_json ubi-utils ${json})
 +	TARGET_LINK_LIBRARIES(block blkid-tiny dl fstools uci ubox ubus blobmsg_json ubi-utils ${json})
  ELSE(DEFINED CMAKE_UBIFS_EXTROOT)
--	TARGET_LINK_LIBRARIES(block blkid-tiny dl uci ubox ubus blobmsg_json ${json})
+-	TARGET_LINK_LIBRARIES(block blkid-tiny fstools-bootparam dl uci ubox ubus blobmsg_json ${json})
 +	TARGET_LINK_LIBRARIES(block blkid-tiny dl fstools uci ubox ubus blobmsg_json ${json})
  ENDIF(DEFINED CMAKE_UBIFS_EXTROOT)
  INSTALL(TARGETS block RUNTIME DESTINATION sbin)
@@ -34,9 +34,9 @@ Signed-off-by: Qi Liu <liuqi_colin@msn.com>
 +#include "libfstools/volume.h"
 +
  #include "probe.h"
+ #include "boot_param.h"
  
- #define AUTOFS_MOUNT_PATH       "/tmp/run/blockd/"
-@@ -1579,6 +1582,44 @@ static int main_extroot(int argc, char **argv)
+@@ -1615,6 +1618,44 @@ static int main_extroot(int argc, char *
         }
  #endif
  
