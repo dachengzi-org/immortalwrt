@@ -8,12 +8,16 @@ export IS_TTY=$(if $(MAKE_TERMOUT),1,0)
 
 include $(TOPDIR)/include/verbose.mk
 
-ifeq ($(SDK),1)
-  include $(TOPDIR)/include/version.mk
-else
-  REVISION:=$(shell $(TOPDIR)/scripts/getver.sh)
-  SOURCE_DATE_EPOCH:=$(shell $(TOPDIR)/scripts/get_source_date_epoch.sh)
-endif
+# ifeq ($(SDK),1)
+#   include $(TOPDIR)/include/version.mk
+# else
+#   REVISION:=$(shell $(TOPDIR)/scripts/getver.sh)
+#   SOURCE_DATE_EPOCH:=$(shell $(TOPDIR)/scripts/get_source_date_epoch.sh)
+# endif
+
+# change to use the current epoch
+REVISION:=$(shell $(TOPDIR)/scripts/getver.sh)
+SOURCE_DATE_EPOCH:=$(shell $(TOPDIR)/scripts/get_cur_epoch.sh)
 
 export REVISION
 export SOURCE_DATE_EPOCH
