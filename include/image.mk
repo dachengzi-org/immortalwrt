@@ -440,6 +440,12 @@ else
   DEVICE_CHECK_PROFILE = $(CONFIG_TARGET_$(if $(CONFIG_TARGET_MULTI_PROFILE),DEVICE_)$(call target_conf,$(BOARD)$(if $(SUBTARGET),_$(SUBTARGET)))_$(1))
 endif
 
+DEVICE_CHECK_FIT_KEY = $(if $(wildcard $(FIT_KEY_DIR)/$(FIT_KEY_NAME).key),install-images,install-disabled)
+DEVICE_CHECK_FIT_DIR = $(if $(FIT_KEY_DIR),$(DEVICE_CHECK_FIT_KEY),install-disabled)
+
+DEVICE_CHECK_OFFLINE_FIT_KEY = $(if $(filter offline%,$(FIT_KEY_NAME)),install-images,$(DEVICE_CHECK_FIT_DIR))
+DEVICE_CHECK_FIT_KEY_NAME = $(if $(FIT_KEY_NAME),$(DEVICE_CHECK_OFFLINE_FIT_KEY),install-images)
+
 DEVICE_EXTRA_PACKAGES = $(call qstrip,$(CONFIG_TARGET_DEVICE_PACKAGES_$(call target_conf,$(BOARD)$(if $(SUBTARGET),_$(SUBTARGET)))_DEVICE_$(1)))
 
 define merge_packages
@@ -462,7 +468,7 @@ endef
 define Device/Check
   $(Device/Check/Common)
   KDIR_KERNEL_IMAGE := $(KDIR)/$(1)$$(KERNEL_SUFFIX)
-  _TARGET := $$(if $$(_PROFILE_SET),install-images,install-disabled)
+  _TARGET := $$(if $$(_PROFILE_SET),$$(DEVICE_CHECK_FIT_KEY_NAME),install-disabled)
   ifndef IB
     _COMPILE_TARGET := $$(if $(CONFIG_IB)$$(_PROFILE_SET),compile,compile-disabled)
   endif
@@ -554,6 +560,16 @@ define Device/Build/kernel
     ifdef CONFIG_IB
       install: $$(KDIR_KERNEL_IMAGE)
     endif
+    ifneq ($$(filter squashfs,$(2)),)
+      # Force squashfs to be built before generating kernel image
+      ROOTFS/squashfs/$(1) := \
+	$(KDIR)/root.squashfs$$(strip \
+		$$(if $$(FS_OPTIONS/squashfs),+fs=$$(call param_mangle,$$(FS_OPTIONS/squashfs))) \
+	)$$(strip \
+		$(if $(TARGET_PER_DEVICE_ROOTFS),+pkg=$$(ROOTFS_ID/$(1))) \
+	)
+      $$(KDIR_KERNEL_IMAGE): $$(ROOTFS/squashfs/$(1))
+    endif
     $$(KDIR_KERNEL_IMAGE): $(KDIR)/$$(KERNEL_NAME) $(CURDIR)/Makefile $$(KERNEL_DEPENDS) image_prepare
 	@rm -f $$@
 	$$(call concat_cmd,$$(KERNEL))
@@ -638,7 +654,7 @@ endef
 
 define Device/Build
   $(if $(CONFIG_TARGET_ROOTFS_INITRAMFS),$(call Device/Build/initramfs,$(1)))
-  $(call Device/Build/kernel,$(1))
+  $(call Device/Build/kernel,$(1),$$(filter $(TARGET_FILESYSTEMS),$$(FILESYSTEMS)))
 
   $$(eval $$(foreach compile,$$(COMPILE), \
     $$(call Device/Build/compile,$$(compile),$(1))))
