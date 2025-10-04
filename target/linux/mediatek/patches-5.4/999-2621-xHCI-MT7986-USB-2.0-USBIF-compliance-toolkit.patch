@@ -13,8 +13,6 @@ Subject: [PATCH]
  drivers/usb/host/xhci.h     |  1 +
  6 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 79b2e79dd..12b1bf9aa 100644
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
 @@ -69,6 +69,15 @@ config USB_XHCI_MTK
@@ -33,8 +31,6 @@ index 79b2e79dd..12b1bf9aa 100644
  config USB_XHCI_MVEBU
  	tristate "xHCI support for Marvell Armada 375/38x/37xx"
  	select USB_XHCI_PLATFORM
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index b19136125..f064f836d 100644
 --- a/drivers/usb/host/Makefile
 +++ b/drivers/usb/host/Makefile
 @@ -21,6 +21,16 @@ endif
@@ -54,8 +50,6 @@ index b19136125..f064f836d 100644
  endif
  
  xhci-plat-hcd-y := xhci-plat.o
-diff --git a/drivers/usb/host/xhci-mtk.c b/drivers/usb/host/xhci-mtk.c
-index 77ddb8c05..7a2007931 100644
 --- a/drivers/usb/host/xhci-mtk.c
 +++ b/drivers/usb/host/xhci-mtk.c
 @@ -18,10 +18,10 @@
@@ -71,7 +65,7 @@ index 77ddb8c05..7a2007931 100644
  /* COMPLIANCE_CP5_CP7_TXDEEMPH_10G register */
  #define COMPLIANCE_CP5_CP7_TXDEEMPH_10G  0x2428
  #define CP5_CP7_TXDEEMPH_10G		 GENMASK(17, 0)
-@@ -586,6 +586,7 @@ static int xhci_mtk_probe(struct platform_device *pdev)
+@@ -587,6 +587,7 @@ static int xhci_mtk_probe(struct platfor
  	ret = usb_add_hcd(xhci->shared_hcd, irq, IRQF_SHARED);
  	if (ret)
  		goto dealloc_usb2_hcd;
@@ -79,7 +73,7 @@ index 77ddb8c05..7a2007931 100644
  
  	return 0;
  
-@@ -620,6 +621,7 @@ static int xhci_mtk_remove(struct platform_device *dev)
+@@ -621,6 +622,7 @@ static int xhci_mtk_remove(struct platfo
  	struct usb_hcd	*hcd = mtk->hcd;
  	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
  	struct usb_hcd  *shared_hcd = xhci->shared_hcd;
@@ -87,8 +81,6 @@ index 77ddb8c05..7a2007931 100644
  
  	pm_runtime_put_noidle(&dev->dev);
  	pm_runtime_disable(&dev->dev);
-diff --git a/drivers/usb/host/xhci-mtk.h b/drivers/usb/host/xhci-mtk.h
-index 8a884e7b4..e815d7091 100644
 --- a/drivers/usb/host/xhci-mtk.h
 +++ b/drivers/usb/host/xhci-mtk.h
 @@ -157,6 +157,13 @@ struct xhci_hcd_mtk {
@@ -105,11 +97,9 @@ index 8a884e7b4..e815d7091 100644
  };
  
  static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index b8915790a..dd1b520af 100644
 --- a/drivers/usb/host/xhci.c
 +++ b/drivers/usb/host/xhci.c
-@@ -714,7 +714,7 @@ EXPORT_SYMBOL_GPL(xhci_run);
+@@ -718,7 +718,7 @@ EXPORT_SYMBOL_GPL(xhci_run);
   * Disable device contexts, disable IRQs, and quiesce the HC.
   * Reset the HC, finish any completed transactions, and cleanup memory.
   */
@@ -118,8 +108,6 @@ index b8915790a..dd1b520af 100644
  {
  	u32 temp;
  	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index e696f1508..07f904167 100644
 --- a/drivers/usb/host/xhci.h
 +++ b/drivers/usb/host/xhci.h
 @@ -2073,6 +2073,7 @@ int xhci_halt(struct xhci_hcd *xhci);
@@ -130,6 +118,3 @@ index e696f1508..07f904167 100644
  int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks);
  void xhci_shutdown(struct usb_hcd *hcd);
  void xhci_init_driver(struct hc_driver *drv,
--- 
-2.34.1
-

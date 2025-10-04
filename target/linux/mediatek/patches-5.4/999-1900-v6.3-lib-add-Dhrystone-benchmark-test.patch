@@ -47,11 +47,9 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  create mode 100644 lib/dhry_2.c
  create mode 100644 lib/dhry_run.c
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 881c3f84e88a..918bda4ee120 100644
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -2079,6 +2079,41 @@ menuconfig RUNTIME_TESTING_MENU
+@@ -1667,6 +1667,41 @@ menuconfig RUNTIME_TESTING_MENU
  
  if RUNTIME_TESTING_MENU
  
@@ -93,22 +91,17 @@ index 881c3f84e88a..918bda4ee120 100644
  config LKDTM
  	tristate "Linux Kernel Dump Test Tool Module"
  	depends on DEBUG_FS
-diff --git a/lib/Makefile b/lib/Makefile
-index 4d9461bfea42..06b9dcd80cda 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -57,6 +57,8 @@ obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
+@@ -64,6 +64,8 @@ obj-$(CONFIG_TEST_HEXDUMP) += test_hexdu
  obj-y += kstrtox.o
  obj-$(CONFIG_FIND_BIT_BENCHMARK) += find_bit_benchmark.o
  obj-$(CONFIG_TEST_BPF) += test_bpf.o
 +test_dhry-objs := dhry_1.o dhry_2.o dhry_run.o
 +obj-$(CONFIG_TEST_DHRY) += test_dhry.o
  obj-$(CONFIG_TEST_FIRMWARE) += test_firmware.o
- obj-$(CONFIG_TEST_BITOPS) += test_bitops.o
- CFLAGS_test_bitops.o += -Werror
-diff --git a/lib/dhry.h b/lib/dhry.h
-new file mode 100644
-index 000000000000..e1a4db8e252c
+ obj-$(CONFIG_TEST_SYSCTL) += test_sysctl.o
+ obj-$(CONFIG_TEST_HASH) += test_hash.o test_siphash.o
 --- /dev/null
 +++ b/lib/dhry.h
 @@ -0,0 +1,358 @@
@@ -470,9 +463,6 @@ index 000000000000..e1a4db8e252c
 +Boolean Func_2(Str_30 Str_1_Par_Ref, Str_30 Str_2_Par_Ref);
 +
 +int dhry(int n);
-diff --git a/lib/dhry_1.c b/lib/dhry_1.c
-new file mode 100644
-index 000000000000..83247106824c
 --- /dev/null
 +++ b/lib/dhry_1.c
 @@ -0,0 +1,283 @@
@@ -759,9 +749,6 @@ index 000000000000..83247106824c
 +
 +	return div_u64(mul_u32_u32(MSEC_PER_SEC, Number_Of_Runs), User_Time);
 +}
-diff --git a/lib/dhry_2.c b/lib/dhry_2.c
-new file mode 100644
-index 000000000000..c19e661f37d3
 --- /dev/null
 +++ b/lib/dhry_2.c
 @@ -0,0 +1,175 @@
@@ -940,9 +927,6 @@ index 000000000000..c19e661f37d3
 +		}
 +	} /* if Ch_Loc */
 +} /* Func_2 */
-diff --git a/lib/dhry_run.c b/lib/dhry_run.c
-new file mode 100644
-index 000000000000..f9d33efa6d09
 --- /dev/null
 +++ b/lib/dhry_run.c
 @@ -0,0 +1,85 @@
@@ -1031,6 +1015,3 @@ index 000000000000..f9d33efa6d09
 +
 +MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
 +MODULE_LICENSE("GPL");
--- 
-2.18.0
-

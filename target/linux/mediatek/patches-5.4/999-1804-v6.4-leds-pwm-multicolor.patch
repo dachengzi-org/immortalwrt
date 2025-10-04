@@ -14,8 +14,6 @@ Subject: [PATCH] backport leds pwm multicolor from v6.4
  create mode 100644 drivers/leds/leds-pwm-multicolor.c
  create mode 100644 include/linux/led-class-multicolor.h
 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index db18084..eebfb8c 100644
 --- a/drivers/leds/Kconfig
 +++ b/drivers/leds/Kconfig
 @@ -30,6 +30,16 @@ config LEDS_CLASS_FLASH
@@ -53,8 +51,6 @@ index db18084..eebfb8c 100644
  config LEDS_REGULATOR
  	tristate "REGULATOR driven LED support"
  	depends on LEDS_CLASS
-diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
-index e648275..39885e5 100644
 --- a/drivers/leds/Makefile
 +++ b/drivers/leds/Makefile
 @@ -4,6 +4,7 @@
@@ -65,7 +61,7 @@ index e648275..39885e5 100644
  obj-$(CONFIG_LEDS_TRIGGERS)		+= led-triggers.o
  
  # LED Platform Drivers
-@@ -54,6 +55,7 @@ obj-$(CONFIG_LEDS_DA9052)		+= leds-da9052.o
+@@ -54,6 +55,7 @@ obj-$(CONFIG_LEDS_DA9052)		+= leds-da905
  obj-$(CONFIG_LEDS_WM831X_STATUS)	+= leds-wm831x-status.o
  obj-$(CONFIG_LEDS_WM8350)		+= leds-wm8350.o
  obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
@@ -73,9 +69,6 @@ index e648275..39885e5 100644
  obj-$(CONFIG_LEDS_REGULATOR)		+= leds-regulator.o
  obj-$(CONFIG_LEDS_INTEL_SS4200)		+= leds-ss4200.o
  obj-$(CONFIG_LEDS_LT3593)		+= leds-lt3593.o
-diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
-new file mode 100644
-index 0000000..16f3372
 --- /dev/null
 +++ b/drivers/leds/led-class-multicolor.c
 @@ -0,0 +1,203 @@
@@ -282,9 +275,6 @@ index 0000000..16f3372
 +MODULE_AUTHOR("Dan Murphy <dmurphy@ti.com>");
 +MODULE_DESCRIPTION("Multicolor LED class interface");
 +MODULE_LICENSE("GPL v2");
-diff --git a/drivers/leds/leds-pwm-multicolor.c b/drivers/leds/leds-pwm-multicolor.c
-new file mode 100644
-index 0000000..e1e2daa
 --- /dev/null
 +++ b/drivers/leds/leds-pwm-multicolor.c
 @@ -0,0 +1,194 @@
@@ -482,9 +472,6 @@ index 0000000..e1e2daa
 +MODULE_DESCRIPTION("multi-color PWM LED driver");
 +MODULE_LICENSE("GPL v2");
 +MODULE_ALIAS("platform:leds-pwm-multicolor");
-diff --git a/include/linux/led-class-multicolor.h b/include/linux/led-class-multicolor.h
-new file mode 100644
-index 0000000..210d57b
 --- /dev/null
 +++ b/include/linux/led-class-multicolor.h
 @@ -0,0 +1,109 @@
@@ -597,6 +584,3 @@ index 0000000..210d57b
 +}
 +
 +#endif	/* _LINUX_MULTICOLOR_LEDS_H_INCLUDED */
--- 
-2.18.0
-

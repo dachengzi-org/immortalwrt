@@ -8,8 +8,6 @@ Subject: [PATCH]
  include/dt-bindings/phy/phy.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/dt-bindings/phy/phy.h b/include/dt-bindings/phy/phy.h
-index b6a1eaf1b..1f3f866fa 100644
 --- a/include/dt-bindings/phy/phy.h
 +++ b/include/dt-bindings/phy/phy.h
 @@ -16,5 +16,6 @@
@@ -19,6 +17,3 @@ index b6a1eaf1b..1f3f866fa 100644
 +#define PHY_TYPE_DP		6
  
  #endif /* _DT_BINDINGS_PHY */
--- 
-2.34.1
-

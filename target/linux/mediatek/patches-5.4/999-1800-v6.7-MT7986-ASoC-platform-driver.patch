@@ -20,8 +20,6 @@ Subject: [PATCH] v6.7 MT7986 ASoC platform driver
  create mode 100644 sound/soc/mediatek/mt7986/mt7986-reg.h
  create mode 100644 sound/soc/mediatek/mt7986/mt7986-wm8960.c
 
-diff --git a/sound/soc/mediatek/Kconfig b/sound/soc/mediatek/Kconfig
-index 111e44b..99d36c4 100644
 --- a/sound/soc/mediatek/Kconfig
 +++ b/sound/soc/mediatek/Kconfig
 @@ -53,6 +53,26 @@ config SND_SOC_MT6797_MT6351
@@ -51,8 +49,6 @@ index 111e44b..99d36c4 100644
  config SND_SOC_MT8173
  	tristate "ASoC support for Mediatek MT8173 chip"
  	depends on ARCH_MEDIATEK
-diff --git a/sound/soc/mediatek/Makefile b/sound/soc/mediatek/Makefile
-index 76032ca..657325a 100644
 --- a/sound/soc/mediatek/Makefile
 +++ b/sound/soc/mediatek/Makefile
 @@ -2,5 +2,6 @@
@@ -62,9 +58,6 @@ index 76032ca..657325a 100644
 +obj-$(CONFIG_SND_SOC_MT7986) += mt7986/
  obj-$(CONFIG_SND_SOC_MT8173) += mt8173/
  obj-$(CONFIG_SND_SOC_MT8183) += mt8183/
-diff --git a/sound/soc/mediatek/mt7986/Makefile b/sound/soc/mediatek/mt7986/Makefile
-new file mode 100644
-index 0000000..fc4c825
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/Makefile
 @@ -0,0 +1,9 @@
@@ -77,9 +70,6 @@ index 0000000..fc4c825
 +
 +obj-$(CONFIG_SND_SOC_MT7986) += snd-soc-mt7986-afe.o
 +obj-$(CONFIG_SND_SOC_MT7986_WM8960) += mt7986-wm8960.o
-diff --git a/sound/soc/mediatek/mt7986/mt7986-afe-common.h b/sound/soc/mediatek/mt7986/mt7986-afe-common.h
-new file mode 100644
-index 0000000..fc3bb31
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/mt7986-afe-common.h
 @@ -0,0 +1,49 @@
@@ -132,9 +122,6 @@ index 0000000..fc3bb31
 +/* dai register */
 +int mt7986_dai_etdm_register(struct mtk_base_afe *afe);
 +#endif
-diff --git a/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c b/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c
-new file mode 100644
-index 0000000..e2f8c51
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c
 @@ -0,0 +1,640 @@
@@ -778,9 +765,6 @@ index 0000000..e2f8c51
 +MODULE_DESCRIPTION("MediaTek SoC AFE platform driver for ALSA MT7986");
 +MODULE_AUTHOR("Vic Wu <vic.wu@mediatek.com>");
 +MODULE_LICENSE("GPL");
-diff --git a/sound/soc/mediatek/mt7986/mt7986-dai-etdm.c b/sound/soc/mediatek/mt7986/mt7986-dai-etdm.c
-new file mode 100644
-index 0000000..192f55a
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/mt7986-dai-etdm.c
 @@ -0,0 +1,428 @@
@@ -1212,9 +1196,6 @@ index 0000000..192f55a
 +
 +	return 0;
 +}
-diff --git a/sound/soc/mediatek/mt7986/mt7986-reg.h b/sound/soc/mediatek/mt7986/mt7986-reg.h
-new file mode 100644
-index 0000000..c2b2007
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/mt7986-reg.h
 @@ -0,0 +1,196 @@
@@ -1414,9 +1395,6 @@ index 0000000..c2b2007
 +#define OUT_SEL_SFT                     12
 +#define OUT_SEL_MASK                    GENMASK(15, 12)
 +#endif
-diff --git a/sound/soc/mediatek/mt7986/mt7986-wm8960.c b/sound/soc/mediatek/mt7986/mt7986-wm8960.c
-new file mode 100644
-index 0000000..c1390b3
 --- /dev/null
 +++ b/sound/soc/mediatek/mt7986/mt7986-wm8960.c
 @@ -0,0 +1,177 @@
@@ -1597,6 +1575,3 @@ index 0000000..c1390b3
 +MODULE_AUTHOR("Vic Wu <vic.wu@mediatek.com>");
 +MODULE_LICENSE("GPL");
 +MODULE_ALIAS("mt7986 wm8960 soc card");
--- 
-2.18.0
-

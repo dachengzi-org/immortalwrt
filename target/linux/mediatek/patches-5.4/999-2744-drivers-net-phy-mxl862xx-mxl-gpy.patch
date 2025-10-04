@@ -7,8 +7,6 @@ Subject: [PATCH] 999-2745-drivers-net-phy-mxl862xx-mxl-gpy
  drivers/net/phy/mxl-gpy.c | 28 ++++++++++++++++++++++++++++
  1 file changed, 28 insertions(+)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 7304278..988eb77 100644
 --- a/drivers/net/phy/mxl-gpy.c
 +++ b/drivers/net/phy/mxl-gpy.c
 @@ -14,6 +14,7 @@
@@ -27,7 +25,7 @@ index 7304278..988eb77 100644
  
  #define PHY_MIISTAT		0x18	/* MII state */
  #define PHY_IMASK		0x19	/* interrupt mask */
-@@ -504,6 +506,15 @@ static int gpy115_loopback(struct phy_device *phydev, bool enable)
+@@ -504,6 +506,15 @@ static int gpy115_loopback(struct phy_de
  	return genphy_soft_reset(phydev);
  }
  
@@ -43,7 +41,7 @@ index 7304278..988eb77 100644
  static struct phy_driver gpy_drivers[] = {
  	{
  		PHY_ID_MATCH_MODEL(PHY_ID_GPY2xx),
-@@ -713,6 +724,22 @@ static struct phy_driver gpy_drivers[] = {
+@@ -713,6 +724,22 @@ static struct phy_driver gpy_drivers[] =
  		.get_wol	= gpy_get_wol,
  		.set_loopback	= gpy_loopback,
  	},
@@ -66,7 +64,7 @@ index 7304278..988eb77 100644
  };
  module_phy_driver(gpy_drivers);
  
-@@ -729,6 +756,7 @@ static struct mdio_device_id __maybe_unused gpy_tbl[] = {
+@@ -729,6 +756,7 @@ static struct mdio_device_id __maybe_unu
  	{PHY_ID_MATCH_MODEL(PHY_ID_GPY241B)},
  	{PHY_ID_MATCH_MODEL(PHY_ID_GPY241BM)},
  	{PHY_ID_MATCH_MODEL(PHY_ID_GPY245B)},
@@ -74,6 +72,3 @@ index 7304278..988eb77 100644
  	{ }
  };
  MODULE_DEVICE_TABLE(mdio, gpy_tbl);
--- 
-2.45.2
-

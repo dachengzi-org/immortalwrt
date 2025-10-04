@@ -7,8 +7,6 @@ Add the VLAN ID and protocol information
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index c373f1d..f45abd5 100644
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
 @@ -27,6 +27,11 @@
@@ -23,7 +21,7 @@ index c373f1d..f45abd5 100644
  #include "vlan.h"
  #include "vlanproc.h"
  #include <linux/if_vlan.h>
-@@ -791,6 +796,27 @@ static int vlan_dev_fill_forward_path(struct net_device_path_ctx *ctx,
+@@ -791,6 +796,27 @@ static int vlan_dev_fill_forward_path(st
  	return 0;
  }
  
@@ -51,7 +49,7 @@ index c373f1d..f45abd5 100644
  static const struct ethtool_ops vlan_ethtool_ops = {
  	.get_link_ksettings	= vlan_ethtool_get_link_ksettings,
  	.get_drvinfo	        = vlan_ethtool_get_drvinfo,
-@@ -830,6 +856,9 @@ static const struct net_device_ops vlan_netdev_ops = {
+@@ -830,6 +856,9 @@ static const struct net_device_ops vlan_
  	.ndo_fix_features	= vlan_dev_fix_features,
  	.ndo_get_iflink		= vlan_dev_get_iflink,
  	.ndo_fill_forward_path	= vlan_dev_fill_forward_path,

@@ -8,8 +8,6 @@ Subject: [PATCH]
  sound/soc/mediatek/common/mtk-afe-fe-dai.c | 143 +++++++++++----------
  1 file changed, 77 insertions(+), 66 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-afe-fe-dai.c b/sound/soc/mediatek/common/mtk-afe-fe-dai.c
-index 309dc1ef6..e761cb66b 100644
 --- a/sound/soc/mediatek/common/mtk-afe-fe-dai.c
 +++ b/sound/soc/mediatek/common/mtk-afe-fe-dai.c
 @@ -6,11 +6,13 @@
@@ -26,7 +24,7 @@ index 309dc1ef6..e761cb66b 100644
  #include "mtk-afe-fe-dai.h"
  #include "mtk-base-afe.h"
  
-@@ -120,50 +122,64 @@ int mtk_afe_fe_hw_params(struct snd_pcm_substream *substream,
+@@ -120,50 +122,64 @@ int mtk_afe_fe_hw_params(struct snd_pcm_
  {
  	struct snd_soc_pcm_runtime *rtd = substream->private_data;
  	struct mtk_base_afe *afe = snd_soc_dai_get_drvdata(dai);
@@ -61,7 +59,10 @@ index 309dc1ef6..e761cb66b 100644
 -			       1, msb_at_bit33, memif->data->msb_shift);
 +	if (afe->request_dram_resource)
 +		afe->request_dram_resource(afe->dev);
-+
+ 
+-	/* set channel */
+-	if (memif->data->mono_shift >= 0) {
+-		unsigned int mono = (params_channels(params) == 1) ? 1 : 0;
 +	dev_dbg(afe->dev, "%s(), %s, ch %d, rate %d, fmt %d, dma_addr %pad, dma_area %p, dma_bytes 0x%zx\n",
 +		__func__, memif->data->name,
 +		channels, rate, format,
@@ -83,12 +84,9 @@ index 309dc1ef6..e761cb66b 100644
 +		return ret;
 +	}
  
- 	/* set channel */
--	if (memif->data->mono_shift >= 0) {
--		unsigned int mono = (params_channels(params) == 1) ? 1 : 0;
--
 -		mtk_regmap_update_bits(afe->regmap, memif->data->mono_reg,
 -				       1, mono, memif->data->mono_shift);
++	/* set channel */
 +	ret = mtk_memif_set_channel(afe, id, channels);
 +	if (ret) {
 +		dev_err(afe->dev, "%s(), error, id %d, set channel %d, ret %d\n",
@@ -136,7 +134,7 @@ index 309dc1ef6..e761cb66b 100644
  	return snd_pcm_lib_free_pages(substream);
  }
  EXPORT_SYMBOL_GPL(mtk_afe_fe_hw_free);
-@@ -182,20 +203,25 @@ int mtk_afe_fe_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -182,20 +203,25 @@ int mtk_afe_fe_trigger(struct snd_pcm_su
  	struct snd_soc_pcm_runtime *rtd = substream->private_data;
  	struct snd_pcm_runtime * const runtime = substream->runtime;
  	struct mtk_base_afe *afe = snd_soc_dai_get_drvdata(dai);
@@ -166,7 +164,7 @@ index 309dc1ef6..e761cb66b 100644
  
  		/* set irq counter */
  		mtk_regmap_update_bits(afe->regmap, irq_data->irq_cnt_reg,
-@@ -219,15 +245,19 @@ int mtk_afe_fe_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -219,15 +245,19 @@ int mtk_afe_fe_trigger(struct snd_pcm_su
  		return 0;
  	case SNDRV_PCM_TRIGGER_STOP:
  	case SNDRV_PCM_TRIGGER_SUSPEND:
@@ -189,7 +187,7 @@ index 309dc1ef6..e761cb66b 100644
  	default:
  		return -EINVAL;
  	}
-@@ -239,34 +269,15 @@ int mtk_afe_fe_prepare(struct snd_pcm_substream *substream,
+@@ -239,34 +269,15 @@ int mtk_afe_fe_prepare(struct snd_pcm_su
  {
  	struct snd_soc_pcm_runtime *rtd  = substream->private_data;
  	struct mtk_base_afe *afe = snd_soc_dai_get_drvdata(dai);
@@ -231,6 +229,3 @@ index 309dc1ef6..e761cb66b 100644
  	return 0;
  }
  EXPORT_SYMBOL_GPL(mtk_afe_fe_prepare);
--- 
-2.34.1
-

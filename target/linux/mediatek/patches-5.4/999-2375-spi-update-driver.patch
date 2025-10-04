@@ -7,8 +7,6 @@ Subject: [PATCH] [spi-and-storage][999-2375-spi-update-driver.patch]
  drivers/spi/spi-mt65xx.c | 414 ++++++++++++++++++++++-----------------
  1 file changed, 231 insertions(+), 183 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 2034d1979..b80f8dcd9 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
 @@ -12,7 +12,7 @@
@@ -82,7 +80,7 @@ index 2034d1979..b80f8dcd9 100644
  	struct completion spimem_done;
  	bool use_spimem;
  	struct device *dev;
-@@ -154,21 +152,10 @@ static const struct mtk_spi_compatible mt2712_compat = {
+@@ -154,21 +152,10 @@ static const struct mtk_spi_compatible m
  	.must_tx = true,
  };
  
@@ -105,7 +103,7 @@ index 2034d1979..b80f8dcd9 100644
  };
  
  static const struct mtk_spi_compatible mt6765_compat = {
-@@ -194,13 +181,25 @@ static const struct mtk_spi_compatible mt8183_compat = {
+@@ -194,13 +181,25 @@ static const struct mtk_spi_compatible m
  	.enhance_timing = true,
  };
  
@@ -133,7 +131,7 @@ index 2034d1979..b80f8dcd9 100644
  	{ .compatible = "mediatek,mt2701-spi",
  		.data = (void *)&mtk_common_compat,
  	},
-@@ -228,6 +227,12 @@ static const struct of_device_id mtk_spi_of_match[] = {
+@@ -228,6 +227,12 @@ static const struct of_device_id mtk_spi
  	{ .compatible = "mediatek,mt8183-spi",
  		.data = (void *)&mt8183_compat,
  	},
@@ -146,7 +144,7 @@ index 2034d1979..b80f8dcd9 100644
  	{}
  };
  MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
-@@ -256,27 +261,30 @@ static int mtk_spi_hw_init(struct spi_master *master,
+@@ -256,27 +261,30 @@ static int mtk_spi_hw_init(struct spi_ma
  	cpha = spi->mode & SPI_CPHA ? 1 : 0;
  	cpol = spi->mode & SPI_CPOL ? 1 : 0;
  
@@ -187,7 +185,7 @@ index 2034d1979..b80f8dcd9 100644
  	reg_val = readl(mdata->base + SPI_CMD_REG);
  	if (mdata->dev_comp->ipm_design) {
  		/* SPI transfer without idle time until packet length done */
-@@ -375,12 +383,11 @@ static void mtk_spi_set_cs(struct spi_device *spi, bool enable)
+@@ -375,12 +383,11 @@ static void mtk_spi_set_cs(struct spi_de
  static void mtk_spi_prepare_transfer(struct spi_master *master,
  				     u32 speed_hz)
  {
@@ -203,7 +201,7 @@ index 2034d1979..b80f8dcd9 100644
  	else
  		div = 1;
  
-@@ -388,13 +395,19 @@ static void mtk_spi_prepare_transfer(struct spi_master *master,
+@@ -388,13 +395,19 @@ static void mtk_spi_prepare_transfer(str
  	cs_time = sck_time * 2;
  
  	if (mdata->dev_comp->enhance_timing) {
@@ -225,7 +223,7 @@ index 2034d1979..b80f8dcd9 100644
  		reg_val |= (((cs_time - 1) & 0xffff)
  			   << SPI_ADJUST_CFG0_CS_SETUP_OFFSET);
  		writel(reg_val, mdata->base + SPI_CFG0_REG);
-@@ -453,14 +466,17 @@ static void mtk_spi_enable_transfer(struct spi_master *master)
+@@ -453,14 +466,17 @@ static void mtk_spi_enable_transfer(stru
  	writel(cmd, mdata->base + SPI_CMD_REG);
  }
  
@@ -249,7 +247,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	return mult_delta;
  }
-@@ -472,22 +488,22 @@ static void mtk_spi_update_mdata_len(struct spi_master *master)
+@@ -472,22 +488,22 @@ static void mtk_spi_update_mdata_len(str
  
  	if (mdata->tx_sgl_len && mdata->rx_sgl_len) {
  		if (mdata->tx_sgl_len > mdata->rx_sgl_len) {
@@ -276,7 +274,7 @@ index 2034d1979..b80f8dcd9 100644
  		mdata->xfer_len = mdata->rx_sgl_len - mult_delta;
  		mdata->rx_sgl_len = mult_delta;
  	}
-@@ -598,6 +614,19 @@ static int mtk_spi_transfer_one(struct spi_master *master,
+@@ -598,6 +614,19 @@ static int mtk_spi_transfer_one(struct s
  				struct spi_device *spi,
  				struct spi_transfer *xfer)
  {
@@ -296,7 +294,7 @@ index 2034d1979..b80f8dcd9 100644
  	if (master->can_dma(master, spi, xfer))
  		return mtk_spi_dma_transfer(master, spi, xfer);
  	else
-@@ -618,8 +647,9 @@ static int mtk_spi_setup(struct spi_device *spi)
+@@ -618,8 +647,9 @@ static int mtk_spi_setup(struct spi_devi
  {
  	struct mtk_spi *mdata = spi_master_get_devdata(spi->master);
  
@@ -308,7 +306,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	return 0;
  }
-@@ -747,9 +777,6 @@ static int mtk_spi_mem_adjust_op_size(struct spi_mem *mem,
+@@ -749,9 +779,6 @@ static int mtk_spi_mem_adjust_op_size(st
  {
  	int opcode_len;
  
@@ -318,7 +316,7 @@ index 2034d1979..b80f8dcd9 100644
  	if (op->data.dir != SPI_MEM_NO_DATA) {
  		opcode_len = 1 + op->addr.nbytes + op->dummy.nbytes;
  		if (opcode_len + op->data.nbytes > MTK_SPI_IPM_PACKET_SIZE) {
-@@ -765,8 +792,7 @@ static int mtk_spi_mem_adjust_op_size(struct spi_mem *mem,
+@@ -767,8 +794,7 @@ static int mtk_spi_mem_adjust_op_size(st
  static bool mtk_spi_mem_supports_op(struct spi_mem *mem,
  				     const struct spi_mem_op *op)
  {
@@ -328,7 +326,7 @@ index 2034d1979..b80f8dcd9 100644
  		return false;
  
  	if (op->addr.nbytes && op->dummy.nbytes &&
-@@ -814,13 +840,18 @@ static int mtk_spi_transfer_wait(struct spi_mem *mem,
+@@ -816,13 +842,18 @@ static int mtk_spi_transfer_wait(struct
  				 const struct spi_mem_op *op)
  {
  	struct mtk_spi *mdata = spi_master_get_devdata(mem->spi->master);
@@ -351,7 +349,7 @@ index 2034d1979..b80f8dcd9 100644
  	ms += ms + 1000; /* 1s tolerance */
  
  	if (ms > UINT_MAX)
-@@ -839,9 +870,8 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -841,9 +872,8 @@ static int mtk_spi_mem_exec_op(struct sp
  				const struct spi_mem_op *op)
  {
  	struct mtk_spi *mdata = spi_master_get_devdata(mem->spi->master);
@@ -363,7 +361,7 @@ index 2034d1979..b80f8dcd9 100644
  	int ret = 0;
  
  	mdata->use_spimem = true;
-@@ -887,9 +917,11 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -889,9 +919,11 @@ static int mtk_spi_mem_exec_op(struct sp
  		 op->dummy.buswidth == 4 ||
  		 op->data.buswidth == 4)
  		nio = 4;
@@ -376,7 +374,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	reg_val |= SPI_CFG3_IPM_HALF_DUPLEX_EN;
  	if (op->data.dir == SPI_MEM_DATA_IN)
-@@ -902,11 +934,13 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -904,11 +936,13 @@ static int mtk_spi_mem_exec_op(struct sp
  	if (op->data.dir == SPI_MEM_DATA_OUT)
  		tx_size += op->data.nbytes;
  
@@ -392,7 +390,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	tx_tmp_buf[0] = op->cmd.opcode;
  
-@@ -937,12 +971,15 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -939,12 +973,15 @@ static int mtk_spi_mem_exec_op(struct sp
  
  	if (op->data.dir == SPI_MEM_DATA_IN) {
  		if(!IS_ALIGNED((size_t)op->data.buf.in, 4)) {
@@ -413,7 +411,7 @@ index 2034d1979..b80f8dcd9 100644
  
  		mdata->rx_dma = dma_map_single(mdata->dev,
  						   rx_tmp_buf,
-@@ -950,7 +987,7 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -952,7 +989,7 @@ static int mtk_spi_mem_exec_op(struct sp
  						   DMA_FROM_DEVICE);
  		if (dma_mapping_error(mdata->dev, mdata->rx_dma)) {
  			ret = -ENOMEM;
@@ -422,7 +420,7 @@ index 2034d1979..b80f8dcd9 100644
  		}
  	}
  
-@@ -980,11 +1017,13 @@ unmap_rx_dma:
+@@ -982,11 +1019,13 @@ unmap_rx_dma:
  	if (op->data.dir == SPI_MEM_DATA_IN) {
  		dma_unmap_single(mdata->dev, mdata->rx_dma,
  				 op->data.nbytes, DMA_FROM_DEVICE);
@@ -439,7 +437,7 @@ index 2034d1979..b80f8dcd9 100644
  unmap_tx_dma:
  	dma_unmap_single(mdata->dev, mdata->tx_dma,
  			 tx_size, DMA_TO_DEVICE);
-@@ -1003,19 +1042,19 @@ static const struct spi_controller_mem_ops mtk_spi_mem_ops = {
+@@ -1005,19 +1044,19 @@ static const struct spi_controller_mem_o
  
  static int mtk_spi_probe(struct platform_device *pdev)
  {
@@ -463,7 +461,7 @@ index 2034d1979..b80f8dcd9 100644
  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
  
  	master->set_cs = mtk_spi_set_cs;
-@@ -1023,23 +1062,16 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1025,23 +1064,16 @@ static int mtk_spi_probe(struct platform
  	master->transfer_one = mtk_spi_transfer_one;
  	master->can_dma = mtk_spi_can_dma;
  	master->setup = mtk_spi_setup;
@@ -489,7 +487,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	if (mdata->dev_comp->enhance_timing)
  		master->mode_bits |= SPI_CS_HIGH;
-@@ -1050,27 +1082,23 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1052,27 +1084,23 @@ static int mtk_spi_probe(struct platform
  	if (mdata->dev_comp->ipm_design)
  		master->mode_bits |= SPI_LOOP;
  
@@ -522,7 +520,7 @@ index 2034d1979..b80f8dcd9 100644
  						    sizeof(u32), GFP_KERNEL);
  		if (!mdata->pad_sel) {
  			ret = -ENOMEM;
-@@ -1078,11 +1106,11 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1080,11 +1108,11 @@ static int mtk_spi_probe(struct platform
  		}
  
  		for (i = 0; i < mdata->pad_num; i++) {
@@ -536,7 +534,7 @@ index 2034d1979..b80f8dcd9 100644
  					i, mdata->pad_sel[i]);
  				ret = -EINVAL;
  				goto err_put_master;
-@@ -1103,122 +1131,118 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1105,122 +1133,118 @@ static int mtk_spi_probe(struct platform
  		goto err_put_master;
  	}
  
@@ -713,7 +711,7 @@ index 2034d1979..b80f8dcd9 100644
  err_put_master:
  	spi_master_put(master);
  
-@@ -1229,11 +1253,22 @@ static int mtk_spi_remove(struct platform_device *pdev)
+@@ -1231,11 +1255,22 @@ static int mtk_spi_remove(struct platfor
  {
  	struct spi_master *master = platform_get_drvdata(pdev);
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
@@ -737,7 +735,7 @@ index 2034d1979..b80f8dcd9 100644
  	return 0;
  }
  
-@@ -1250,8 +1285,7 @@ static int mtk_spi_suspend(struct device *dev)
+@@ -1252,8 +1287,7 @@ static int mtk_spi_suspend(struct device
  
  	if (!pm_runtime_suspended(dev)) {
  		clk_disable_unprepare(mdata->spi_clk);
@@ -747,7 +745,7 @@ index 2034d1979..b80f8dcd9 100644
  	}
  
  	return ret;
-@@ -1264,26 +1298,24 @@ static int mtk_spi_resume(struct device *dev)
+@@ -1266,26 +1300,24 @@ static int mtk_spi_resume(struct device
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
  	if (!pm_runtime_suspended(dev)) {
@@ -782,7 +780,7 @@ index 2034d1979..b80f8dcd9 100644
  	}
  
  	return ret;
-@@ -1296,10 +1328,13 @@ static int mtk_spi_runtime_suspend(struct device *dev)
+@@ -1298,10 +1330,13 @@ static int mtk_spi_runtime_suspend(struc
  	struct spi_master *master = dev_get_drvdata(dev);
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
@@ -799,7 +797,7 @@ index 2034d1979..b80f8dcd9 100644
  
  	return 0;
  }
-@@ -1310,18 +1345,31 @@ static int mtk_spi_runtime_resume(struct device *dev)
+@@ -1312,18 +1347,31 @@ static int mtk_spi_runtime_resume(struct
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
  	int ret;
  
@@ -838,6 +836,3 @@ index 2034d1979..b80f8dcd9 100644
  	}
  
  	return 0;
--- 
-2.34.1
-

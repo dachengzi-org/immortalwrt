@@ -8,11 +8,9 @@ Subject: [PATCH] [networking][999-2716-en8801sc-gphy-support.patch]
  drivers/net/phy/Makefile | 1 +
  2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 3a3c12566..87eaaad76 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -345,6 +345,11 @@ config SFP
+@@ -352,6 +352,11 @@ config SFP
  	depends on HWMON || HWMON=n
  	select MDIO_I2C
  
@@ -24,8 +22,6 @@ index 3a3c12566..87eaaad76 100644
  config AIROHA_EN8811H_PHY
  	tristate "Drivers for Airoha EN8811H 2.5G Gigabit PHY"
  	---help---
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 1d368d1d5..801550726 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
 @@ -68,6 +68,7 @@ aquantia-objs			+= aquantia_main.o
@@ -36,7 +32,3 @@ index 1d368d1d5..801550726 100644
  air_en8811h-y := air_en8811h_main.o air_en8811h_api.o
  obj-$(CONFIG_AIROHA_EN8811H_PHY)	+= air_en8811h.o
  obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
- obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
--- 
-2.34.1
-

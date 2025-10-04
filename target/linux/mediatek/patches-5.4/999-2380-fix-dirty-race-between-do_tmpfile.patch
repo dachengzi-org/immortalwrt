@@ -8,8 +8,6 @@ Subject: [PATCH]
  fs/ubifs/dir.c | 60 +++++++++++++++++++++++++-------------------------
  1 file changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
-index 332c0b02a..97b231c43 100644
 --- a/fs/ubifs/dir.c
 +++ b/fs/ubifs/dir.c
 @@ -356,6 +356,32 @@ out_budg:
@@ -110,6 +108,3 @@ index 332c0b02a..97b231c43 100644
  static int ubifs_link(struct dentry *old_dentry, struct inode *dir,
  		      struct dentry *dentry)
  {
--- 
-2.34.1
-

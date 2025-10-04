@@ -7,8 +7,6 @@ Subject: [PATCH] add pwm hw breathing light support for mt7987
  drivers/pwm/pwm-mediatek.c | 118 ++++++++++++++++++++++++++++++++++++-
  1 file changed, 116 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index ad7cb2aa..6e5ba9da 100644
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
 @@ -31,6 +31,11 @@
@@ -40,7 +38,7 @@ index ad7cb2aa..6e5ba9da 100644
  };
  
  static const unsigned int mtk_pwm_reg_offset_v1[] = {
-@@ -161,6 +169,85 @@ static inline void pwm_mediatek_writel(struct pwm_mediatek_chip *chip,
+@@ -161,6 +169,85 @@ static inline void pwm_mediatek_writel(s
  	writel(value, chip->regs + pwm_offset + offset);
  }
  
@@ -126,7 +124,7 @@ index ad7cb2aa..6e5ba9da 100644
  static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
  			       int duty_ns, int period_ns)
  {
-@@ -171,6 +258,8 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+@@ -171,6 +258,8 @@ static int pwm_mediatek_config(struct pw
  	u32 clkdiv = 0, clksel = 0, cnt_period, cnt_duty,
  	    reg_width = PWMDWIDTH, reg_thres = PWMTHRES;
  	u64 resolution;
@@ -135,7 +133,7 @@ index ad7cb2aa..6e5ba9da 100644
  	int ret;
  
  	ret = pwm_mediatek_clk_enable(chip, pwm);
-@@ -178,15 +267,24 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+@@ -178,15 +267,24 @@ static int pwm_mediatek_config(struct pw
  	if (ret < 0)
  		return ret;
  
@@ -161,7 +159,7 @@ index ad7cb2aa..6e5ba9da 100644
  		/* Using clkdiv to reduce clock frequency and calculate
  		 * new resolution based on new clock speed
  		 */
-@@ -230,8 +328,14 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+@@ -230,8 +328,14 @@ static int pwm_mediatek_config(struct pw
  				    clkdiv);
  	else
  		pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
@@ -177,7 +175,7 @@ index ad7cb2aa..6e5ba9da 100644
  
  	pwm_mediatek_clk_disable(chip, pwm);
  
-@@ -276,6 +380,7 @@ static const struct pwm_ops pwm_mediatek_ops = {
+@@ -276,6 +380,7 @@ static const struct pwm_ops pwm_mediatek
  
  static int pwm_mediatek_probe(struct platform_device *pdev)
  {
@@ -185,7 +183,7 @@ index ad7cb2aa..6e5ba9da 100644
  	struct pwm_mediatek_chip *pc;
  	struct resource *res;
  	unsigned int i;
-@@ -313,6 +418,7 @@ static int pwm_mediatek_probe(struct platform_device *pdev)
+@@ -313,6 +418,7 @@ static int pwm_mediatek_probe(struct pla
  
  	for (i = 0; i < pc->soc->num_pwms; i++) {
  		char name[8];
@@ -193,7 +191,7 @@ index ad7cb2aa..6e5ba9da 100644
  
  		snprintf(name, sizeof(name), "pwm%d", i + 1);
  
-@@ -322,6 +428,12 @@ static int pwm_mediatek_probe(struct platform_device *pdev)
+@@ -322,6 +428,12 @@ static int pwm_mediatek_probe(struct pla
  				name, PTR_ERR(pc->clk_pwms[i]));
  			return PTR_ERR(pc->clk_pwms[i]);
  		}
@@ -206,7 +204,7 @@ index ad7cb2aa..6e5ba9da 100644
  	}
  
  	platform_set_drvdata(pdev, pc);
-@@ -393,6 +505,8 @@ static const struct pwm_mediatek_of_data mt7987_pwm_data = {
+@@ -393,6 +505,8 @@ static const struct pwm_mediatek_of_data
  	.num_pwms = 3,
  	.pwm45_fixup = false,
  	.reg_ver = REG_V3,
@@ -215,6 +213,3 @@ index ad7cb2aa..6e5ba9da 100644
  };
  
  static const struct pwm_mediatek_of_data mt7988_pwm_data = {
--- 
-2.18.0
-

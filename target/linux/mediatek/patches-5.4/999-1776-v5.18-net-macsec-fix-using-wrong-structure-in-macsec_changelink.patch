@@ -55,11 +55,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 0d580d81d910f..a183250ff66ad 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3809,7 +3809,7 @@ static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -3851,7 +3851,7 @@ static int macsec_changelink(struct net_
  			     struct netlink_ext_ack *extack)
  {
  	struct macsec_dev *macsec = macsec_priv(dev);
@@ -68,6 +66,3 @@ index 0d580d81d910f..a183250ff66ad 100644
  	struct macsec_secy secy;
  	int ret;
  
--- 
-cgit 1.2.3-1.el7
-

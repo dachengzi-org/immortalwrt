@@ -1,5 +1,3 @@
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index cf3a53e..be40a84 100644
 --- a/drivers/clk/mediatek/Kconfig
 +++ b/drivers/clk/mediatek/Kconfig
 @@ -275,6 +275,14 @@ config COMMON_CLK_MT7981
@@ -19,7 +17,7 @@ index cf3a53e..be40a84 100644
  	depends on ARCH_MEDIATEK || COMPILE_TEST
 --- a/drivers/clk/mediatek/Makefile
 +++ b/drivers/clk/mediatek/Makefile
-@@ -41,6 +41,11 @@ obj-$(CONFIG_COMMON_CLK_MT7629_ETHSYS) += clk-mt7629-eth.o
+@@ -41,6 +41,11 @@ obj-$(CONFIG_COMMON_CLK_MT7629_ETHSYS) +
  obj-$(CONFIG_COMMON_CLK_MT7629_HIFSYS) += clk-mt7629-hif.o
  obj-$(CONFIG_COMMON_CLK_MT7986) += clk-mt7986.o
  obj-$(CONFIG_COMMON_CLK_MT7981) += clk-mt7981.o

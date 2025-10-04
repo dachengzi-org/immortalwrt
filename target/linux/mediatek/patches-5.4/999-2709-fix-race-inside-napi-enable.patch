@@ -7,11 +7,9 @@ Subject: [PATCH] [networking][999-2709-fix-race-inside-napi-enable.patch]
  net/core/dev.c | 16 ++++++++++------
  1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 81892cd83..503af0034 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6413,12 +6413,16 @@ EXPORT_SYMBOL(napi_disable);
+@@ -6593,12 +6593,16 @@ EXPORT_SYMBOL(napi_disable);
   */
  void napi_enable(struct napi_struct *n)
  {
@@ -34,6 +32,3 @@ index 81892cd83..503af0034 100644
  }
  EXPORT_SYMBOL(napi_enable);
  
--- 
-2.34.1
-

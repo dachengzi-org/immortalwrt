@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/mtd/spi-nor/spi-nor.c | 40 +++++++++++++++++++++++++++++++++++
  1 file changed, 40 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 8d2bc03cd..198b57a92 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -4899,6 +4899,35 @@ static void spi_nor_debugfs_init(struct spi_nor *nor,
+@@ -4899,6 +4899,35 @@ static void spi_nor_debugfs_init(struct
  					 info->id_len, info->id);
  }
  
@@ -48,7 +46,7 @@ index 8d2bc03cd..198b57a92 100644
  static const struct flash_info *spi_nor_get_flash_info(struct spi_nor *nor,
  						       const char *name)
  {
-@@ -4973,6 +5002,17 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
+@@ -4973,6 +5002,17 @@ int spi_nor_scan(struct spi_nor *nor, co
  	if (!nor->bouncebuf)
  		return -ENOMEM;
  
@@ -66,6 +64,3 @@ index 8d2bc03cd..198b57a92 100644
  	info = spi_nor_get_flash_info(nor, name);
  	if (IS_ERR(info))
  		return PTR_ERR(info);
--- 
-2.34.1
-

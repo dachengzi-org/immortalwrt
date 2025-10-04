@@ -8,11 +8,9 @@ Subject: [PATCH] [networking][999-2705-hwnat_Kconfig_Makefile.patch]
  net/Makefile |  3 +++
  2 files changed, 15 insertions(+)
 
-diff --git a/net/Kconfig b/net/Kconfig
-index 46d9b3827..123e4bc28 100644
 --- a/net/Kconfig
 +++ b/net/Kconfig
-@@ -460,6 +460,18 @@ config FAILOVER
+@@ -458,6 +458,18 @@ config FAILOVER
  	  migration of VMs with direct attached VFs by failing over to the
  	  paravirtual datapath when the VF is unplugged.
  
@@ -31,11 +29,9 @@ index 46d9b3827..123e4bc28 100644
  endif   # if NET
  
  # Used by archs to tell that they support BPF JIT compiler plus which flavour.
-diff --git a/net/Makefile b/net/Makefile
-index 9603e98f0..673f0a664 100644
 --- a/net/Makefile
 +++ b/net/Makefile
-@@ -62,6 +62,9 @@ endif
+@@ -61,6 +61,9 @@ endif
  obj-$(CONFIG_6LOWPAN)		+= 6lowpan/
  obj-$(CONFIG_IEEE802154)	+= ieee802154/
  obj-$(CONFIG_MAC802154)		+= mac802154/
@@ -45,6 +41,3 @@ index 9603e98f0..673f0a664 100644
  
  ifeq ($(CONFIG_NET),y)
  obj-$(CONFIG_SYSCTL)		+= sysctl_net.o
--- 
-2.34.1
-

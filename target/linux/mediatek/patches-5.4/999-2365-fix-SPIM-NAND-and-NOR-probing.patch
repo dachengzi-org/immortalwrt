@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/spi/spi-mt65xx.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 3a8f67f1e..05697e1d1 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -1072,7 +1072,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1074,7 +1074,7 @@ static int mtk_spi_probe(struct platform
  		goto err_put_master;
  	}
  
@@ -21,7 +19,7 @@ index 3a8f67f1e..05697e1d1 100644
  	mdata->parent_clk = devm_clk_get(&pdev->dev, "parent-clk");
  	if (IS_ERR(mdata->parent_clk)) {
  		ret = PTR_ERR(mdata->parent_clk);
-@@ -1100,17 +1100,17 @@ static int mtk_spi_probe(struct platform_device *pdev)
+@@ -1102,17 +1102,17 @@ static int mtk_spi_probe(struct platform
  		goto err_put_master;
  	}
  
@@ -43,6 +41,3 @@ index 3a8f67f1e..05697e1d1 100644
  	ret = devm_spi_register_master(&pdev->dev, master);
  	if (ret) {
  		dev_err(&pdev->dev, "failed to register master (%d)\n", ret);
--- 
-2.34.1
-

@@ -12,11 +12,9 @@ Subject: [PATCH] 999-2728-net-phy-aquantia-add-mib-read.patch
  5 files changed, 202 insertions(+)
  create mode 100644 drivers/net/phy/aquantia_mib.c
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index d467834..d6e2f37 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -405,6 +405,12 @@ config AQUANTIA_PHY_FW_FILE
+@@ -418,6 +418,12 @@ config AQUANTIA_PHY_FW_FILE
  	---help---
  	  Currently supports the Aquantia AQR113c
  
@@ -29,8 +27,6 @@ index d467834..d6e2f37 100644
  config AX88796B_PHY
  	tristate "Asix PHYs"
  	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index e9653de..7aff0be 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
 @@ -71,6 +71,9 @@ endif
@@ -41,13 +37,11 @@ index e9653de..7aff0be 100644
 +aquantia-objs			+= aquantia_mib.o
 +endif
  obj-$(CONFIG_AIROHA_EN8801SC_PHY)	+= en8801sc.o
+ air_en8811h-y := air_en8811h_main.o air_en8811h_api.o
  obj-$(CONFIG_AIROHA_EN8811H_PHY)	+= air_en8811h.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
-diff --git a/drivers/net/phy/aquantia.h b/drivers/net/phy/aquantia.h
-index ab1c241..68845b5 100644
 --- a/drivers/net/phy/aquantia.h
 +++ b/drivers/net/phy/aquantia.h
-@@ -47,6 +47,21 @@ static const struct aqr107_hw_stat aqr107_hw_stats[] = {
+@@ -47,6 +47,21 @@ static const struct aqr107_hw_stat aqr10
  };
  #define AQR107_SGMII_STAT_SZ ARRAY_SIZE(aqr107_hw_stats)
  
@@ -80,7 +74,7 @@ index ab1c241..68845b5 100644
  };
  
  int aqr107_set_downshift(struct phy_device *phydev, u8 cnt);
-@@ -78,3 +97,6 @@ enum {
+@@ -78,3 +97,6 @@ enum aqr_fw_dl_mode {
  int aqr_firmware_heartbeat_thread(void *data);
  int aqr_firmware_download(struct phy_device *phydev);
  #endif
@@ -88,11 +82,9 @@ index ab1c241..68845b5 100644
 +int aqr107_config_mib(struct phy_device *phydev);
 +#endif
 \ No newline at end of file
-diff --git a/drivers/net/phy/aquantia_main.c b/drivers/net/phy/aquantia_main.c
-index 874cd26..5c05ea8 100644
 --- a/drivers/net/phy/aquantia_main.c
 +++ b/drivers/net/phy/aquantia_main.c
-@@ -605,6 +605,10 @@ static int aqr107_probe(struct phy_device *phydev)
+@@ -607,6 +607,10 @@ static int aqr107_probe(struct phy_devic
  	if (!phydev->priv)
  		return -ENOMEM;
  
@@ -103,9 +95,6 @@ index 874cd26..5c05ea8 100644
  	return aqr_hwmon_probe(phydev);
  }
  
-diff --git a/drivers/net/phy/aquantia_mib.c b/drivers/net/phy/aquantia_mib.c
-new file mode 100644
-index 0000000..07223fa
 --- /dev/null
 +++ b/drivers/net/phy/aquantia_mib.c
 @@ -0,0 +1,167 @@
@@ -276,6 +265,3 @@ index 0000000..07223fa
 +
 +	return 0;
 +}
--- 
-2.18.0
-

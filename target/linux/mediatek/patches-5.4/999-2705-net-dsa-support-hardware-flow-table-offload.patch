@@ -7,8 +7,6 @@ Look up the master device and the port id
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index e0c0a80..a1b4ab5 100644
 --- a/include/net/netfilter/nf_flow_table.h
 +++ b/include/net/netfilter/nf_flow_table.h
 @@ -188,6 +188,7 @@ struct flow_offload_hw_path {
@@ -19,8 +17,6 @@ index e0c0a80..a1b4ab5 100644
  };
  
  #define NF_FLOW_TIMEOUT (30 * HZ)
-diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index 2ea9ec1..eab4e4a 100644
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
 @@ -19,6 +19,10 @@
@@ -34,7 +30,7 @@ index 2ea9ec1..eab4e4a 100644
  
  #include "dsa_priv.h"
  
-@@ -1257,6 +1261,27 @@ static int dsa_slave_fill_forward_path(struct net_device_path_ctx *ctx,
+@@ -1257,6 +1261,27 @@ static int dsa_slave_fill_forward_path(s
  	return 0;
  }
  
@@ -62,7 +58,7 @@ index 2ea9ec1..eab4e4a 100644
  static const struct net_device_ops dsa_slave_netdev_ops = {
  	.ndo_open	 	= dsa_slave_open,
  	.ndo_stop		= dsa_slave_close,
-@@ -1282,6 +1307,9 @@ static const struct net_device_ops dsa_slave_netdev_ops = {
+@@ -1282,6 +1307,9 @@ static const struct net_device_ops dsa_s
  	.ndo_vlan_rx_kill_vid	= dsa_slave_vlan_rx_kill_vid,
  	.ndo_get_devlink_port	= dsa_slave_get_devlink_port,
  	.ndo_fill_forward_path	= dsa_slave_fill_forward_path,

@@ -13,11 +13,9 @@ Subject: [PATCH]
  5 files changed, 1241 insertions(+), 41 deletions(-)
  create mode 100644 drivers/net/phy/aquantia_firmware.c
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index c0e09c99d..d467834eb 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -372,7 +372,38 @@ config AMD_PHY
+@@ -385,7 +385,38 @@ config AMD_PHY
  config AQUANTIA_PHY
  	tristate "Aquantia PHYs"
  	---help---
@@ -57,8 +55,6 @@ index c0e09c99d..d467834eb 100644
  
  config AX88796B_PHY
  	tristate "Asix PHYs"
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 8b57d6105..e9653de36 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
 @@ -68,6 +68,9 @@ aquantia-objs			+= aquantia_main.o
@@ -69,10 +65,8 @@ index 8b57d6105..e9653de36 100644
 +aquantia-objs			+= aquantia_firmware.o
 +endif
  obj-$(CONFIG_AIROHA_EN8801SC_PHY)	+= en8801sc.o
+ air_en8811h-y := air_en8811h_main.o air_en8811h_api.o
  obj-$(CONFIG_AIROHA_EN8811H_PHY)	+= air_en8811h.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
-diff --git a/drivers/net/phy/aquantia.h b/drivers/net/phy/aquantia.h
-index 5a16caab7..ab1c241d3 100644
 --- a/drivers/net/phy/aquantia.h
 +++ b/drivers/net/phy/aquantia.h
 @@ -9,8 +9,72 @@
@@ -148,9 +142,6 @@ index 5a16caab7..ab1c241d3 100644
 +int aqr_firmware_heartbeat_thread(void *data);
 +int aqr_firmware_download(struct phy_device *phydev);
 +#endif
-diff --git a/drivers/net/phy/aquantia_firmware.c b/drivers/net/phy/aquantia_firmware.c
-new file mode 100644
-index 000000000..d2828aad4
 --- /dev/null
 +++ b/drivers/net/phy/aquantia_firmware.c
 @@ -0,0 +1,1110 @@
@@ -1264,8 +1255,6 @@ index 000000000..d2828aad4
 +#endif
 +	return ret;
 +}
-diff --git a/drivers/net/phy/aquantia_main.c b/drivers/net/phy/aquantia_main.c
-index e7495c9a7..36f1aac4f 100644
 --- a/drivers/net/phy/aquantia_main.c
 +++ b/drivers/net/phy/aquantia_main.c
 @@ -8,10 +8,12 @@
@@ -1340,7 +1329,7 @@ index e7495c9a7..36f1aac4f 100644
  static int aqr107_get_sset_count(struct phy_device *phydev)
  {
  	return AQR107_SGMII_STAT_SZ;
-@@ -398,7 +362,7 @@ static int aqr107_get_downshift(struct phy_device *phydev, u8 *data)
+@@ -398,7 +362,7 @@ static int aqr107_get_downshift(struct p
  	return 0;
  }
  
@@ -1349,7 +1338,7 @@ index e7495c9a7..36f1aac4f 100644
  {
  	int val = 0;
  
-@@ -458,7 +422,7 @@ static int aqr107_wait_reset_complete(struct phy_device *phydev)
+@@ -458,7 +422,7 @@ static int aqr107_wait_reset_complete(st
  	return val ? 0 : -ETIMEDOUT;
  }
  
@@ -1358,7 +1347,7 @@ index e7495c9a7..36f1aac4f 100644
  {
  	u8 fw_major, fw_minor, build_id, prov_id;
  	int val;
-@@ -481,6 +445,21 @@ static void aqr107_chip_info(struct phy_device *phydev)
+@@ -481,6 +445,21 @@ static void aqr107_chip_info(struct phy_
  		   fw_major, fw_minor, build_id, prov_id);
  }
  
@@ -1380,7 +1369,7 @@ index e7495c9a7..36f1aac4f 100644
  static int aqr107_config_init(struct phy_device *phydev)
  {
  	int ret;
-@@ -499,6 +478,12 @@ static int aqr107_config_init(struct phy_device *phydev)
+@@ -499,6 +478,12 @@ static int aqr107_config_init(struct phy
  	ret = aqr107_wait_reset_complete(phydev);
  	if (!ret)
  		aqr107_chip_info(phydev);
@@ -1393,7 +1382,7 @@ index e7495c9a7..36f1aac4f 100644
  
  	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
  }
-@@ -574,12 +559,43 @@ static void aqr107_link_change_notify(struct phy_device *phydev)
+@@ -574,12 +559,43 @@ static void aqr107_link_change_notify(st
  
  static int aqr107_suspend(struct phy_device *phydev)
  {
@@ -1437,6 +1426,3 @@ index e7495c9a7..36f1aac4f 100644
  	return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, MDIO_CTRL1,
  				  MDIO_CTRL1_LPOWER);
  }
--- 
-2.34.1
-

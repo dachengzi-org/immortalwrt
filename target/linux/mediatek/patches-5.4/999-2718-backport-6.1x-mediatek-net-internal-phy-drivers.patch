@@ -1,6 +1,6 @@
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -592,27 +592,7 @@ config MESON_GXL_PHY
+@@ -541,27 +541,7 @@ config MESON_GXL_PHY
  	---help---
  	  Currently has a driver for the Amlogic Meson GXL Internal PHY
  
@@ -31,7 +31,7 @@
  	tristate "Micrel PHYs"
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -105,9 +105,7 @@ obj-$(CONFIG_LXT_PHY)		+= lxt.o
+@@ -98,9 +98,7 @@ obj-$(CONFIG_LXT_PHY)		+= lxt.o
  obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
  obj-$(CONFIG_MARVELL_10G_PHY)	+= marvell10g.o
  obj-$(CONFIG_MAXLINEAR_GPHY)	+= mxl-gpy.o

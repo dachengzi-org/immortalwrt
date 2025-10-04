@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/spi/spi-mt65xx.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 2883dc908..b03257132 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -957,12 +957,12 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -959,12 +959,12 @@ static int mtk_spi_mem_exec_op(struct sp
  
  unmap_rx_dma:
  	if (op->data.dir == SPI_MEM_DATA_IN) {
@@ -27,6 +25,3 @@ index 2883dc908..b03257132 100644
  	}
  unmap_tx_dma:
  	dma_unmap_single(mdata->dev, mdata->tx_dma,
--- 
-2.34.1
-

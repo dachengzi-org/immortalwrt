@@ -14,8 +14,6 @@ Subject: [PATCH]
  create mode 100644 drivers/net/dsa/mt7531_phy.c
  create mode 100644 drivers/net/dsa/mt7531_phy.h
 
-diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-index ae70b7962..0aa10bc3d 100644
 --- a/drivers/net/dsa/Makefile
 +++ b/drivers/net/dsa/Makefile
 @@ -6,7 +6,8 @@ ifdef CONFIG_NET_DSA_LOOP
@@ -28,8 +26,6 @@ index ae70b7962..0aa10bc3d 100644
  obj-$(CONFIG_NET_DSA_MV88E6060) += mv88e6060.o
  obj-$(CONFIG_NET_DSA_QCA8K)	+= qca8k.o
  obj-$(CONFIG_NET_DSA_REALTEK_SMI) += realtek-smi.o
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 008432d5c..e4c021eeb 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
 @@ -1829,6 +1829,8 @@ mt7531_setup(struct dsa_switch *ds)
@@ -41,19 +37,14 @@ index 008432d5c..e4c021eeb 100644
  	/* Group and enable unused ports as a standalone dumb switch. */
  	setup_unused_ports(ds, unused_pm);
  
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index aa758b2d2..8f1e827ff 100644
 --- a/drivers/net/dsa/mt7530.h
 +++ b/drivers/net/dsa/mt7530.h
-@@ -782,4 +782,5 @@ static inline void INIT_MT7530_DUMMY_POLL(struct mt7530_dummy_poll *p,
+@@ -782,4 +782,5 @@ static inline void INIT_MT7530_DUMMY_POL
  	p->reg = reg;
  }
  
 +int mt7531_phy_setup(struct dsa_switch *ds);
  #endif /* __MT7530_H */
-diff --git a/drivers/net/dsa/mt7531_phy.c b/drivers/net/dsa/mt7531_phy.c
-new file mode 100644
-index 000000000..a5c1e7d54
 --- /dev/null
 +++ b/drivers/net/dsa/mt7531_phy.c
 @@ -0,0 +1,1378 @@
@@ -1435,9 +1426,6 @@ index 000000000..a5c1e7d54
 +
 +	return ret;
 +}
-diff --git a/drivers/net/dsa/mt7531_phy.h b/drivers/net/dsa/mt7531_phy.h
-new file mode 100644
-index 000000000..4cacabf54
 --- /dev/null
 +++ b/drivers/net/dsa/mt7531_phy.h
 @@ -0,0 +1,262 @@
@@ -1703,6 +1691,3 @@ index 000000000..4cacabf54
 +	DSP_MAX = 0x3e,
 +};
 +#endif /* _MT753X_REGS_H_ */
--- 
-2.34.1
-

@@ -7,8 +7,6 @@ Subject: [PATCH] [networking][999-2725-iwconfig-wireless-rate-fix.patch]
  include/uapi/linux/wireless.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-index 24f3371ad..590c90b14 100644
 --- a/include/uapi/linux/wireless.h
 +++ b/include/uapi/linux/wireless.h
 @@ -678,7 +678,7 @@
@@ -29,6 +27,3 @@ index 24f3371ad..590c90b14 100644
  
  	/* RTS threshold */
  	__s32		min_rts;	/* Minimal RTS threshold */
--- 
-2.34.1
-

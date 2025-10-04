@@ -10,11 +10,9 @@ Subject: [PATCH] 999-1715-v6.2-net-ptp-introduce-adjust-by-scaled-ppm.patch
  lib/math/div64.c                              | 42 +++++++++++
  4 files changed, 126 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index eedf067..5cca99f 100644
 --- a/drivers/ptp/ptp_clock.c
 +++ b/drivers/ptp/ptp_clock.c
-@@ -63,27 +63,6 @@ static void enqueue_external_timestamp(struct timestamp_event_queue *queue,
+@@ -64,27 +64,6 @@ static void enqueue_external_timestamp(s
  	spin_unlock_irqrestore(&queue->lock, flags);
  }
  
@@ -42,11 +40,9 @@ index eedf067..5cca99f 100644
  /* posix clock implementation */
  
  static int ptp_clock_getres(struct posix_clock *pc, struct timespec64 *tp)
-diff --git a/include/linux/math64.h b/include/linux/math64.h
-index 65bef21..a593096 100644
 --- a/include/linux/math64.h
 +++ b/include/linux/math64.h
-@@ -281,6 +281,18 @@ static inline u64 mul_u64_u32_div(u64 a, u32 mul, u32 divisor)
+@@ -281,6 +281,18 @@ static inline u64 mul_u64_u32_div(u64 a,
  }
  #endif /* mul_u64_u32_div */
  
@@ -65,8 +61,6 @@ index 65bef21..a593096 100644
  #define DIV64_U64_ROUND_UP(ll, d)	\
  	({ u64 _tmp = (d); div64_u64((ll) + _tmp - 1, _tmp); })
  
-diff --git a/include/linux/ptp_clock_kernel.h b/include/linux/ptp_clock_kernel.h
-index 874f7e7..2ff9afe 100644
 --- a/include/linux/ptp_clock_kernel.h
 +++ b/include/linux/ptp_clock_kernel.h
 @@ -169,6 +169,78 @@ struct ptp_clock_event {
@@ -148,11 +142,9 @@ index 874f7e7..2ff9afe 100644
  #if IS_REACHABLE(CONFIG_PTP_1588_CLOCK)
  
  /**
-diff --git a/lib/math/div64.c b/lib/math/div64.c
-index 368ca7f..edd1090 100644
 --- a/lib/math/div64.c
 +++ b/lib/math/div64.c
-@@ -190,3 +190,45 @@ u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
+@@ -190,3 +190,45 @@ u32 iter_div_u64_rem(u64 dividend, u32 d
  	return __iter_div_u64_rem(dividend, divisor, remainder);
  }
  EXPORT_SYMBOL(iter_div_u64_rem);
@@ -198,5 +190,3 @@ index 368ca7f..edd1090 100644
 +}
 +EXPORT_SYMBOL(mul_u64_u64_div_u64);
 +#endif
--- 
-2.18.0

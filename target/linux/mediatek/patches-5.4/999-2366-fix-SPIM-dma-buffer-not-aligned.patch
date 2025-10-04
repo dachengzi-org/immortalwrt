@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/spi/spi-mt65xx.c | 33 +++++++++++++++++++++++----------
  1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 05697e1d1..2883dc908 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -184,7 +184,7 @@ static const struct mtk_spi_compatible mt8183_compat = {
+@@ -184,7 +184,7 @@ static const struct mtk_spi_compatible m
   */
  static const struct mtk_chip_config mtk_default_chip_info = {
  	.sample_sel = 0,
@@ -21,7 +19,7 @@ index 05697e1d1..2883dc908 100644
  };
  
  static const struct of_device_id mtk_spi_of_match[] = {
-@@ -731,8 +731,11 @@ static int mtk_spi_mem_adjust_op_size(struct spi_mem *mem,
+@@ -733,8 +733,11 @@ static int mtk_spi_mem_adjust_op_size(st
  
  	if (op->data.dir != SPI_MEM_NO_DATA) {
  		opcode_len = 1 + op->addr.nbytes + op->dummy.nbytes;
@@ -34,7 +32,7 @@ index 05697e1d1..2883dc908 100644
  	}
  
  	return 0;
-@@ -759,10 +762,6 @@ static bool mtk_spi_mem_supports_op(struct spi_mem *mem,
+@@ -761,10 +764,6 @@ static bool mtk_spi_mem_supports_op(stru
  			return false;
  	}
  
@@ -45,7 +43,7 @@ index 05697e1d1..2883dc908 100644
  	return true;
  }
  
-@@ -821,6 +820,7 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -823,6 +822,7 @@ static int mtk_spi_mem_exec_op(struct sp
  	struct mtk_spi *mdata = spi_master_get_devdata(mem->spi->master);
  	u32 reg_val, nio = 1, tx_size;
  	char *tx_tmp_buf;
@@ -53,7 +51,7 @@ index 05697e1d1..2883dc908 100644
  	int ret = 0;
  
  	mdata->use_spimem = true;
-@@ -915,10 +915,18 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -917,10 +917,18 @@ static int mtk_spi_mem_exec_op(struct sp
  	}
  
  	if (op->data.dir == SPI_MEM_DATA_IN) {
@@ -75,7 +73,7 @@ index 05697e1d1..2883dc908 100644
  		if (dma_mapping_error(mdata->dev, mdata->rx_dma)) {
  			ret = -ENOMEM;
  			goto unmap_tx_dma;
-@@ -948,9 +956,14 @@ static int mtk_spi_mem_exec_op(struct spi_mem *mem,
+@@ -950,9 +958,14 @@ static int mtk_spi_mem_exec_op(struct sp
  	writel(reg_val, mdata->base + SPI_CMD_REG);
  
  unmap_rx_dma:
@@ -91,6 +89,3 @@ index 05697e1d1..2883dc908 100644
  unmap_tx_dma:
  	dma_unmap_single(mdata->dev, mdata->tx_dma,
  			 tx_size, DMA_TO_DEVICE);
--- 
-2.34.1
-

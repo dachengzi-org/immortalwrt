@@ -23,11 +23,9 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
  drivers/net/macsec.c | 24 ++++++++++++------------
  1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 16aa3a478e9e8..33ff33c05aabc 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3870,6 +3870,18 @@ static void macsec_common_dellink(struct net_device *dev, struct list_head *head
+@@ -3929,6 +3929,18 @@ static void macsec_common_dellink(struct
  	struct macsec_dev *macsec = macsec_priv(dev);
  	struct net_device *real_dev = macsec->real_dev;
  
@@ -46,7 +44,7 @@ index 16aa3a478e9e8..33ff33c05aabc 100644
  	unregister_netdevice_queue(dev, head);
  	list_del_rcu(&macsec->secys);
  	macsec_del_dev(macsec);
-@@ -3884,18 +3896,6 @@ static void macsec_dellink(struct net_device *dev, struct list_head *head)
+@@ -3943,18 +3955,6 @@ static void macsec_dellink(struct net_de
  	struct net_device *real_dev = macsec->real_dev;
  	struct macsec_rxh_data *rxd = macsec_data_rtnl(real_dev);
  
@@ -65,6 +63,3 @@ index 16aa3a478e9e8..33ff33c05aabc 100644
  	macsec_common_dellink(dev, head);
  
  	if (list_empty(&rxd->secys)) {
--- 
-cgit 1.2.3-1.el7
-

@@ -10,11 +10,9 @@ Subject: [PATCH] [networking][999-1703-mxl-gpy-phy-support.patch]
  3 files changed, 745 insertions(+)
  create mode 100644 drivers/net/phy/mxl-gpy.c
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 45aaf7203..c0e09c99d 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -516,6 +516,12 @@ config MARVELL_10G_PHY
+@@ -501,6 +501,12 @@ config MARVELL_10G_PHY
  	---help---
  	  Support for the Marvell Alaska MV88X3310 and compatible PHYs.
  
@@ -27,21 +25,16 @@ index 45aaf7203..c0e09c99d 100644
  config MESON_GXL_PHY
  	tristate "Amlogic Meson GXL Internal PHY"
  	depends on ARCH_MESON || COMPILE_TEST
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 998de790e..8b57d6105 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -96,6 +96,7 @@ obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c.o
+@@ -92,6 +92,7 @@ obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c
  obj-$(CONFIG_LXT_PHY)		+= lxt.o
  obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
  obj-$(CONFIG_MARVELL_10G_PHY)	+= marvell10g.o
 +obj-$(CONFIG_MAXLINEAR_GPHY)	+= mxl-gpy.o
  obj-$(CONFIG_MEDIATEK_GE_PHY)	+= mediatek-ge.o
  obj-$(CONFIG_MEDIATEK_GE_SOC_PHY)	+= mediatek-ge-soc.o
- obj-$(CONFIG_MEDIATEK_2P5GE_PHY)+= mediatek-2p5ge.o
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-new file mode 100644
-index 000000000..730427832
+ obj-$(CONFIG_MESON_GXL_PHY)	+= meson-gxl.o
 --- /dev/null
 +++ b/drivers/net/phy/mxl-gpy.c
 @@ -0,0 +1,738 @@
@@ -783,6 +776,3 @@ index 000000000..730427832
 +MODULE_DESCRIPTION("Maxlinear Ethernet GPY Driver");
 +MODULE_AUTHOR("Xu Liang");
 +MODULE_LICENSE("GPL");
--- 
-2.34.1
-

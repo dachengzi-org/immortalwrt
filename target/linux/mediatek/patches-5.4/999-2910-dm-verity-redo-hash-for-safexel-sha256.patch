@@ -1,8 +1,6 @@
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index 711f101..d143fdc 100644
 --- a/drivers/md/dm-verity-target.c
 +++ b/drivers/md/dm-verity-target.c
-@@ -278,6 +278,7 @@ static int verity_verify_level(struct dm_verity *v, struct dm_verity_io *io,
+@@ -278,6 +278,7 @@ static int verity_verify_level(struct dm
  	int r;
  	sector_t hash_block;
  	unsigned offset;
@@ -10,7 +8,7 @@ index 711f101..d143fdc 100644
  
  	verity_hash_at_level(v, block, level, &hash_block, &offset);
  
-@@ -293,11 +294,23 @@ static int verity_verify_level(struct dm_verity *v, struct dm_verity_io *io,
+@@ -293,11 +294,23 @@ static int verity_verify_level(struct dm
  			goto release_ret_r;
  		}
  
@@ -39,7 +37,7 @@ index 711f101..d143fdc 100644
  
  		if (likely(memcmp(verity_io_real_digest(v, io), want_digest,
  				  v->digest_size) == 0))
-@@ -399,6 +412,7 @@ static int verity_for_io_block(struct dm_verity *v, struct dm_verity_io *io,
+@@ -399,6 +412,7 @@ static int verity_for_io_block(struct dm
  
  		bio_advance_iter(bio, iter, len);
  		todo -= len;
@@ -47,7 +45,7 @@ index 711f101..d143fdc 100644
  	} while (todo);
  
  	return 0;
-@@ -469,7 +483,9 @@ static int verity_verify_io(struct dm_verity_io *io)
+@@ -469,7 +483,9 @@ static int verity_verify_io(struct dm_ve
  	bool is_zero;
  	struct dm_verity *v = io->v;
  	struct bvec_iter start;
@@ -55,9 +53,9 @@ index 711f101..d143fdc 100644
  	unsigned b;
 +	unsigned c;
  	struct crypto_wait wait;
+ 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
  
- 	for (b = 0; b < io->n_blocks; b++) {
-@@ -502,19 +518,39 @@ static int verity_verify_io(struct dm_verity_io *io)
+@@ -503,19 +519,39 @@ static int verity_verify_io(struct dm_ve
  			continue;
  		}
  

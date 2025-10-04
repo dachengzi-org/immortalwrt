@@ -14,11 +14,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 25 +------------------------
  1 file changed, 1 insertion(+), 24 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 093e81d605ec7..146a7881a20ac 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2553,11 +2553,10 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
+@@ -2589,11 +2589,10 @@ static int macsec_upd_offload(struct sk_
  	enum macsec_offload offload, prev_offload;
  	int (*func)(struct macsec_context *ctx);
  	struct nlattr **attrs = info->attrs;
@@ -31,7 +29,7 @@ index 093e81d605ec7..146a7881a20ac 100644
  	int ret;
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
-@@ -2585,28 +2584,6 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
+@@ -2621,28 +2620,6 @@ static int macsec_upd_offload(struct sk_
  	    !macsec_check_offload(offload, macsec))
  		return -EOPNOTSUPP;
  
@@ -60,6 +58,3 @@ index 093e81d605ec7..146a7881a20ac 100644
  	/* Check if the net device is busy. */
  	if (netif_running(dev))
  		return -EBUSY;
--- 
-cgit 1.2.3-1.el7
-

@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/net/phy/aquantia_main.c | 45 +++++++++++++++------------------
  1 file changed, 21 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/phy/aquantia_main.c b/drivers/net/phy/aquantia_main.c
-index 75d8351ee..e7495c9a7 100644
 --- a/drivers/net/phy/aquantia_main.c
 +++ b/drivers/net/phy/aquantia_main.c
 @@ -22,6 +22,7 @@
@@ -20,7 +18,7 @@ index 75d8351ee..e7495c9a7 100644
  
  #define MDIO_PHYXS_VEND_IF_STATUS		0xe812
  #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_MASK	GENMASK(7, 3)
-@@ -303,17 +304,6 @@ static int aqr_read_status(struct phy_device *phydev)
+@@ -303,17 +304,6 @@ static int aqr_read_status(struct phy_de
  	return genphy_c45_read_status(phydev);
  }
  
@@ -38,7 +36,7 @@ index 75d8351ee..e7495c9a7 100644
  static int aqr107_read_rate(struct phy_device *phydev)
  {
  	int val;
-@@ -388,13 +378,7 @@ static int aqr107_read_status(struct phy_device *phydev)
+@@ -388,13 +378,7 @@ static int aqr107_read_status(struct phy
  		break;
  	}
  
@@ -53,7 +51,7 @@ index 75d8351ee..e7495c9a7 100644
  	return aqr107_read_rate(phydev);
  }
  
-@@ -516,9 +500,6 @@ static int aqr107_config_init(struct phy_device *phydev)
+@@ -516,9 +500,6 @@ static int aqr107_config_init(struct phy
  	if (!ret)
  		aqr107_chip_info(phydev);
  
@@ -63,7 +61,7 @@ index 75d8351ee..e7495c9a7 100644
  	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
  }
  
-@@ -543,9 +524,6 @@ static int aqcs109_config_init(struct phy_device *phydev)
+@@ -543,9 +524,6 @@ static int aqcs109_config_init(struct ph
  	if (ret)
  		return ret;
  
@@ -73,7 +71,7 @@ index 75d8351ee..e7495c9a7 100644
  	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
  }
  
-@@ -695,6 +673,24 @@ static struct phy_driver aqr_driver[] = {
+@@ -695,6 +673,24 @@ static struct phy_driver aqr_driver[] =
  	.ack_interrupt	= aqr_ack_interrupt,
  	.read_status	= aqr_read_status,
  },
@@ -98,7 +96,7 @@ index 75d8351ee..e7495c9a7 100644
  };
  
  module_phy_driver(aqr_driver);
-@@ -707,6 +703,7 @@ static struct mdio_device_id __maybe_unused aqr_tbl[] = {
+@@ -707,6 +703,7 @@ static struct mdio_device_id __maybe_unu
  	{ PHY_ID_MATCH_MODEL(PHY_ID_AQR107) },
  	{ PHY_ID_MATCH_MODEL(PHY_ID_AQCS109) },
  	{ PHY_ID_MATCH_MODEL(PHY_ID_AQR405) },
@@ -106,6 +104,3 @@ index 75d8351ee..e7495c9a7 100644
  	{ }
  };
  
--- 
-2.34.1
-

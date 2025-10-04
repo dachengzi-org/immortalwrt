@@ -30,7 +30,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  #include <uapi/linux/if_macsec.h>
  
-@@ -3859,6 +3860,8 @@ static int macsec_newlink(struct net *ne
+@@ -3898,6 +3899,8 @@ static int macsec_newlink(struct net *ne
  	real_dev = __dev_get_by_index(net, nla_get_u32(tb[IFLA_LINK]));
  	if (!real_dev)
  		return -ENODEV;

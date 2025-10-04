@@ -9,11 +9,9 @@ Subject: [PATCH]
  drivers/net/dsa/mt7530.h |  1 +
  2 files changed, 60 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 8ce3d51e8..008432d5c 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -1022,6 +1022,9 @@ mt7530_stp_state_set(struct dsa_switch *ds, int port, u8 state)
+@@ -1022,6 +1022,9 @@ mt7530_stp_state_set(struct dsa_switch *
  	struct mt7530_priv *priv = ds->priv;
  	u32 stp_state;
  
@@ -23,11 +21,10 @@ index 8ce3d51e8..008432d5c 100644
  	switch (state) {
  	case BR_STATE_DISABLED:
  		stp_state = MT7530_STP_DISABLED;
-@@ -1674,11 +1677,59 @@ mt7530_setup(struct dsa_switch *ds)
- 	return 0;
+@@ -1675,10 +1678,58 @@ mt7530_setup(struct dsa_switch *ds)
  }
  
-+static int
+ static int
 +setup_unused_ports(struct dsa_switch *ds, u32 pm)
 +{
 +	struct mt7530_priv *priv = ds->priv;
@@ -74,7 +71,7 @@ index 8ce3d51e8..008432d5c 100644
 +	return 0;
 +}
 +
- static int
++static int
  mt7531_setup(struct dsa_switch *ds)
  {
  	struct mt7530_priv *priv = ds->priv;
@@ -104,7 +101,7 @@ index 8ce3d51e8..008432d5c 100644
  	ds->configure_vlan_while_not_filtering = true;
  
  	/* Flush the FDB table */
-@@ -2100,7 +2156,7 @@ mt7531_mac_config(struct dsa_switch *ds, int port, unsigned int mode,
+@@ -2100,7 +2156,7 @@ mt7531_mac_config(struct dsa_switch *ds,
  	case PHY_INTERFACE_MODE_RGMII_RXID:
  	case PHY_INTERFACE_MODE_RGMII_TXID:
  		dp = dsa_to_port(ds, port);
@@ -113,7 +110,7 @@ index 8ce3d51e8..008432d5c 100644
  		return mt7531_rgmii_setup(priv, port, interface, phydev);
  	case PHY_INTERFACE_MODE_SGMII:
  		return mt7531_sgmii_setup_mode_an(priv, port, interface);
-@@ -2640,7 +2696,7 @@ mt7530_probe(struct mdio_device *mdiodev)
+@@ -2640,7 +2696,7 @@ mt7530_probe(struct mdio_device *mdiodev
  	if (!priv)
  		return -ENOMEM;
  
@@ -122,8 +119,6 @@ index 8ce3d51e8..008432d5c 100644
  	if (!priv->ds)
  		return -ENOMEM;
  
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 6424bc90e..aa758b2d2 100644
 --- a/drivers/net/dsa/mt7530.h
 +++ b/drivers/net/dsa/mt7530.h
 @@ -10,6 +10,7 @@
@@ -134,6 +129,3 @@ index 6424bc90e..aa758b2d2 100644
  
  enum mt753x_id {
  	ID_MT7530 = 0,
--- 
-2.34.1
-

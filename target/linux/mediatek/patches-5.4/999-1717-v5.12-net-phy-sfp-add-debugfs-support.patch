@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/net/phy/sfp.c | 55 +++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 55 insertions(+)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index d49a825..4bcc2bb 100644
 --- a/drivers/net/phy/sfp.c
 +++ b/drivers/net/phy/sfp.c
 @@ -1,6 +1,7 @@
@@ -30,7 +28,7 @@ index d49a825..4bcc2bb 100644
  };
  
  static bool sff_module_supported(const struct sfp_eeprom_id *id)
-@@ -1617,6 +1621,54 @@ static void sfp_module_tx_enable(struct sfp *sfp)
+@@ -1667,6 +1671,54 @@ static void sfp_module_tx_enable(struct
  	sfp_set_state(sfp, sfp->state);
  }
  
@@ -85,7 +83,7 @@ index d49a825..4bcc2bb 100644
  static void sfp_module_tx_fault_reset(struct sfp *sfp)
  {
  	unsigned int state = sfp->state;
-@@ -2795,6 +2847,8 @@ static int sfp_probe(struct platform_device *pdev)
+@@ -2823,6 +2875,8 @@ static int sfp_probe(struct platform_dev
  	if (!sfp->sfp_bus)
  		return -ENOMEM;
  
@@ -94,7 +92,7 @@ index d49a825..4bcc2bb 100644
  	return 0;
  }
  
-@@ -2802,6 +2856,7 @@ static int sfp_remove(struct platform_device *pdev)
+@@ -2830,6 +2884,7 @@ static int sfp_remove(struct platform_de
  {
  	struct sfp *sfp = platform_get_drvdata(pdev);
  
@@ -102,6 +100,3 @@ index d49a825..4bcc2bb 100644
  	sfp_unregister_socket(sfp->sfp_bus);
  
  	rtnl_lock();
--- 
-2.18.0
-

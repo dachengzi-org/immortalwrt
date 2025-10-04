@@ -7,8 +7,6 @@ Look up the real device and pass it on
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 03934dd..094b2b1 100644
 --- a/net/bridge/br_device.c
 +++ b/net/bridge/br_device.c
 @@ -14,6 +14,10 @@
@@ -22,7 +20,7 @@ index 03934dd..094b2b1 100644
  
  #include <linux/uaccess.h>
  #include "br_private.h"
-@@ -440,6 +444,28 @@ static const struct ethtool_ops br_ethtool_ops = {
+@@ -440,6 +444,28 @@ static const struct ethtool_ops br_ethto
  	.get_link	= ethtool_op_get_link,
  };
  
@@ -51,7 +49,7 @@ index 03934dd..094b2b1 100644
  static const struct net_device_ops br_netdev_ops = {
  	.ndo_open		 = br_dev_open,
  	.ndo_stop		 = br_dev_stop,
-@@ -469,6 +495,9 @@ static const struct net_device_ops br_netdev_ops = {
+@@ -469,6 +495,9 @@ static const struct net_device_ops br_ne
  	.ndo_bridge_dellink	 = br_dellink,
  	.ndo_features_check	 = passthru_features_check,
  	.ndo_fill_forward_path	 = br_fill_forward_path,

@@ -14,8 +14,6 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
  drivers/net/macsec.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 11ca5fa902a16..92425e1fd70c0 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
 @@ -101,6 +101,7 @@ struct pcpu_secy_stats {
@@ -26,6 +24,3 @@ index 11ca5fa902a16..92425e1fd70c0 100644
   * @offload: status of offloading on the MACsec device
   */
  struct macsec_dev {
--- 
-cgit 1.2.3-1.el7
-

@@ -8,8 +8,6 @@ Subject: [PATCH] add config
  drivers/iio/pressure/Makefile | 1 +
  2 files changed, 8 insertions(+)
 
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index ba420e4..83bf432 100644
 --- a/drivers/iio/pressure/Kconfig
 +++ b/drivers/iio/pressure/Kconfig
 @@ -64,6 +64,13 @@ config DPS310
@@ -26,11 +24,9 @@ index ba420e4..83bf432 100644
  config HID_SENSOR_PRESS
  	depends on HID_SENSOR_HUB
  	select IIO_BUFFER
-diff --git a/drivers/iio/pressure/Makefile b/drivers/iio/pressure/Makefile
-index d8f5ace..2433aad 100644
 --- a/drivers/iio/pressure/Makefile
 +++ b/drivers/iio/pressure/Makefile
-@@ -10,6 +10,7 @@ bmp280-objs := bmp280-core.o bmp280-regmap.o
+@@ -10,6 +10,7 @@ bmp280-objs := bmp280-core.o bmp280-regm
  obj-$(CONFIG_BMP280_I2C) += bmp280-i2c.o
  obj-$(CONFIG_BMP280_SPI) += bmp280-spi.o
  obj-$(CONFIG_DPS310) += dps310.o
@@ -38,6 +34,3 @@ index d8f5ace..2433aad 100644
  obj-$(CONFIG_IIO_CROS_EC_BARO) += cros_ec_baro.o
  obj-$(CONFIG_HID_SENSOR_PRESS)   += hid-sensor-press.o
  obj-$(CONFIG_HP03) += hp03.o
--- 
-2.18.0
-

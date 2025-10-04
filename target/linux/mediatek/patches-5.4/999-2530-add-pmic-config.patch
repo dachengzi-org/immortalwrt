@@ -8,8 +8,6 @@ Subject: [PATCH] [adv-feature][999-2530-add-pmic-config.patch]
  drivers/regulator/Makefile |  1 +
  2 files changed, 11 insertions(+)
 
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 3ee63531f..5c573ced5 100644
 --- a/drivers/regulator/Kconfig
 +++ b/drivers/regulator/Kconfig
 @@ -798,6 +798,16 @@ config REGULATOR_RT5033
@@ -29,11 +27,9 @@ index 3ee63531f..5c573ced5 100644
  config REGULATOR_S2MPA01
  	tristate "Samsung S2MPA01 voltage regulator"
  	depends on MFD_SEC_CORE
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 2210ba56f..bf75b7755 100644
 --- a/drivers/regulator/Makefile
 +++ b/drivers/regulator/Makefile
-@@ -100,6 +100,7 @@ obj-$(CONFIG_REGULATOR_RC5T583)  += rc5t583-regulator.o
+@@ -100,6 +100,7 @@ obj-$(CONFIG_REGULATOR_RC5T583)  += rc5t
  obj-$(CONFIG_REGULATOR_RK808)   += rk808-regulator.o
  obj-$(CONFIG_REGULATOR_RN5T618) += rn5t618-regulator.o
  obj-$(CONFIG_REGULATOR_RT5033)	+= rt5033-regulator.o
@@ -41,6 +37,3 @@ index 2210ba56f..bf75b7755 100644
  obj-$(CONFIG_REGULATOR_S2MPA01) += s2mpa01.o
  obj-$(CONFIG_REGULATOR_S2MPS11) += s2mps11.o
  obj-$(CONFIG_REGULATOR_S5M8767) += s5m8767.o
--- 
-2.34.1
-

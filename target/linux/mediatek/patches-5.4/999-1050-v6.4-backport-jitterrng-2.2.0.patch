@@ -1,5 +1,3 @@
-diff --git a/crypto/Makefile b/crypto/Makefile
-index 4e7a0a8f7..2b5a2a9c8 100644
 --- a/crypto/Makefile
 +++ b/crypto/Makefile
 @@ -156,6 +156,7 @@ CFLAGS_jitterentropy.o = -O0
@@ -10,9 +8,6 @@ index 4e7a0a8f7..2b5a2a9c8 100644
  obj-$(CONFIG_CRYPTO_TEST) += tcrypt.o
  obj-$(CONFIG_CRYPTO_GHASH) += ghash-generic.o
  obj-$(CONFIG_CRYPTO_USER_API) += af_alg.o
-diff --git a/crypto/jitterentropy-dbg.c b/crypto/jitterentropy-dbg.c
-new file mode 100644
-index 000000000..2e7e98b9a
 --- /dev/null
 +++ b/crypto/jitterentropy-dbg.c
 @@ -0,0 +1,242 @@
@@ -258,9 +253,6 @@ index 000000000..2e7e98b9a
 +	debugfs_remove_recursive(jent_debugfs.jent_debugfs_root);
 +	jent_drng_cleanup_raw(&raw_entropy);
 +}
-diff --git a/crypto/jitterentropy-dbg.h b/crypto/jitterentropy-dbg.h
-new file mode 100644
-index 000000000..921bd65dc
 --- /dev/null
 +++ b/crypto/jitterentropy-dbg.h
 @@ -0,0 +1,49 @@
@@ -313,8 +305,6 @@ index 000000000..921bd65dc
 +
 +
 +#endif /* _JITTERENTROPY_DBG_KERNEL_H */
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index 701b8d86a..7a3691fab 100644
 --- a/crypto/jitterentropy-kcapi.c
 +++ b/crypto/jitterentropy-kcapi.c
 @@ -44,13 +44,11 @@
@@ -336,7 +326,7 @@ index 701b8d86a..7a3691fab 100644
  
  /***************************************************************************
   * Helper function
-@@ -148,7 +146,31 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+@@ -148,7 +146,31 @@ static int jent_kcapi_random(struct cryp
  	int ret = 0;
  
  	spin_lock(&rng->jent_lock);
@@ -400,8 +390,6 @@ index 701b8d86a..7a3691fab 100644
  }
  
  module_init(jent_mod_init);
-diff --git a/crypto/jitterentropy.c b/crypto/jitterentropy.c
-index 77fa2120f..fea7a6d42 100644
 --- a/crypto/jitterentropy.c
 +++ b/crypto/jitterentropy.c
 @@ -2,12 +2,12 @@
@@ -485,13 +473,20 @@ index 77fa2120f..fea7a6d42 100644
 +
 +#include <linux/fips.h>
 +#include <linux/printk.h>
-+
-+/***************************************************************************
+ 
+ /***************************************************************************
+- * Helper functions
 + * Adaptive Proportion Test
 + *
 + * This test complies with SP800-90B section 4.4.2.
-+ ***************************************************************************/
-+
+  ***************************************************************************/
+ 
+-void jent_get_nstime(__u64 *out);
+-void *jent_zalloc(unsigned int len);
+-void jent_zfree(void *ptr);
+-int jent_fips_enabled(void);
+-void jent_panic(char *s);
+-void jent_memcpy(void *dest, const void *src, unsigned int n);
 +/*
 + * Reset the APT counter
 + *
@@ -539,9 +534,8 @@ index 77fa2120f..fea7a6d42 100644
 +{
 +	return (ec->apt_count >= JENT_APT_CUTOFF) ? 1 : 0;
 +}
- 
- /***************************************************************************
-- * Helper functions
++
++/***************************************************************************
 + * Stuck Test and its use as Repetition Count Test
 + *
 + * The Jitter RNG uses an enhanced version of the Repetition Count Test
@@ -555,14 +549,8 @@ index 77fa2120f..fea7a6d42 100644
 + * cut-off value of C. If that value exceeds the allowed cut-off value,
 + * the Jitter RNG output block will be calculated completely but discarded at
 + * the end. The caller of the Jitter RNG is informed with an error code.
-  ***************************************************************************/
- 
--void jent_get_nstime(__u64 *out);
--void *jent_zalloc(unsigned int len);
--void jent_zfree(void *ptr);
--int jent_fips_enabled(void);
--void jent_panic(char *s);
--void jent_memcpy(void *dest, const void *src, unsigned int n);
++ ***************************************************************************/
++
 +/*
 + * Repetition Count Test as defined in SP800-90B section 4.4.1
 + *
@@ -658,7 +646,7 @@ index 77fa2120f..fea7a6d42 100644
   * Update of the loop count used for the next round of
   * an entropy collection.
   *
-@@ -153,11 +297,7 @@ static __u64 jent_loop_shuffle(struct rand_data *ec,
+@@ -153,11 +297,7 @@ static __u64 jent_loop_shuffle(struct ra
  	return (shuffle + (1<<min));
  }
  
@@ -671,7 +659,7 @@ index 77fa2120f..fea7a6d42 100644
   * CPU Jitter noise source -- this is the noise source based on the CPU
   *			      execution time jitter
   *
-@@ -171,18 +311,19 @@ static __u64 jent_loop_shuffle(struct rand_data *ec,
+@@ -171,18 +311,19 @@ static __u64 jent_loop_shuffle(struct ra
   * the CPU execution time jitter. Any change to the loop in this function
   * implies that careful retesting must be done.
   *
@@ -697,7 +685,7 @@ index 77fa2120f..fea7a6d42 100644
  {
  	unsigned int i;
  	__u64 j = 0;
-@@ -225,12 +366,20 @@ static __u64 jent_lfsr_time(struct rand_data *ec, __u64 time, __u64 loop_cnt)
+@@ -225,12 +366,20 @@ static __u64 jent_lfsr_time(struct rand_
  			new ^= tmp;
  		}
  	}
@@ -721,7 +709,7 @@ index 77fa2120f..fea7a6d42 100644
   * Memory Access noise source -- this is a noise source based on variations in
   *				 memory access times
   *
-@@ -248,16 +397,13 @@ static __u64 jent_lfsr_time(struct rand_data *ec, __u64 time, __u64 loop_cnt)
+@@ -248,16 +397,13 @@ static __u64 jent_lfsr_time(struct rand_
   * to reliably access either L3 or memory, the ec->mem memory must be quite
   * large which is usually not desirable.
   *
@@ -744,7 +732,7 @@ index 77fa2120f..fea7a6d42 100644
  {
  	unsigned int wrap = 0;
  	__u64 i = 0;
-@@ -267,7 +413,7 @@ static unsigned int jent_memaccess(struct rand_data *ec, __u64 loop_cnt)
+@@ -267,7 +413,7 @@ static unsigned int jent_memaccess(struc
  		jent_loop_shuffle(ec, MAX_ACC_LOOP_BIT, MIN_ACC_LOOP_BIT);
  
  	if (NULL == ec || NULL == ec->mem)
@@ -753,7 +741,7 @@ index 77fa2120f..fea7a6d42 100644
  	wrap = ec->memblocksize * ec->memblocks;
  
  	/*
-@@ -293,44 +439,12 @@ static unsigned int jent_memaccess(struct rand_data *ec, __u64 loop_cnt)
+@@ -293,44 +439,12 @@ static unsigned int jent_memaccess(struc
  		ec->memlocation = ec->memlocation + ec->memblocksize - 1;
  		ec->memlocation = ec->memlocation % wrap;
  	}
@@ -799,7 +787,7 @@ index 77fa2120f..fea7a6d42 100644
   * This is the heart of the entropy generation: calculate time deltas and
   * use the CPU jitter in the time deltas. The jitter is injected into the
   * entropy pool.
-@@ -339,15 +453,15 @@ static int jent_stuck(struct rand_data *ec, __u64 current_delta)
+@@ -339,15 +453,15 @@ static int jent_stuck(struct rand_data *
   *	    of this function! This can be done by calling this function
   *	    and not using its result.
   *
@@ -818,7 +806,7 @@ index 77fa2120f..fea7a6d42 100644
  
  	/* Invoke one noise source before time measurement to add variations */
  	jent_memaccess(ec, 0);
-@@ -357,31 +471,33 @@ static int jent_measure_jitter(struct rand_data *ec)
+@@ -357,31 +471,33 @@ static int jent_measure_jitter(struct ra
  	 * invocation to measure the timing variations
  	 */
  	jent_get_nstime(&time);
@@ -862,7 +850,7 @@ index 77fa2120f..fea7a6d42 100644
  		/* If a stuck measurement is received, repeat measurement */
  		if (jent_measure_jitter(ec))
  			continue;
-@@ -390,37 +506,12 @@ static void jent_gen_entropy(struct rand_data *ec)
+@@ -390,37 +506,12 @@ static void jent_gen_entropy(struct rand
  		 * We multiply the loop value with ->osr to obtain the
  		 * oversampling rate requested by the caller
  		 */
@@ -902,7 +890,7 @@ index 77fa2120f..fea7a6d42 100644
   * Entry function: Obtain entropy for the caller.
   *
   * This function invokes the entropy gathering logic as often to generate
-@@ -430,42 +521,62 @@ static void jent_fips_test(struct rand_data *ec)
+@@ -430,17 +521,18 @@ static void jent_fips_test(struct rand_d
   * This function truncates the last 64 bit entropy value output to the exact
   * size specified by the caller.
   *
@@ -927,9 +915,7 @@ index 77fa2120f..fea7a6d42 100644
   */
  int jent_read_entropy(struct rand_data *ec, unsigned char *data,
  		      unsigned int len)
- {
- 	unsigned char *p = data;
- 
+@@ -450,11 +542,30 @@ int jent_read_entropy(struct rand_data *
  	if (!ec)
  		return -1;
  
@@ -962,18 +948,7 @@ index 77fa2120f..fea7a6d42 100644
  		if ((DATA_SIZE_BITS / 8) < len)
  			tocopy = (DATA_SIZE_BITS / 8);
  		else
- 			tocopy = len;
- 		jent_memcpy(p, &ec->data, tocopy);
- 
- 		len -= tocopy;
- 		p += tocopy;
- 	}
- 
-	return 0;
- }
- 
- /***************************************************************************
-@@ -496,7 +609,7 @@ struct rand_data *jent_entropy_collector_alloc(unsigned int osr,
+@@ -496,7 +607,7 @@ struct rand_data *jent_entropy_collector
  	}
  
  	/* verify and set the oversampling rate */
@@ -982,7 +957,7 @@ index 77fa2120f..fea7a6d42 100644
  		osr = 1; /* minimum sampling rate is 1 */
  	entropy_collector->osr = osr;
  
-@@ -518,11 +631,15 @@ int jent_entropy_init(void)
+@@ -518,11 +629,15 @@ int jent_entropy_init(void)
  	int i;
  	__u64 delta_sum = 0;
  	__u64 old_delta = 0;
@@ -998,7 +973,7 @@ index 77fa2120f..fea7a6d42 100644
  	/* We could perform statistical tests here, but the problem is
  	 * that we only have a few loop counts to do testing. These
  	 * loop counts may show some slight skew and we produce
-@@ -544,8 +661,10 @@ int jent_entropy_init(void)
+@@ -544,8 +659,10 @@ int jent_entropy_init(void)
  	/*
  	 * TESTLOOPCOUNT needs some loops to identify edge systems. 100 is
  	 * definitely too little.
@@ -1010,7 +985,7 @@ index 77fa2120f..fea7a6d42 100644
  #define CLEARCACHE 100
  	for (i = 0; (TESTLOOPCOUNT + CLEARCACHE) > i; i++) {
  		__u64 time = 0;
-@@ -557,13 +676,13 @@ int jent_entropy_init(void)
+@@ -557,13 +674,13 @@ int jent_entropy_init(void)
  		/* Invoke core entropy collection logic */
  		jent_get_nstime(&time);
  		ec.prev_time = time;
@@ -1026,7 +1001,7 @@ index 77fa2120f..fea7a6d42 100644
  		/*
  		 * test whether timer is fine grained enough to provide
  		 * delta even when called shortly after each other -- this
-@@ -581,11 +700,31 @@ int jent_entropy_init(void)
+@@ -581,11 +698,31 @@ int jent_entropy_init(void)
  		 * etc. with the goal to clear it to get the worst case
  		 * measurements.
  		 */
@@ -1059,7 +1034,7 @@ index 77fa2120f..fea7a6d42 100644
  
  		/* test whether we have an increasing timer */
  		if (!(time2 > time))
-@@ -616,7 +755,7 @@ int jent_entropy_init(void)
+@@ -616,7 +753,7 @@ int jent_entropy_init(void)
  	 * should not fail. The value of 3 should cover the NTP case being
  	 * performed during our test run.
  	 */
@@ -1068,9 +1043,6 @@ index 77fa2120f..fea7a6d42 100644
  		return JENT_ENOMONOTONIC;
  
  	/*
-diff --git a/crypto/jitterentropy.h b/crypto/jitterentropy.h
-new file mode 100644
-index 000000000..ee555f642
 --- /dev/null
 +++ b/crypto/jitterentropy.h
 @@ -0,0 +1,79 @@

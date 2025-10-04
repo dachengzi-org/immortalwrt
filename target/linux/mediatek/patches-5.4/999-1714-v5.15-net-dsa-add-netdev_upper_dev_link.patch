@@ -7,11 +7,9 @@ Subject: [PATCH] net dsa add netdev_upper_dev_link
  net/dsa/slave.c                |  11 +
  1 files changed, 11 insertions(+), 0 deletions(-)
 
-diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index 2dfaa1e..a60a26c 100644
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
-@@ -1495,8 +1495,19 @@ int dsa_slave_create(struct dsa_port *port)
+@@ -1461,8 +1461,19 @@ int dsa_slave_create(struct dsa_port *po
  		goto out_phy;
  	}
  
@@ -31,6 +29,3 @@ index 2dfaa1e..a60a26c 100644
  out_phy:
  	rtnl_lock();
  	phylink_disconnect_phy(p->dp->pl);
--- 
-2.18.0
-

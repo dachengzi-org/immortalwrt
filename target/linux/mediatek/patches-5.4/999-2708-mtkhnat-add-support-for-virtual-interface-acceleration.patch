@@ -12,8 +12,6 @@ Subject: [PATCH]
  net/ipv6/sit.c                        | 24 ++++++++++++++++++++++++
  5 files changed, 51 insertions(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index b60b506..c30952f 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
 @@ -849,6 +849,8 @@ enum net_device_path_type {
@@ -25,8 +23,6 @@ index b60b506..c30952f 100644
  };
  
  struct net_device_path {
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index a1b4ab5..7a2945e 100644
 --- a/include/net/netfilter/nf_flow_table.h
 +++ b/include/net/netfilter/nf_flow_table.h
 @@ -181,6 +181,7 @@ struct flow_offload {
@@ -37,11 +33,9 @@ index a1b4ab5..7a2945e 100644
  	u32 flags;
  
  	u8 eth_src[ETH_ALEN];
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index f45abd5..db5867d 100644
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -808,6 +808,7 @@ static int vlan_dev_flow_offload_check(struct flow_offload_hw_path *path)
+@@ -808,6 +808,7 @@ static int vlan_dev_flow_offload_check(s
  	path->flags |= BIT(DEV_PATH_VLAN);
  	path->vlan_proto = vlan->vlan_proto;
  	path->vlan_id = vlan->vlan_id;
@@ -49,8 +43,6 @@ index f45abd5..db5867d 100644
  	path->dev = vlan->real_dev;
  
  	if (vlan->real_dev->netdev_ops->ndo_flow_offload_check)
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 2e8a528..0bf25b0 100644
 --- a/net/ipv6/ip6_tunnel.c
 +++ b/net/ipv6/ip6_tunnel.c
 @@ -57,6 +57,11 @@
@@ -65,7 +57,7 @@ index 2e8a528..0bf25b0 100644
  MODULE_AUTHOR("Ville Nuorvala");
  MODULE_DESCRIPTION("IPv6 tunneling device");
  MODULE_LICENSE("GPL");
-@@ -1889,6 +1894,22 @@ int ip6_tnl_get_iflink(const struct net_device *dev)
+@@ -1889,6 +1894,22 @@ int ip6_tnl_get_iflink(const struct net_
  }
  EXPORT_SYMBOL(ip6_tnl_get_iflink);
  
@@ -88,7 +80,7 @@ index 2e8a528..0bf25b0 100644
  int ip6_tnl_encap_add_ops(const struct ip6_tnl_encap_ops *ops,
  			  unsigned int num)
  {
-@@ -1950,6 +1971,9 @@ static const struct net_device_ops ip6_tnl_netdev_ops = {
+@@ -1950,6 +1971,9 @@ static const struct net_device_ops ip6_t
  	.ndo_change_mtu = ip6_tnl_change_mtu,
  	.ndo_get_stats	= ip6_get_stats,
  	.ndo_get_iflink = ip6_tnl_get_iflink,
@@ -98,8 +90,6 @@ index 2e8a528..0bf25b0 100644
  };
  
  #define IPXIPX_FEATURES (NETIF_F_SG |		\
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index 8d704ea..c50bbef 100644
 --- a/net/ipv6/sit.c
 +++ b/net/ipv6/sit.c
 @@ -52,6 +52,11 @@
@@ -114,7 +104,7 @@ index 8d704ea..c50bbef 100644
  /*
     This version of net/ipv6/sit.c is cloned of net/ipv4/ip_gre.c
  
-@@ -1344,6 +1349,22 @@ ipip6_tunnel_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+@@ -1344,6 +1349,22 @@ done:
  	return err;
  }
  
@@ -137,7 +127,7 @@ index 8d704ea..c50bbef 100644
  static const struct net_device_ops ipip6_netdev_ops = {
  	.ndo_init	= ipip6_tunnel_init,
  	.ndo_uninit	= ipip6_tunnel_uninit,
-@@ -1351,6 +1372,9 @@ static const struct net_device_ops ipip6_netdev_ops = {
+@@ -1351,6 +1372,9 @@ static const struct net_device_ops ipip6
  	.ndo_do_ioctl	= ipip6_tunnel_ioctl,
  	.ndo_get_stats64 = ip_tunnel_get_stats64,
  	.ndo_get_iflink = ip_tunnel_get_iflink,
@@ -147,6 +137,3 @@ index 8d704ea..c50bbef 100644
  };
  
  static void ipip6_dev_free(struct net_device *dev)
--- 
-2.34.1
-

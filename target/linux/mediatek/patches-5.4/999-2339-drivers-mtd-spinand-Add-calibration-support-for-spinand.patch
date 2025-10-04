@@ -1,7 +1,5 @@
-Index: linux-5.4.260/drivers/mtd/nand/spi/core.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/core.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/core.c
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
 @@ -789,6 +789,60 @@ static int spinand_manufacturer_match(st
  	return -ENOTSUPP;
  }

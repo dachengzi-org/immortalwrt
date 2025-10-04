@@ -8,11 +8,9 @@ Subject: [PATCH]
  net/dsa/tag_mtk.c | 32 +++++++++++++++++++-------------
  1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/net/dsa/tag_mtk.c b/net/dsa/tag_mtk.c
-index edc505e07..c386fdc90 100644
 --- a/net/dsa/tag_mtk.c
 +++ b/net/dsa/tag_mtk.c
-@@ -80,22 +80,28 @@ static struct sk_buff *mtk_tag_rcv(struct sk_buff *skb, struct net_device *dev,
+@@ -82,22 +82,28 @@ static struct sk_buff *mtk_tag_rcv(struc
  	bool is_multicast_skb = is_multicast_ether_addr(dest) &&
  				!is_broadcast_ether_addr(dest);
  
@@ -54,6 +52,3 @@ index edc505e07..c386fdc90 100644
  
  	/* Get source port information */
  	port = (hdr & MTK_HDR_RECV_SOURCE_PORT_MASK);
--- 
-2.34.1
-

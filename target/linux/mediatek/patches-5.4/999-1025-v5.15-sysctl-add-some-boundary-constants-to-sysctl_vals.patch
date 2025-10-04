@@ -8,11 +8,9 @@ Subject: [PATCH] sysctl: add some boundary constants to sysctl_vals
  include/linux/sysctl.h | 17 ++++++++++++++---
  2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index f4264dd..c76d2fd 100644
 --- a/fs/proc/proc_sysctl.c
 +++ b/fs/proc/proc_sysctl.c
-@@ -24,7 +24,7 @@ static const struct file_operations proc_sys_dir_file_operations;
+@@ -24,7 +24,7 @@ static const struct file_operations proc
  static const struct inode_operations proc_sys_dir_operations;
  
  /* shared constants to be used in various sysctls */
@@ -21,8 +19,6 @@ index f4264dd..c76d2fd 100644
  EXPORT_SYMBOL(sysctl_vals);
  
  /* Support for permanently empty directories */
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index aa615a0..b4b439f 100644
 --- a/include/linux/sysctl.h
 +++ b/include/linux/sysctl.h
 @@ -38,9 +38,20 @@ struct ctl_table_header;
@@ -49,6 +45,3 @@ index aa615a0..b4b439f 100644
  
  extern const int sysctl_vals[];
  
--- 
-2.45.2
-

@@ -8,11 +8,9 @@ Subject: [PATCH]
  net/core/dev.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index cccd7b407..794c768e3 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6394,7 +6394,7 @@ void napi_disable(struct napi_struct *n)
+@@ -6574,7 +6574,7 @@ void napi_disable(struct napi_struct *n)
  	might_sleep();
  	set_bit(NAPI_STATE_DISABLE, &n->state);
  
@@ -21,7 +19,7 @@ index cccd7b407..794c768e3 100644
  		val = READ_ONCE(n->state);
  		if (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
  			usleep_range(20, 200);
-@@ -6403,7 +6403,10 @@ void napi_disable(struct napi_struct *n)
+@@ -6583,7 +6583,10 @@ void napi_disable(struct napi_struct *n)
  
  		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
  		new &= ~(NAPIF_STATE_THREADED);
@@ -33,6 +31,3 @@ index cccd7b407..794c768e3 100644
  
  	hrtimer_cancel(&n->timer);
  
--- 
-2.34.1
-

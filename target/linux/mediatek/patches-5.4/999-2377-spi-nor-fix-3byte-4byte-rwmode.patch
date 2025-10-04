@@ -1,7 +1,7 @@
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -2252,7 +2252,7 @@ static const struct flash_info spi_nor_i
- 	{ "en25qx128",	INFO(0x1c7118, 0, 64 * 1024,  256,
+@@ -2251,7 +2251,7 @@ static const struct flash_info spi_nor_i
+ 	{ "en25qx128a",	INFO(0x1c7118, 0, 64 * 1024,  256,
  			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
  			SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
 -	{ "en25qh256",  INFO(0x1c7019, 0, 64 * 1024,  512, 0) },
@@ -9,7 +9,7 @@
  	{ "en25qx256a", INFO(0x1c7119, 0, 64 * 1024,  512,
  			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
  			SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
-@@ -4904,7 +4904,6 @@ static void spi_nor_debugfs_init(struct
+@@ -4906,7 +4906,6 @@ static void spi_nor_debugfs_init(struct
  
  static int spi_nor_cal_read(void *priv, u32 *addr, int addrlen, u8 *buf, int readlen)
  {
@@ -17,7 +17,7 @@
  	struct spi_nor *nor = (struct spi_nor *)priv;
  
  	nor->reg_proto = SNOR_PROTO_1_1_1;
-@@ -4919,7 +4918,6 @@ static int spi_nor_cal_read(void *priv,
+@@ -4921,7 +4920,6 @@ static int spi_nor_cal_read(void *priv,
  static int spi_nor_cal_read_4B(void *priv, u32 *addr, int addrlen, u8 *buf,
  			    int readlen)
  {
@@ -25,7 +25,7 @@
  	struct spi_nor *nor = (struct spi_nor *)priv;
  
  	nor->reg_proto = SNOR_PROTO_1_1_1;
-@@ -4971,6 +4969,15 @@ static const struct flash_info *spi_nor_
+@@ -4973,6 +4971,15 @@ static const struct flash_info *spi_nor_
  	return info;
  }
  
@@ -41,7 +41,7 @@
  int spi_nor_scan(struct spi_nor *nor, const char *name,
  		 const struct spi_nor_hwcaps *hwcaps)
  {
-@@ -5009,11 +5016,11 @@ int spi_nor_scan(struct spi_nor *nor, co
+@@ -5011,11 +5018,11 @@ int spi_nor_scan(struct spi_nor *nor, co
  		ret = spi_mem_do_calibration(nor->spimem,
  					     spi_nor_cal_read, nor);
  		if (ret) {
@@ -78,7 +78,7 @@
  	if (wait_startup(chip, 0) != 0) {
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -1779,7 +1779,7 @@ static int spinand_init(struct spinand_d
+@@ -1062,7 +1062,7 @@ static int spinand_init(struct spinand_d
  
  	ret = spi_mem_do_calibration(spinand->spimem, spinand_cal_read, spinand);
  	if (ret)

@@ -26,7 +26,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  struct sfp_bus;
  /* 802.11 specific */
-@@ -1805,6 +1807,8 @@ enum netdev_ml_priv_type {
+@@ -1854,6 +1856,8 @@ enum netdev_ml_priv_type {
   *
   *	@threaded:	napi threaded mode is enabled
   *
@@ -35,7 +35,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *	FIXME: cleanup struct net_device such that network protocol info
   *	moves out.
   */
-@@ -2109,6 +2113,11 @@ struct net_device {
+@@ -2155,6 +2159,11 @@ struct net_device {
  	bool			proto_down;
  	unsigned		wol_enabled:1;
  	unsigned		threaded:1;

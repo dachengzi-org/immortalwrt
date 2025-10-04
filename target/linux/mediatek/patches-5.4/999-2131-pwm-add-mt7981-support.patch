@@ -7,8 +7,6 @@ Subject: [PATCH] [slow-speed-io][999-2131-pwm-add-mt7981-support.patch]
  drivers/pwm/pwm-mediatek.c | 51 +++++++++++++++++++++++++++++++++++---
  1 file changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 35a0db2ff..f4393bd46 100644
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
 @@ -32,10 +32,13 @@
@@ -41,7 +39,7 @@ index 35a0db2ff..f4393bd46 100644
  static inline struct pwm_mediatek_chip *
  to_pwm_mediatek_chip(struct pwm_chip *chip)
  {
-@@ -107,14 +114,38 @@ static void pwm_mediatek_clk_disable(struct pwm_chip *chip,
+@@ -107,14 +114,38 @@ static void pwm_mediatek_clk_disable(str
  static inline u32 pwm_mediatek_readl(struct pwm_mediatek_chip *chip,
  				     unsigned int num, unsigned int offset)
  {
@@ -82,7 +80,7 @@ index 35a0db2ff..f4393bd46 100644
  }
  
  static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
-@@ -280,36 +311,49 @@ static int pwm_mediatek_remove(struct platform_device *pdev)
+@@ -280,36 +311,49 @@ static int pwm_mediatek_remove(struct pl
  static const struct pwm_mediatek_of_data mt2712_pwm_data = {
  	.num_pwms = 8,
  	.pwm45_fixup = false,
@@ -132,7 +130,7 @@ index 35a0db2ff..f4393bd46 100644
  };
  
  static const struct of_device_id pwm_mediatek_of_match[] = {
-@@ -318,6 +362,7 @@ static const struct of_device_id pwm_mediatek_of_match[] = {
+@@ -318,6 +362,7 @@ static const struct of_device_id pwm_med
  	{ .compatible = "mediatek,mt7623-pwm", .data = &mt7623_pwm_data },
  	{ .compatible = "mediatek,mt7628-pwm", .data = &mt7628_pwm_data },
  	{ .compatible = "mediatek,mt7629-pwm", .data = &mt7629_pwm_data },
@@ -140,6 +138,3 @@ index 35a0db2ff..f4393bd46 100644
  	{ .compatible = "mediatek,mt7986-pwm", .data = &mt7986_pwm_data },
  	{ .compatible = "mediatek,mt8516-pwm", .data = &mt8516_pwm_data },
  	{ },
--- 
-2.34.1
-

@@ -1,5 +1,3 @@
-Index: drivers/net/ppp/pppoe.c
-===================================================================
 --- a/drivers/net/ppp/pppoe.c
 +++ b/drivers/net/ppp/pppoe.c
 @@ -1215,6 +1215,113 @@ static struct pernet_operations pppoe_ne

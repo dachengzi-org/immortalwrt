@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/pwm/pwm-mediatek.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index f4393bd46..9701092e7 100644
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
-@@ -350,6 +350,12 @@ static const struct pwm_mediatek_of_data mt7986_pwm_data = {
+@@ -350,6 +350,12 @@ static const struct pwm_mediatek_of_data
  	.reg_ver = REG_V1,
  };
  
@@ -25,7 +23,7 @@ index f4393bd46..9701092e7 100644
  static const struct pwm_mediatek_of_data mt8516_pwm_data = {
  	.num_pwms = 5,
  	.pwm45_fixup = false,
-@@ -364,6 +370,7 @@ static const struct of_device_id pwm_mediatek_of_match[] = {
+@@ -364,6 +370,7 @@ static const struct of_device_id pwm_med
  	{ .compatible = "mediatek,mt7629-pwm", .data = &mt7629_pwm_data },
  	{ .compatible = "mediatek,mt7981-pwm", .data = &mt7981_pwm_data },
  	{ .compatible = "mediatek,mt7986-pwm", .data = &mt7986_pwm_data },
@@ -33,6 +31,3 @@ index f4393bd46..9701092e7 100644
  	{ .compatible = "mediatek,mt8516-pwm", .data = &mt8516_pwm_data },
  	{ },
  };
--- 
-2.34.1
-

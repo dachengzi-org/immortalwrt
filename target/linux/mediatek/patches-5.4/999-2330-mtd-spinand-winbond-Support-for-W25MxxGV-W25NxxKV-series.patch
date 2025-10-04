@@ -1,7 +1,5 @@
-Index: linux-5.4.260/drivers/mtd/nand/spi/winbond.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/winbond.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/winbond.c
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
 @@ -15,6 +15,23 @@
  
  #define WINBOND_CFG_BUF_READ		BIT(3)

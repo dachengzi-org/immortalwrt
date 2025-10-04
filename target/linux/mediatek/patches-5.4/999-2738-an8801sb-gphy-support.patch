@@ -8,11 +8,9 @@ Subject: [PATCH] [networking][999-2738-an8801sb-gphy-support.patch]
  drivers/net/phy/Makefile |   1 +
  2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index ccd3f3f..5dbfb17 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -345,6 +345,11 @@ config SFP
+@@ -352,6 +352,11 @@ config SFP
  	depends on HWMON || HWMON=n
  	select MDIO_I2C
  
@@ -24,8 +22,6 @@ index ccd3f3f..5dbfb17 100644
  config AIROHA_EN8801SC_PHY
  	tristate "Drivers for Airoha EN8801S Gigabit PHYs for MediaTek SoC."
  	---help---
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 1e8d67b..d39e54b 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
 @@ -74,6 +74,7 @@ endif
@@ -36,6 +32,3 @@ index 1e8d67b..d39e54b 100644
  obj-$(CONFIG_AIROHA_EN8801SC_PHY)	+= en8801sc.o
  air_en8811h-y := air_en8811h_main.o air_en8811h_api.o
  obj-$(CONFIG_AIROHA_EN8811H_PHY)	+= air_en8811h.o
--- 
-2.18.0
-

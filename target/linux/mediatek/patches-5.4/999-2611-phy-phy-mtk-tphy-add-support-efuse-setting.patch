@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/phy/mediatek/phy-mtk-tphy.c | 195 ++++++++++++++++++++++++++++
  1 file changed, 195 insertions(+)
 
-diff --git a/drivers/phy/mediatek/phy-mtk-tphy.c b/drivers/phy/mediatek/phy-mtk-tphy.c
-index c6e073401..fcf8c845f 100644
 --- a/drivers/phy/mediatek/phy-mtk-tphy.c
 +++ b/drivers/phy/mediatek/phy-mtk-tphy.c
 @@ -12,6 +12,7 @@
@@ -107,7 +105,7 @@ index c6e073401..fcf8c845f 100644
  	u32 index;
  	u32 type;
  	struct regmap *type_sw;
-@@ -970,6 +1013,139 @@ static int phy_type_set(struct mtk_phy_instance *instance)
+@@ -970,6 +1013,139 @@ static int phy_type_set(struct mtk_phy_i
  	return 0;
  }
  
@@ -256,7 +254,7 @@ index c6e073401..fcf8c845f 100644
  	switch (instance->type) {
  	case PHY_TYPE_USB2:
  		u2_phy_instance_init(tphy, instance);
-@@ -1072,6 +1250,7 @@ static struct phy *mtk_phy_xlate(struct device *dev,
+@@ -1072,6 +1250,7 @@ static struct phy *mtk_phy_xlate(struct
  	struct mtk_phy_instance *instance = NULL;
  	struct device_node *phy_np = args->np;
  	int index;
@@ -264,7 +262,7 @@ index c6e073401..fcf8c845f 100644
  
  	if (args->args_count != 1) {
  		dev_err(dev, "invalid number of cells in 'phy' property\n");
-@@ -1108,6 +1287,10 @@ static struct phy *mtk_phy_xlate(struct device *dev,
+@@ -1108,6 +1287,10 @@ static struct phy *mtk_phy_xlate(struct
  		return ERR_PTR(-EINVAL);
  	}
  
@@ -275,7 +273,7 @@ index c6e073401..fcf8c845f 100644
  	phy_parse_property(tphy, instance);
  	phy_type_set(instance);
  
-@@ -1130,14 +1313,26 @@ static const struct mtk_phy_pdata tphy_v1_pdata = {
+@@ -1130,14 +1313,26 @@ static const struct mtk_phy_pdata tphy_v
  
  static const struct mtk_phy_pdata tphy_v2_pdata = {
  	.avoid_rx_sen_degradation = false,
@@ -302,6 +300,3 @@ index c6e073401..fcf8c845f 100644
  static const struct of_device_id mtk_tphy_id_table[] = {
  	{ .compatible = "mediatek,mt2701-u3phy", .data = &tphy_v1_pdata },
  	{ .compatible = "mediatek,mt2712-u3phy", .data = &tphy_v2_pdata },
--- 
-2.34.1
-

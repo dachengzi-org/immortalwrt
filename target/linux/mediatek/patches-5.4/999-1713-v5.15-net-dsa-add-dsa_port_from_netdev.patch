@@ -9,8 +9,6 @@ Subject: [PATCH] net dsa add dsa_port_from_netdev
  net/dsa/slave.c                               |    1 +
   3 files changed, 20 insertions(+), 0 deletions(-)
 
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index d29ee9e..43f65cb 100644
 --- a/include/net/dsa.h
 +++ b/include/net/dsa.h
 @@ -562,6 +562,8 @@ struct dsa_switch_ops {
@@ -22,7 +20,7 @@ index d29ee9e..43f65cb 100644
  struct dsa_switch_driver {
  	struct list_head	list;
  	const struct dsa_switch_ops *ops;
-@@ -654,6 +656,14 @@ static inline int call_dsa_notifiers(unsigned long val, struct net_device *dev,
+@@ -654,6 +656,14 @@ static inline int call_dsa_notifiers(uns
  #define BRCM_TAG_GET_PORT(v)		((v) >> 8)
  #define BRCM_TAG_GET_QUEUE(v)		((v) & 0xff)
  
@@ -37,11 +35,9 @@ index d29ee9e..43f65cb 100644
  
  netdev_tx_t dsa_enqueue_skb(struct sk_buff *skb, struct net_device *dev);
  int dsa_port_get_phy_strings(struct dsa_port *dp, uint8_t *data);
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index ca80f86..35a1249 100644
 --- a/net/dsa/dsa.c
 +++ b/net/dsa/dsa.c
-@@ -329,6 +329,15 @@ int call_dsa_notifiers(unsigned long val, struct net_device *dev,
+@@ -329,6 +329,15 @@ int call_dsa_notifiers(unsigned long val
  }
  EXPORT_SYMBOL_GPL(call_dsa_notifiers);
  
@@ -57,11 +53,9 @@ index ca80f86..35a1249 100644
  static int __init dsa_init_module(void)
  {
  	int rc;
-diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index e2b91b3..2dfaa1e 100644
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
-@@ -1499,6 +1533,7 @@ bool dsa_slave_dev_check(const struct net_device *dev)
+@@ -1499,6 +1499,7 @@ bool dsa_slave_dev_check(const struct ne
  {
  	return dev->netdev_ops == &dsa_slave_netdev_ops;
  }
@@ -69,6 +63,3 @@ index e2b91b3..2dfaa1e 100644
  
  static int dsa_slave_changeupper(struct net_device *dev,
  				 struct netdev_notifier_changeupper_info *info)
--- 
-2.18.0
-

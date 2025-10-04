@@ -13,11 +13,9 @@ device, like VLAN ID/protocol, PPPoE session and Ethernet MAC address.
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 2d1aa35..b60b506 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -989,6 +989,7 @@ struct dev_ifalias {
+@@ -993,6 +993,7 @@ struct dev_ifalias {
  struct devlink;
  struct tlsdev_ops;
  
@@ -25,7 +23,7 @@ index 2d1aa35..b60b506 100644
  
  /*
   * This structure defines the management hooks for network devices.
-@@ -1222,6 +1223,11 @@ struct tlsdev_ops;
+@@ -1226,6 +1227,11 @@ struct tlsdev_ops;
   * int (*ndo_bridge_dellink)(struct net_device *dev, struct nlmsghdr *nlh,
   *			     u16 flags);
   *
@@ -37,7 +35,7 @@ index 2d1aa35..b60b506 100644
   * int (*ndo_change_carrier)(struct net_device *dev, bool new_carrier);
   *	Called to change device carrier. Soft-devices (like dummy, team, etc)
   *	which do not represent real hardware may define this to allow their
-@@ -1471,6 +1477,7 @@ struct net_device_ops {
+@@ -1475,6 +1481,7 @@ struct net_device_ops {
  	int			(*ndo_bridge_dellink)(struct net_device *dev,
  						      struct nlmsghdr *nlh,
  						      u16 flags);
@@ -45,8 +43,6 @@ index 2d1aa35..b60b506 100644
  	int			(*ndo_change_carrier)(struct net_device *dev,
  						      bool new_carrier);
  	int			(*ndo_get_phys_port_id)(struct net_device *dev,
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index 7374cb2..e0c0a80 100644
 --- a/include/net/netfilter/nf_flow_table.h
 +++ b/include/net/netfilter/nf_flow_table.h
 @@ -179,6 +179,17 @@ struct flow_offload {

@@ -1,7 +1,5 @@
-Index: linux-5.4.260/drivers/mtd/nand/spi/macronix.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/macronix.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/macronix.c
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
 @@ -86,7 +86,7 @@ static int mx35lf1ge4ab_ecc_get_status(s
  		if (mx35lf1ge4ab_get_eccsr(spinand, &eccsr))
  			return nand->eccreq.strength;

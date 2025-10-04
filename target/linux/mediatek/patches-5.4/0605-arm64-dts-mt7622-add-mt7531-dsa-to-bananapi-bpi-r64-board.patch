@@ -12,7 +12,7 @@ Signed-off-by: Landen Chao <landen.chao@mediatek.com>
 
 --- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
 +++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -150,6 +150,56 @@
+@@ -151,6 +151,56 @@
  	mdio: mdio-bus {
  		#address-cells = <1>;
  		#size-cells = <0>;

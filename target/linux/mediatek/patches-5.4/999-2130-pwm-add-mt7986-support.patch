@@ -7,11 +7,9 @@ Subject: [PATCH] [slow-speed-io][999-2130-pwm-add-mt7986-support.patch]
  drivers/pwm/pwm-mediatek.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index b94e0d09c..35a0db2ff 100644
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
-@@ -302,6 +302,11 @@ static const struct pwm_mediatek_of_data mt7629_pwm_data = {
+@@ -302,6 +302,11 @@ static const struct pwm_mediatek_of_data
  	.pwm45_fixup = false,
  };
  
@@ -23,7 +21,7 @@ index b94e0d09c..35a0db2ff 100644
  static const struct pwm_mediatek_of_data mt8516_pwm_data = {
  	.num_pwms = 5,
  	.pwm45_fixup = false,
-@@ -313,6 +318,7 @@ static const struct of_device_id pwm_mediatek_of_match[] = {
+@@ -313,6 +318,7 @@ static const struct of_device_id pwm_med
  	{ .compatible = "mediatek,mt7623-pwm", .data = &mt7623_pwm_data },
  	{ .compatible = "mediatek,mt7628-pwm", .data = &mt7628_pwm_data },
  	{ .compatible = "mediatek,mt7629-pwm", .data = &mt7629_pwm_data },
@@ -31,6 +29,3 @@ index b94e0d09c..35a0db2ff 100644
  	{ .compatible = "mediatek,mt8516-pwm", .data = &mt8516_pwm_data },
  	{ },
  };
--- 
-2.34.1
-

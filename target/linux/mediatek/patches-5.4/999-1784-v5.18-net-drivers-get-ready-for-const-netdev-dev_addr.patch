@@ -19,11 +19,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/vmxnet3/vmxnet3_drv.c | 4 ++--
  3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 18b6dba9394e8..16aa3a478e9e8 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -250,7 +250,7 @@ static bool send_sci(const struct macsec_secy *secy)
+@@ -263,7 +263,7 @@ static bool send_sci(const struct macsec
  		(secy->n_rx_sc > 1 && !tx_sc->end_station && !tx_sc->scb);
  }
  
@@ -32,11 +30,9 @@ index 18b6dba9394e8..16aa3a478e9e8 100644
  {
  	sci_t sci;
  
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 6189acb33973c..d2f830ec2969c 100644
 --- a/drivers/net/macvlan.c
 +++ b/drivers/net/macvlan.c
-@@ -698,7 +698,8 @@ hash_del:
+@@ -697,7 +697,8 @@ hash_del:
  	return 0;
  }
  
@@ -46,11 +42,9 @@ index 6189acb33973c..d2f830ec2969c 100644
  {
  	struct macvlan_dev *vlan = netdev_priv(dev);
  	struct net_device *lowerdev = vlan->lowerdev;
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 7a205ddf0060a..3e1b7746cce44 100644
 --- a/drivers/net/vmxnet3/vmxnet3_drv.c
 +++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(pci, vmxnet3_pciid_table);
+@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(pci, vmxnet3_pciid_t
  static int enable_mq = 1;
  
  static void
@@ -59,7 +53,7 @@ index 7a205ddf0060a..3e1b7746cce44 100644
  
  /*
   *    Enable/Disable the given intr
-@@ -2806,7 +2806,7 @@ vmxnet3_quiesce_dev(struct vmxnet3_adapter *adapter)
+@@ -2688,7 +2688,7 @@ vmxnet3_quiesce_dev(struct vmxnet3_adapt
  
  
  static void
@@ -68,6 +62,3 @@ index 7a205ddf0060a..3e1b7746cce44 100644
  {
  	u32 tmp;
  
--- 
-cgit 1.2.3-1.el7
-

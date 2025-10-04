@@ -8,8 +8,6 @@ Subject: [PATCH] add pwm-gpio support
  drivers/pwm/Makefile |  1 +
  2 files changed, 11 insertions(+)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index e3a2518..9b2200c 100644
 --- a/drivers/pwm/Kconfig
 +++ b/drivers/pwm/Kconfig
 @@ -171,6 +171,16 @@ config PWM_FSL_FTM
@@ -29,8 +27,6 @@ index e3a2518..9b2200c 100644
  config PWM_HIBVT
  	tristate "HiSilicon BVT PWM support"
  	depends on ARCH_HISI || COMPILE_TEST
-diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-index 26326ad..034c1d0 100644
 --- a/drivers/pwm/Makefile
 +++ b/drivers/pwm/Makefile
 @@ -15,6 +15,7 @@ obj-$(CONFIG_PWM_CRC)		+= pwm-crc.o
@@ -41,6 +37,3 @@ index 26326ad..034c1d0 100644
  obj-$(CONFIG_PWM_HIBVT)		+= pwm-hibvt.o
  obj-$(CONFIG_PWM_IMG)		+= pwm-img.o
  obj-$(CONFIG_PWM_IMX1)		+= pwm-imx1.o
--- 
-2.18.0
-

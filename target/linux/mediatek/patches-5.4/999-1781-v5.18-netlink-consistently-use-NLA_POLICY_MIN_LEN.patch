@@ -17,7 +17,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1608,7 +1608,7 @@ static const struct nla_policy macsec_ge
+@@ -1646,7 +1646,7 @@ static const struct nla_policy macsec_ge
  static const struct nla_policy macsec_genl_sa_policy[NUM_MACSEC_SA_ATTR] = {
  	[MACSEC_SA_ATTR_AN] = { .type = NLA_U8 },
  	[MACSEC_SA_ATTR_ACTIVE] = { .type = NLA_U8 },

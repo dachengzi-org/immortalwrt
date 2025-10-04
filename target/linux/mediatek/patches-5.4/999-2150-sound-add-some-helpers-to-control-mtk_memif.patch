@@ -10,11 +10,9 @@ Subject: [PATCH]
  sound/soc/mediatek/common/mtk-base-afe.h   |  28 ++-
  3 files changed, 259 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-afe-fe-dai.c b/sound/soc/mediatek/common/mtk-afe-fe-dai.c
-index 10ea4fdbe..309dc1ef6 100644
 --- a/sound/soc/mediatek/common/mtk-afe-fe-dai.c
 +++ b/sound/soc/mediatek/common/mtk-afe-fe-dai.c
-@@ -361,6 +361,222 @@ int mtk_afe_dai_resume(struct snd_soc_dai *dai)
+@@ -361,6 +361,222 @@ int mtk_afe_dai_resume(struct snd_soc_da
  }
  EXPORT_SYMBOL_GPL(mtk_afe_dai_resume);
  
@@ -237,11 +235,9 @@ index 10ea4fdbe..309dc1ef6 100644
  MODULE_DESCRIPTION("Mediatek simple fe dai operator");
  MODULE_AUTHOR("Garlic Tseng <garlic.tseng@mediatek.com>");
  MODULE_LICENSE("GPL v2");
-diff --git a/sound/soc/mediatek/common/mtk-afe-fe-dai.h b/sound/soc/mediatek/common/mtk-afe-fe-dai.h
-index 55074fb98..507e3e7c3 100644
 --- a/sound/soc/mediatek/common/mtk-afe-fe-dai.h
 +++ b/sound/soc/mediatek/common/mtk-afe-fe-dai.h
-@@ -34,4 +34,20 @@ int mtk_dynamic_irq_release(struct mtk_base_afe *afe, int irq_id);
+@@ -34,4 +34,20 @@ int mtk_dynamic_irq_release(struct mtk_b
  int mtk_afe_dai_suspend(struct snd_soc_dai *dai);
  int mtk_afe_dai_resume(struct snd_soc_dai *dai);
  
@@ -262,8 +258,6 @@ index 55074fb98..507e3e7c3 100644
 +int mtk_memif_set_pbuf_size(struct mtk_base_afe *afe,
 +			    int id, int pbuf_size);
  #endif
-diff --git a/sound/soc/mediatek/common/mtk-base-afe.h b/sound/soc/mediatek/common/mtk-base-afe.h
-index 60cb609a9..a8cf44d98 100644
 --- a/sound/soc/mediatek/common/mtk-base-afe.h
 +++ b/sound/soc/mediatek/common/mtk-base-afe.h
 @@ -16,21 +16,38 @@ struct mtk_base_memif_data {
@@ -329,6 +323,3 @@ index 60cb609a9..a8cf44d98 100644
  };
  
  struct mtk_base_afe_irq {
--- 
-2.34.1
-

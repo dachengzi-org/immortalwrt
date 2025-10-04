@@ -8,7 +8,7 @@
  
  #define DM_MSG_PREFIX "table"
  
-@@ -400,6 +401,132 @@ static int upgrade_mode(struct dm_dev_in
+@@ -405,6 +406,132 @@ static int upgrade_mode(struct dm_dev_in
  }
  
  /*
@@ -141,7 +141,7 @@
   * Convert the path to a device
   */
  dev_t dm_get_dev_t(const char *path)
-@@ -407,6 +534,21 @@ dev_t dm_get_dev_t(const char *path)
+@@ -412,6 +539,21 @@ dev_t dm_get_dev_t(const char *path)
  	dev_t dev;
  	struct block_device *bdev;
  

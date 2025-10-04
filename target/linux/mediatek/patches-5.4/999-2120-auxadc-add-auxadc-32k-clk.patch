@@ -7,8 +7,6 @@ Subject: [PATCH] [slow-speed-io][999-2120-auxadc-add-auxadc-32k-clk.patch]
  drivers/iio/adc/mt6577_auxadc.c | 22 ++++++++++++++++++++++
  1 file changed, 22 insertions(+)
 
-diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-index 9cdb9084c..34f94554f 100644
 --- a/drivers/iio/adc/mt6577_auxadc.c
 +++ b/drivers/iio/adc/mt6577_auxadc.c
 @@ -42,6 +42,7 @@ struct mtk_auxadc_compatible {
@@ -19,7 +17,7 @@ index 9cdb9084c..34f94554f 100644
  	struct mutex lock;
  	const struct mtk_auxadc_compatible *dev_comp;
  };
-@@ -222,6 +223,12 @@ static int __maybe_unused mt6577_auxadc_resume(struct device *dev)
+@@ -222,6 +223,12 @@ static int __maybe_unused mt6577_auxadc_
  		return ret;
  	}
  
@@ -32,7 +30,7 @@ index 9cdb9084c..34f94554f 100644
  	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
  			      MT6577_AUXADC_PDN_EN, 0);
  	mdelay(MT6577_AUXADC_POWER_READY_MS);
-@@ -236,6 +243,8 @@ static int __maybe_unused mt6577_auxadc_suspend(struct device *dev)
+@@ -236,6 +243,8 @@ static int __maybe_unused mt6577_auxadc_
  
  	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
  			      0, MT6577_AUXADC_PDN_EN);
@@ -41,7 +39,7 @@ index 9cdb9084c..34f94554f 100644
  	clk_disable_unprepare(adc_dev->adc_clk);
  
  	return 0;
-@@ -280,6 +289,17 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
+@@ -280,6 +289,17 @@ static int mt6577_auxadc_probe(struct pl
  		return ret;
  	}
  
@@ -67,7 +65,7 @@ index 9cdb9084c..34f94554f 100644
  	clk_disable_unprepare(adc_dev->adc_clk);
  	return ret;
  }
-@@ -323,6 +344,7 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
+@@ -323,6 +344,7 @@ static int mt6577_auxadc_remove(struct p
  	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
  			      0, MT6577_AUXADC_PDN_EN);
  
@@ -75,6 +73,3 @@ index 9cdb9084c..34f94554f 100644
  	clk_disable_unprepare(adc_dev->adc_clk);
  
  	return 0;
--- 
-2.34.1
-

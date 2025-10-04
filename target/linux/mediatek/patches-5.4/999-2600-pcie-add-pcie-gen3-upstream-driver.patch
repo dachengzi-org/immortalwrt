@@ -9,8 +9,6 @@ Subject: [PATCH]
  drivers/pci/controller/Makefile |  1 +
  2 files changed, 14 insertions(+)
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index 70e078238..67988f868 100644
 --- a/drivers/pci/controller/Kconfig
 +++ b/drivers/pci/controller/Kconfig
 @@ -241,6 +241,19 @@ config PCIE_MEDIATEK
@@ -33,11 +31,9 @@ index 70e078238..67988f868 100644
  config PCIE_MOBIVEIL
  	bool "Mobiveil AXI PCIe controller"
  	depends on ARCH_ZYNQMP || COMPILE_TEST
-diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index a2a22c9d9..54a496a68 100644
 --- a/drivers/pci/controller/Makefile
 +++ b/drivers/pci/controller/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_PCIE_ROCKCHIP) += pcie-rockchip.o
+@@ -27,6 +27,7 @@ obj-$(CONFIG_PCIE_ROCKCHIP) += pcie-rock
  obj-$(CONFIG_PCIE_ROCKCHIP_EP) += pcie-rockchip-ep.o
  obj-$(CONFIG_PCIE_ROCKCHIP_HOST) += pcie-rockchip-host.o
  obj-$(CONFIG_PCIE_MEDIATEK) += pcie-mediatek.o
@@ -45,6 +41,3 @@ index a2a22c9d9..54a496a68 100644
  obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
  obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
  obj-$(CONFIG_VMD) += vmd.o
--- 
-2.34.1
-

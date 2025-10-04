@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/phy/mediatek/phy-mtk-tphy.c | 37 +++++++++++++++++++++++++++++
  1 file changed, 37 insertions(+)
 
-diff --git a/drivers/phy/mediatek/phy-mtk-tphy.c b/drivers/phy/mediatek/phy-mtk-tphy.c
-index 149464f37..e7ed93799 100644
 --- a/drivers/phy/mediatek/phy-mtk-tphy.c
 +++ b/drivers/phy/mediatek/phy-mtk-tphy.c
 @@ -221,6 +221,14 @@
@@ -36,7 +34,7 @@ index 149464f37..e7ed93799 100644
  };
  
  struct mtk_tphy {
-@@ -520,6 +530,20 @@ static void u3_phy_instance_init(struct mtk_tphy *tphy,
+@@ -520,6 +530,20 @@ static void u3_phy_instance_init(struct
  	tmp |= P3D_RG_RXDET_STB2_SET_P3_VAL(0x10);
  	writel(tmp, u3_banks->phyd + U3P_U3_PHYD_RXDET2);
  
@@ -57,7 +55,7 @@ index 149464f37..e7ed93799 100644
  	dev_dbg(tphy->dev, "%s(%d)\n", __func__, instance->index);
  }
  
-@@ -952,6 +976,19 @@ static void phy_parse_property(struct mtk_tphy *tphy,
+@@ -952,6 +976,19 @@ static void phy_parse_property(struct mt
  {
  	struct device *dev = &instance->phy->dev;
  
@@ -77,6 +75,3 @@ index 149464f37..e7ed93799 100644
  	if (instance->type != PHY_TYPE_USB2)
  		return;
  
--- 
-2.34.1
-

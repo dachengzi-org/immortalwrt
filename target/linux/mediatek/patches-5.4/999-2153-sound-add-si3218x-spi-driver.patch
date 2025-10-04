@@ -8,8 +8,6 @@ Subject: [PATCH] sound add si3218x spi driver
  sound/soc/codecs/Makefile | 5 +++++
  2 files changed, 14 insertions(+)
 
-diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
-index dfc536c..b5a7b2a 100644
 --- a/sound/soc/codecs/Kconfig
 +++ b/sound/soc/codecs/Kconfig
 @@ -127,6 +127,7 @@ config SND_SOC_ALL_CODECS
@@ -35,8 +33,6 @@ index dfc536c..b5a7b2a 100644
  config SND_SOC_TPA6130A2
  	tristate "Texas Instruments TPA6130A2 headphone amplifier"
  	depends on I2C
-diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
-index c498373..dbd437e 100644
 --- a/sound/soc/codecs/Makefile
 +++ b/sound/soc/codecs/Makefile
 @@ -176,6 +176,7 @@ snd-soc-alc5632-objs := alc5632.o
@@ -47,7 +43,7 @@ index c498373..dbd437e 100644
  snd-soc-si476x-objs := si476x.o
  snd-soc-sirf-audio-codec-objs := sirf-audio-codec.o
  snd-soc-spdif-tx-objs := spdif_transmitter.o
-@@ -563,3 +564,7 @@ obj-$(CONFIG_SND_SOC_MAX9877)	+= snd-soc-max9877.o
+@@ -563,3 +564,7 @@ obj-$(CONFIG_SND_SOC_MAX9877)	+= snd-soc
  obj-$(CONFIG_SND_SOC_MAX98504)	+= snd-soc-max98504.o
  obj-$(CONFIG_SND_SOC_SIMPLE_AMPLIFIER)	+= snd-soc-simple-amplifier.o
  obj-$(CONFIG_SND_SOC_TPA6130A2)	+= snd-soc-tpa6130a2.o
@@ -55,6 +51,3 @@ index c498373..dbd437e 100644
 +# Proslic si3218x
 +#obj-$(CONFIG_SND_SOC_SI3218X)	+= si3218x/
 +obj-$(CONFIG_SND_SOC_SI3218X_SPI) += snd-soc-si3218x-spi.o
--- 
-2.18.0
-

@@ -146,7 +146,7 @@ Signed-off-by: chuanjia.liu <Chuanjia.Liu@mediatek.com>
 
 --- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-@@ -791,60 +791,73 @@
+@@ -857,60 +857,73 @@
  		};
  	};
  
@@ -253,7 +253,7 @@ Signed-off-by: chuanjia.liu <Chuanjia.Liu@mediatek.com>
  				#interrupt-cells = <1>;
 --- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
 +++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -294,18 +294,16 @@
+@@ -295,18 +295,16 @@
  	};
  };
  
@@ -281,7 +281,7 @@ Signed-off-by: chuanjia.liu <Chuanjia.Liu@mediatek.com>
  &pio {
 --- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -795,45 +795,41 @@
+@@ -794,45 +794,41 @@
  		#reset-cells = <1>;
  	};
  
@@ -344,7 +344,7 @@ Signed-off-by: chuanjia.liu <Chuanjia.Liu@mediatek.com>
  			interrupt-map-mask = <0 0 0 7>;
  			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
  					<0 0 0 2 &pcie_intc0 1>,
-@@ -845,15 +841,39 @@
+@@ -844,15 +840,39 @@
  				#interrupt-cells = <1>;
  			};
  		};
@@ -389,7 +389,7 @@ Signed-off-by: chuanjia.liu <Chuanjia.Liu@mediatek.com>
  					<0 0 0 2 &pcie_intc1 1>,
 --- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
 +++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -184,14 +184,16 @@
+@@ -196,14 +196,16 @@
  	};
  };
  

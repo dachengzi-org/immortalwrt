@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/phy/mediatek/phy-mtk-tphy.c | 140 ++++++++++++++++++++++++++++
  1 file changed, 140 insertions(+)
 
-diff --git a/drivers/phy/mediatek/phy-mtk-tphy.c b/drivers/phy/mediatek/phy-mtk-tphy.c
-index fcf8c845f..6c07885be 100644
 --- a/drivers/phy/mediatek/phy-mtk-tphy.c
 +++ b/drivers/phy/mediatek/phy-mtk-tphy.c
 @@ -42,6 +42,15 @@
@@ -46,7 +44,7 @@ index fcf8c845f..6c07885be 100644
  	u32 index;
  	u32 type;
  	struct regmap *type_sw;
-@@ -900,6 +913,36 @@ static void phy_v2_banks_init(struct mtk_tphy *tphy,
+@@ -900,6 +913,36 @@ static void phy_v2_banks_init(struct mtk
  	}
  }
  
@@ -83,7 +81,7 @@ index fcf8c845f..6c07885be 100644
  static void phy_parse_property(struct mtk_tphy *tphy,
  				struct mtk_phy_instance *instance)
  {
-@@ -1082,6 +1125,40 @@ static int phy_efuse_get(struct mtk_tphy *tphy, struct mtk_phy_instance *instanc
+@@ -1082,6 +1125,40 @@ static int phy_efuse_get(struct mtk_tphy
  		dev_info(dev, "u3 efuse - intr %x, rx_imp %x, tx_imp %x\n",
  			 instance->efuse_intr, instance->efuse_rx_imp,
  			 instance->efuse_tx_imp);
@@ -124,7 +122,7 @@ index fcf8c845f..6c07885be 100644
  		break;
  	default:
  		dev_err(dev, "no sw efuse for type %d\n", instance->type);
-@@ -1115,6 +1192,31 @@ static void phy_efuse_set(struct mtk_phy_instance *instance)
+@@ -1115,6 +1192,31 @@ static void phy_efuse_set(struct mtk_phy
  
  		break;
  	case PHY_TYPE_USB3:
@@ -156,7 +154,7 @@ index fcf8c845f..6c07885be 100644
  	case PHY_TYPE_PCIE:
  		tmp = readl(u3_banks->phyd + U3P_U3_PHYD_RSV);
  		tmp |= P3D_RG_EFUSE_AUTO_LOAD_DIS;
-@@ -1139,6 +1241,35 @@ static void phy_efuse_set(struct mtk_phy_instance *instance)
+@@ -1139,6 +1241,35 @@ static void phy_efuse_set(struct mtk_phy
  		pr_err("%s set efuse, tx_imp %x, rx_imp %x intr %x\n",
  			__func__, instance->efuse_tx_imp,
  			instance->efuse_rx_imp, instance->efuse_intr);
@@ -192,7 +190,7 @@ index fcf8c845f..6c07885be 100644
  		break;
  	default:
  		dev_warn(dev, "no sw efuse for type %d\n", instance->type);
-@@ -1282,6 +1413,8 @@ static struct phy *mtk_phy_xlate(struct device *dev,
+@@ -1282,6 +1413,8 @@ static struct phy *mtk_phy_xlate(struct
  		phy_v1_banks_init(tphy, instance);
  	} else if (tphy->pdata->version == MTK_PHY_V2) {
  		phy_v2_banks_init(tphy, instance);
@@ -201,7 +199,7 @@ index fcf8c845f..6c07885be 100644
  	} else {
  		dev_err(dev, "phy version is not supported\n");
  		return ERR_PTR(-EINVAL);
-@@ -1333,12 +1466,19 @@ static const struct mtk_phy_pdata mt8195_pdata = {
+@@ -1333,12 +1466,19 @@ static const struct mtk_phy_pdata mt8195
  	.version = MTK_PHY_V3,
  };
  
@@ -221,6 +219,3 @@ index fcf8c845f..6c07885be 100644
  	{ },
  };
  MODULE_DEVICE_TABLE(of, mtk_tphy_id_table);
--- 
-2.34.1
-

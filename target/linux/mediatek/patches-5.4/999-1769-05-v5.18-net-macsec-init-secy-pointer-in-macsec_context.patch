@@ -14,11 +14,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 16 +++++++++++++++-
  1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index d29c072e19af6..093e81d605ec7 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1794,6 +1794,7 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
+@@ -1830,6 +1830,7 @@ static int macsec_add_rxsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.rx_sa = rx_sa;
@@ -26,7 +24,7 @@ index d29c072e19af6..093e81d605ec7 100644
  		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),
  		       MACSEC_KEYID_LEN);
  
-@@ -1841,6 +1842,7 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
+@@ -1877,6 +1878,7 @@ static int macsec_add_rxsc(struct sk_buf
  	struct nlattr **attrs = info->attrs;
  	struct macsec_rx_sc *rx_sc;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
@@ -34,7 +32,7 @@ index d29c072e19af6..093e81d605ec7 100644
  	bool was_active;
  	int ret;
  
-@@ -1860,6 +1862,7 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
+@@ -1896,6 +1898,7 @@ static int macsec_add_rxsc(struct sk_buf
  		return PTR_ERR(dev);
  	}
  
@@ -42,7 +40,7 @@ index d29c072e19af6..093e81d605ec7 100644
  	sci = nla_get_sci(tb_rxsc[MACSEC_RXSC_ATTR_SCI]);
  
  	rx_sc = create_rx_sc(dev, sci);
-@@ -1883,6 +1886,7 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
+@@ -1919,6 +1922,7 @@ static int macsec_add_rxsc(struct sk_buf
  		}
  
  		ctx.rx_sc = rx_sc;
@@ -50,7 +48,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_add_rxsc, &ctx);
  		if (ret)
-@@ -2032,6 +2036,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
+@@ -2068,6 +2072,7 @@ static int macsec_add_txsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.tx_sa = tx_sa;
@@ -58,7 +56,7 @@ index d29c072e19af6..093e81d605ec7 100644
  		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),
  		       MACSEC_KEYID_LEN);
  
-@@ -2107,6 +2112,7 @@ static int macsec_del_rxsa(struct sk_buff *skb, struct genl_info *info)
+@@ -2143,6 +2148,7 @@ static int macsec_del_rxsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.rx_sa = rx_sa;
@@ -66,7 +64,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_del_rxsa, &ctx);
  		if (ret)
-@@ -2172,6 +2178,7 @@ static int macsec_del_rxsc(struct sk_buff *skb, struct genl_info *info)
+@@ -2208,6 +2214,7 @@ static int macsec_del_rxsc(struct sk_buf
  		}
  
  		ctx.rx_sc = rx_sc;
@@ -74,7 +72,7 @@ index d29c072e19af6..093e81d605ec7 100644
  		ret = macsec_offload(ops->mdo_del_rxsc, &ctx);
  		if (ret)
  			goto cleanup;
-@@ -2230,6 +2237,7 @@ static int macsec_del_txsa(struct sk_buff *skb, struct genl_info *info)
+@@ -2266,6 +2273,7 @@ static int macsec_del_txsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.tx_sa = tx_sa;
@@ -82,7 +80,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_del_txsa, &ctx);
  		if (ret)
-@@ -2341,6 +2349,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
+@@ -2377,6 +2385,7 @@ static int macsec_upd_txsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.tx_sa = tx_sa;
@@ -90,7 +88,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_upd_txsa, &ctx);
  		if (ret)
-@@ -2433,6 +2442,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
+@@ -2469,6 +2478,7 @@ static int macsec_upd_rxsa(struct sk_buf
  
  		ctx.sa.assoc_num = assoc_num;
  		ctx.sa.rx_sa = rx_sa;
@@ -98,7 +96,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_upd_rxsa, &ctx);
  		if (ret)
-@@ -2503,6 +2513,7 @@ static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
+@@ -2539,6 +2549,7 @@ static int macsec_upd_rxsc(struct sk_buf
  		}
  
  		ctx.rx_sc = rx_sc;
@@ -106,7 +104,7 @@ index d29c072e19af6..093e81d605ec7 100644
  
  		ret = macsec_offload(ops->mdo_upd_rxsc, &ctx);
  		if (ret)
-@@ -3370,6 +3381,7 @@ static int macsec_dev_open(struct net_device *dev)
+@@ -3406,6 +3417,7 @@ static int macsec_dev_open(struct net_de
  			goto clear_allmulti;
  		}
  
@@ -114,7 +112,7 @@ index d29c072e19af6..093e81d605ec7 100644
  		err = macsec_offload(ops->mdo_dev_open, &ctx);
  		if (err)
  			goto clear_allmulti;
-@@ -3401,8 +3413,10 @@ static int macsec_dev_stop(struct net_device *dev)
+@@ -3437,8 +3449,10 @@ static int macsec_dev_stop(struct net_de
  		struct macsec_context ctx;
  
  		ops = macsec_get_ops(macsec, &ctx);
@@ -126,6 +124,3 @@ index d29c072e19af6..093e81d605ec7 100644
  	}
  
  	dev_mc_unsync(real_dev, dev);
--- 
-cgit 1.2.3-1.el7
-

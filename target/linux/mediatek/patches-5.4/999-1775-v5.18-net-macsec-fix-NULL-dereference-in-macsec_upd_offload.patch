@@ -16,11 +16,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index da82d7f16a09d..0d580d81d910f 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2594,6 +2594,9 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
+@@ -2630,6 +2630,9 @@ static int macsec_upd_offload(struct sk_
  		return PTR_ERR(dev);
  	macsec = macsec_priv(dev);
  
@@ -30,6 +28,3 @@ index da82d7f16a09d..0d580d81d910f 100644
  	offload = nla_get_u8(tb_offload[MACSEC_OFFLOAD_ATTR_TYPE]);
  	if (macsec->offload == offload)
  		return 0;
--- 
-cgit 1.2.3-1.el7
-

@@ -9,11 +9,9 @@ Subject: [PATCH]
  drivers/net/phy/Makefile      |   2 +
  2 files changed, 13 insertions(+)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 170dd00cd..5eeccfee2 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -345,6 +345,17 @@ config SFP
+@@ -352,6 +352,17 @@ config SFP
  	depends on HWMON || HWMON=n
  	select MDIO_I2C
  
@@ -31,11 +29,9 @@ index 170dd00cd..5eeccfee2 100644
  config ADIN_PHY
  	tristate "Analog Devices Industrial Ethernet PHYs"
  	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 2368c1d19..8ea612a85 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -67,6 +67,8 @@ aquantia-objs			+= aquantia_main.o
+@@ -68,6 +68,8 @@ aquantia-objs			+= aquantia_main.o
  ifdef CONFIG_HWMON
  aquantia-objs			+= aquantia_hwmon.o
  endif
@@ -44,6 +40,3 @@ index 2368c1d19..8ea612a85 100644
  obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
  obj-$(CONFIG_AT803X_PHY)	+= at803x.o
--- 
-2.34.1
-

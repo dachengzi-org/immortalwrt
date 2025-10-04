@@ -43,7 +43,7 @@ Commit-Queue: Yu Zhao <yuzhao@chromium.org>
  #endif /* __ASM_CPUCAPS_H */
 --- a/arch/arm64/include/asm/cpufeature.h
 +++ b/arch/arm64/include/asm/cpufeature.h
-@@ -643,6 +643,12 @@ static inline bool system_has_prio_mask_
+@@ -666,6 +666,12 @@ static inline bool system_has_prio_mask_
  	       system_uses_irq_prio_masking();
  }
  
@@ -66,7 +66,7 @@ Commit-Queue: Yu Zhao <yuzhao@chromium.org>
  #include <linux/mmdebug.h>
  #include <linux/mm_types.h>
  #include <linux/sched.h>
-@@ -848,6 +849,12 @@ static inline pmd_t pmdp_establish(struc
+@@ -854,6 +855,12 @@ static inline pmd_t pmdp_establish(struc
  
  extern int kern_addr_valid(unsigned long addr);
  

@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/spi/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index b26bf6b46..4b97ca45c 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
 @@ -429,6 +429,7 @@ config SPI_MT65XX
@@ -20,6 +18,3 @@ index b26bf6b46..4b97ca45c 100644
  	select MTD_SPI_NAND
  	help
  	  This selects the SPI NAND FLASH interface(SNFI),
--- 
-2.34.1
-

@@ -1,6 +1,6 @@
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -981,6 +981,10 @@ struct xfrmdev_ops {
+@@ -922,6 +922,10 @@ struct xfrmdev_ops {
  	bool	(*xdo_dev_offload_ok) (struct sk_buff *skb,
  				       struct xfrm_state *x);
  	void	(*xdo_dev_state_advance_esn) (struct xfrm_state *x);

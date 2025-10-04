@@ -1,7 +1,5 @@
-Index: linux-5.4.260/drivers/mtd/nand/spi/core.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/core.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/core.c
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
 @@ -16,6 +16,7 @@
  #include <linux/mtd/spinand.h>
  #include <linux/of.h>
@@ -155,10 +153,8 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/core.c
  	if (ret) {
  		dev_err(dev, "unknown raw ID %*phN\n", SPINAND_MAX_ID_LEN,
  			spinand->id.data);
-Index: linux-5.4.260/include/linux/mtd/spinand.h
-===================================================================
---- linux-5.4.260.orig/include/linux/mtd/spinand.h
-+++ linux-5.4.260/include/linux/mtd/spinand.h
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
 @@ -32,9 +32,9 @@
  		   SPI_MEM_OP_NO_DUMMY,					\
  		   SPI_MEM_OP_NO_DATA)
@@ -296,10 +292,8 @@ Index: linux-5.4.260/include/linux/mtd/spinand.h
  
  int spinand_upd_cfg(struct spinand_device *spinand, u8 mask, u8 val);
  int spinand_select_target(struct spinand_device *spinand, unsigned int target);
-Index: linux-5.4.260/drivers/mtd/nand/spi/winbond.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/winbond.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/winbond.c
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
 @@ -75,7 +75,8 @@ static int w25m02gv_select_target(struct
  }
  

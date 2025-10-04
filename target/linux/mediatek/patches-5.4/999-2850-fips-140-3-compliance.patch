@@ -20,7 +20,7 @@
  config CRYPTO_USER_API
  	tristate
  
-@@ -1853,6 +1868,17 @@ config CRYPTO_USER_API_RNG
+@@ -1853,6 +1866,17 @@ config CRYPTO_USER_API_RNG
  	  This option enables the user-spaces interface for random
  	  number generator algorithms.
  
@@ -38,7 +38,7 @@
  config CRYPTO_USER_API_AEAD
  	tristate "User-space interface for AEAD cipher algorithms"
  	depends on NET
-@@ -1879,6 +1904,16 @@ config CRYPTO_STATS
+@@ -1879,6 +1903,16 @@ config CRYPTO_STATS
  config CRYPTO_HASH_INFO
  	bool
  
@@ -55,7 +55,6 @@
  source "lib/crypto/Kconfig"
  source "drivers/crypto/Kconfig"
  source "crypto/asymmetric_keys/Kconfig"
-
 --- a/crypto/algif_rng.c
 +++ b/crypto/algif_rng.c
 @@ -51,7 +51,7 @@ MODULE_AUTHOR("Stephan Mueller <smueller

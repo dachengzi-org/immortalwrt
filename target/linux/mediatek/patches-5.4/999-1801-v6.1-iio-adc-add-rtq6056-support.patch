@@ -10,8 +10,6 @@ Subject: [PATCH] iio: adc: Add rtq6056 support
  3 files changed, 665 insertions(+)
  create mode 100644 drivers/iio/adc/rtq6056.c
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index cb57880..7457a53 100644
 --- a/drivers/iio/adc/Kconfig
 +++ b/drivers/iio/adc/Kconfig
 @@ -746,6 +746,21 @@ config ROCKCHIP_SARADC
@@ -36,8 +34,6 @@ index cb57880..7457a53 100644
  config SC27XX_ADC
  	tristate "Spreadtrum SC27xx series PMICs ADC"
  	depends on MFD_SC27XX_PMIC || COMPILE_TEST
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index ef9cc48..6a4ac1b 100644
 --- a/drivers/iio/adc/Makefile
 +++ b/drivers/iio/adc/Makefile
 @@ -59,6 +59,7 @@ obj-$(CONFIG_MCP3911) += mcp3911.o
@@ -48,9 +44,6 @@ index ef9cc48..6a4ac1b 100644
  obj-$(CONFIG_MXS_LRADC_ADC) += mxs-lradc-adc.o
  obj-$(CONFIG_NAU7802) += nau7802.o
  obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
-diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
-new file mode 100644
-index 0000000..962058e
 --- /dev/null
 +++ b/drivers/iio/adc/rtq6056.c
 @@ -0,0 +1,649 @@
@@ -703,6 +696,3 @@ index 0000000..962058e
 +MODULE_AUTHOR("ChiYuan Huang <cy_huang@richtek.com>");
 +MODULE_DESCRIPTION("Richtek RTQ6056 Driver");
 +MODULE_LICENSE("GPL v2");
--- 
-2.18.0
-

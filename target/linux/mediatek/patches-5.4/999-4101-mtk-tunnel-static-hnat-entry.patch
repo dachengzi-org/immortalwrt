@@ -13,14 +13,14 @@
  else
 --- a/drivers/net/ethernet/mediatek/mtk_hnat/hnat_debugfs.c
 +++ b/drivers/net/ethernet/mediatek/mtk_hnat/hnat_debugfs.c
-@@ -2919,6 +2919,7 @@ u32 hnat_get_ppe_hash(struct foe_entry *
- 
- 	return hash;
+@@ -2914,6 +2914,7 @@ static int hnat_qos_toggle_open(struct i
+ {
+ 	return single_open(file, hnat_qos_toggle_read, file->private_data);
  }
 +EXPORT_SYMBOL(hnat_get_ppe_hash);
  
- static u32 hnat_char2hex(const char c)
- {
+ static ssize_t hnat_qos_toggle_write(struct file *file, const char __user *buffer,
+ 				     size_t count, loff_t *data)
 --- /dev/null
 +++ b/drivers/net/ethernet/mediatek/mtk_hnat/external/hnat_entry.c
 @@ -0,0 +1,61 @@

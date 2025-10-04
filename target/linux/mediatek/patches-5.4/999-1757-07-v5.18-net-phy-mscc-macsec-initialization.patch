@@ -26,8 +26,6 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  create mode 100644 drivers/net/phy/mscc_mac.h
  create mode 100644 drivers/net/phy/mscc_macsec.h
 
-diff --git a/drivers/net/phy/mscc.c b/drivers/net/phy/mscc.c
-index 50214c081164f..8579a59a1336a 100644
 --- a/drivers/net/phy/mscc.c
 +++ b/drivers/net/phy/mscc.c
 @@ -18,6 +18,10 @@
@@ -76,7 +74,7 @@ index 50214c081164f..8579a59a1336a 100644
  /* Extended reg - GPIO; this is a bank of registers that are shared for all PHYs
   * in the same package.
   */
-@@ -1584,6 +1609,350 @@ out:
+@@ -1576,6 +1601,350 @@ out:
  	return ret;
  }
  
@@ -427,7 +425,7 @@ index 50214c081164f..8579a59a1336a 100644
  /* Check if one PHY has already done the init of the parts common to all PHYs
   * in the Quad PHY package.
   */
-@@ -1733,6 +2102,19 @@ static int vsc8584_config_init(struct phy_device *phydev)
+@@ -1707,6 +2076,19 @@ static int vsc8584_config_init(struct ph
  
  	mutex_unlock(&phydev->mdio.bus->mdio_lock);
  
@@ -447,9 +445,6 @@ index 50214c081164f..8579a59a1336a 100644
  	phy_write(phydev, MSCC_EXT_PAGE_ACCESS, MSCC_PHY_PAGE_STANDARD);
  
  	val = phy_read(phydev, MSCC_PHY_EXT_PHY_CNTL_1);
-diff --git a/drivers/net/phy/mscc_fc_buffer.h b/drivers/net/phy/mscc_fc_buffer.h
-new file mode 100644
-index 0000000000000..7e9c0e8778952
 --- /dev/null
 +++ b/drivers/net/phy/mscc_fc_buffer.h
 @@ -0,0 +1,64 @@
@@ -517,9 +512,6 @@ index 0000000000000..7e9c0e8778952
 +#define MSCC_FCBUF_FC_READ_THRESH_CFG_RX_THRESH_M		GENMASK(31, 16)
 +
 +#endif
-diff --git a/drivers/net/phy/mscc_mac.h b/drivers/net/phy/mscc_mac.h
-new file mode 100644
-index 0000000000000..9420ee5175a61
 --- /dev/null
 +++ b/drivers/net/phy/mscc_mac.h
 @@ -0,0 +1,159 @@
@@ -682,9 +674,6 @@ index 0000000000000..9420ee5175a61
 +#define MSCC_PROC_0_IP_1588_TOP_CFG_STAT_MODE_CTL_PROTOCOL_MODE_M	GENMASK(2, 0)
 +
 +#endif /* _MSCC_OCELOT_LINE_MAC_H_ */
-diff --git a/drivers/net/phy/mscc_macsec.h b/drivers/net/phy/mscc_macsec.h
-new file mode 100644
-index 0000000000000..0d108da28dad2
 --- /dev/null
 +++ b/drivers/net/phy/mscc_macsec.h
 @@ -0,0 +1,260 @@
@@ -948,6 +937,3 @@ index 0000000000000..0d108da28dad2
 +#define MSCC_MS_INTR_CTRL_STATUS_INTR_ENABLE_M		GENMASK(31, 16)
 +
 +#endif
--- 
-cgit 1.2.3-1.el7
-

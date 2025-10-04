@@ -11,11 +11,9 @@ Subject: [PATCH] 999-2742-drivers-net-dsa-mxl862xx
  net/dsa/Makefile         |  2 ++
  6 files changed, 23 insertions(+)
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index a15dd0d..13ef0f0 100644
 --- a/drivers/net/dsa/Kconfig
 +++ b/drivers/net/dsa/Kconfig
-@@ -54,6 +54,8 @@ source "drivers/net/dsa/microchip/Kconfig"
+@@ -54,6 +54,8 @@ source "drivers/net/dsa/microchip/Kconfi
  
  source "drivers/net/dsa/mv88e6xxx/Kconfig"
  
@@ -24,8 +22,6 @@ index a15dd0d..13ef0f0 100644
  source "drivers/net/dsa/sja1105/Kconfig"
  
  config NET_DSA_QCA8K
-diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-index c36e793..263c052 100644
 --- a/drivers/net/dsa/Makefile
 +++ b/drivers/net/dsa/Makefile
 @@ -23,3 +23,4 @@ obj-y				+= b53/
@@ -33,8 +29,6 @@ index c36e793..263c052 100644
  obj-y				+= mv88e6xxx/
  obj-y				+= sja1105/
 +obj-y				+= mxl862xx/
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 65cfa41..0c138e5 100644
 --- a/include/net/dsa.h
 +++ b/include/net/dsa.h
 @@ -44,6 +44,8 @@ struct phylink_link_state;
@@ -55,8 +49,6 @@ index 65cfa41..0c138e5 100644
  };
  
  struct packet_type;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 5da7a23..b0b9df1 100644
 --- a/net/dsa/Kconfig
 +++ b/net/dsa/Kconfig
 @@ -86,6 +86,19 @@ config NET_DSA_TAG_KSZ
@@ -79,16 +71,11 @@ index 5da7a23..b0b9df1 100644
  config NET_DSA_TAG_RTL4_A
  	tristate "Tag driver for Realtek 4 byte protocol A tags"
  	help
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index b58ac0f..692b70f 100644
 --- a/net/dsa/Makefile
 +++ b/net/dsa/Makefile
-@@ -17,3 +17,5 @@ obj-$(CONFIG_NET_DSA_TAG_QCA) += tag_qca.o
+@@ -17,3 +17,5 @@ obj-$(CONFIG_NET_DSA_TAG_QCA) += tag_qca
  obj-$(CONFIG_NET_DSA_TAG_SJA1105) += tag_sja1105.o
  obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
  obj-$(CONFIG_NET_DSA_TAG_AIROHA) += tag_arht.o
 +obj-$(CONFIG_NET_DSA_TAG_MXL862) += tag_mxl862xx.o
 +obj-$(CONFIG_NET_DSA_TAG_MXL862_8021Q) += tag_mxl862xx_8021q.o
--- 
-2.18.0
-

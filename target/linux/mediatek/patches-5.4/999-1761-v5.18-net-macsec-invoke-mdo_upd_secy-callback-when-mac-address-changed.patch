@@ -15,11 +15,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 66c6392251bc3..6ec6fc191a6e4 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3274,6 +3274,19 @@ static int macsec_set_mac_address(struct net_device *dev, void *p)
+@@ -3315,6 +3315,19 @@ static int macsec_set_mac_address(struct
  out:
  	ether_addr_copy(dev->dev_addr, addr->sa_data);
  	macsec->secy.sci = dev_to_sci(dev, MACSEC_PORT_ES);
@@ -39,6 +37,3 @@ index 66c6392251bc3..6ec6fc191a6e4 100644
  	return 0;
  }
  
--- 
-cgit 1.2.3-1.el7
-

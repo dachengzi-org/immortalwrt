@@ -8,8 +8,6 @@ Subject: [PATCH] [spi-and-storage][999-2332-mtd-add-mtk-snand-driver.patch]
  drivers/mtd/Makefile | 2 ++
  2 files changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index 3ed42b402..4b6f9d851 100644
 --- a/drivers/mtd/Kconfig
 +++ b/drivers/mtd/Kconfig
 @@ -230,6 +230,8 @@ source "drivers/mtd/hyperbus/Kconfig"
@@ -21,8 +19,6 @@ index 3ed42b402..4b6f9d851 100644
  source "drivers/mtd/composite/Kconfig"
  
  endif # MTD
-diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index f27f66784..df786f994 100644
 --- a/drivers/mtd/Makefile
 +++ b/drivers/mtd/Makefile
 @@ -35,5 +35,7 @@ obj-$(CONFIG_MTD_HYPERBUS)	+= hyperbus/
@@ -33,6 +29,3 @@ index f27f66784..df786f994 100644
 +
  # Composite drivers must be loaded last
  obj-y				+= composite/
--- 
-2.34.1
-

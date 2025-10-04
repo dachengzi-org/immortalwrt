@@ -8,11 +8,9 @@ Subject: [PATCH]
  net/core/dev.c | 17 ++++++++++++-----
  1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 503af0034..cccd7b407 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6389,18 +6389,25 @@ EXPORT_SYMBOL(netif_napi_add);
+@@ -6569,18 +6569,25 @@ EXPORT_SYMBOL(netif_napi_add);
  
  void napi_disable(struct napi_struct *n)
  {
@@ -43,6 +41,3 @@ index 503af0034..cccd7b407 100644
  }
  EXPORT_SYMBOL(napi_disable);
  
--- 
-2.34.1
-

@@ -8,8 +8,6 @@ Subject: [PATCH] [adv-feature][999-2550-dual-image-mount-rootfs.patch]
  kernel/boot_param.c | 2 +-
  2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index cd5fca8aa..2dfc0dac7 100644
 --- a/init/do_mounts.c
 +++ b/init/do_mounts.c
 @@ -576,7 +576,8 @@ void __init mount_root(void)
@@ -22,6 +20,3 @@ index cd5fca8aa..2dfc0dac7 100644
  		return;
  #endif
  #ifdef CONFIG_BLOCK
--- 
-2.34.1
-

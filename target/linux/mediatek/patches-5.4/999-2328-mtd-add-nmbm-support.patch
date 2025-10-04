@@ -8,8 +8,6 @@ Subject: [PATCH] [spi-and-storage][999-2328-mtd-add-nmbm-support.patch]
  drivers/mtd/Makefile | 2 ++
  2 files changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index 503f19763..3ed42b402 100644
 --- a/drivers/mtd/Kconfig
 +++ b/drivers/mtd/Kconfig
 @@ -228,6 +228,8 @@ source "drivers/mtd/ubi/Kconfig"
@@ -21,8 +19,6 @@ index 503f19763..3ed42b402 100644
  source "drivers/mtd/composite/Kconfig"
  
  endif # MTD
-diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index 147e79596..f27f66784 100644
 --- a/drivers/mtd/Makefile
 +++ b/drivers/mtd/Makefile
 @@ -33,5 +33,7 @@ obj-$(CONFIG_MTD_SPI_NOR)	+= spi-nor/
@@ -33,6 +29,3 @@ index 147e79596..f27f66784 100644
 +
  # Composite drivers must be loaded last
  obj-y				+= composite/
--- 
-2.34.1
-

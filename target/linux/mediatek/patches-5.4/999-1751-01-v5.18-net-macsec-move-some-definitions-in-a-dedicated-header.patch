@@ -17,8 +17,6 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  2 files changed, 178 insertions(+), 163 deletions(-)
  create mode 100644 include/net/macsec.h
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index afd8b2a082454..a336eee018f0b 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
 @@ -16,11 +16,10 @@
@@ -218,9 +216,6 @@ index afd8b2a082454..a336eee018f0b 100644
  struct pcpu_secy_stats {
  	struct macsec_dev_stats stats;
  	struct u64_stats_sync syncp;
-diff --git a/include/net/macsec.h b/include/net/macsec.h
-new file mode 100644
-index 0000000000000..e7b41c1043f6f
 --- /dev/null
 +++ b/include/net/macsec.h
 @@ -0,0 +1,177 @@
@@ -401,6 +396,3 @@ index 0000000000000..e7b41c1043f6f
 +};
 +
 +#endif /* _NET_MACSEC_H_ */
--- 
-cgit 1.2.3-1.el7
-

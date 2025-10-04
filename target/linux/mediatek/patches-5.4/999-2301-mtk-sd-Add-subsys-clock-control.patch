@@ -8,8 +8,6 @@ Subject: [PATCH]
  drivers/mmc/host/mtk-sd.c | 76 +++++++++++++++++++++++++++++----------
  1 file changed, 58 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index b25e8567f..ef344a4bd 100644
 --- a/drivers/mmc/host/mtk-sd.c
 +++ b/drivers/mmc/host/mtk-sd.c
 @@ -33,6 +33,7 @@
@@ -29,7 +27,7 @@ index b25e8567f..ef344a4bd 100644
  	u32 mclk;		/* mmc subsystem clock frequency */
  	u32 src_clk_freq;	/* source clock frequency */
  	unsigned char timing;
-@@ -745,6 +748,7 @@ static void msdc_set_timeout(struct msdc_host *host, u32 ns, u32 clks)
+@@ -745,6 +748,7 @@ static void msdc_set_timeout(struct msdc
  
  static void msdc_gate_clock(struct msdc_host *host)
  {
@@ -37,7 +35,7 @@ index b25e8567f..ef344a4bd 100644
  	clk_disable_unprepare(host->src_clk_cg);
  	clk_disable_unprepare(host->src_clk);
  	clk_disable_unprepare(host->bus_clk);
-@@ -753,10 +757,18 @@ static void msdc_gate_clock(struct msdc_host *host)
+@@ -753,10 +757,18 @@ static void msdc_gate_clock(struct msdc_
  
  static void msdc_ungate_clock(struct msdc_host *host)
  {
@@ -56,7 +54,7 @@ index b25e8567f..ef344a4bd 100644
  	while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
  		cpu_relax();
  }
-@@ -2195,6 +2207,50 @@ static void msdc_of_property_parse(struct platform_device *pdev,
+@@ -2195,6 +2207,50 @@ static void msdc_of_property_parse(struc
  		host->hs400_cmd_resp_sel_rising = false;
  }
  
@@ -107,7 +105,7 @@ index b25e8567f..ef344a4bd 100644
  static int msdc_drv_probe(struct platform_device *pdev)
  {
  	struct mmc_host *mmc;
-@@ -2235,25 +2291,9 @@ static int msdc_drv_probe(struct platform_device *pdev)
+@@ -2235,25 +2291,9 @@ static int msdc_drv_probe(struct platfor
  	if (ret)
  		goto host_free;
  
@@ -135,6 +133,3 @@ index b25e8567f..ef344a4bd 100644
  
  	host->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
  								"hrst");
--- 
-2.34.1
-

@@ -15,11 +15,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/macsec.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index d4034025c87c1..d0d31cb991803 100644
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2641,11 +2641,12 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
+@@ -2676,11 +2676,12 @@ static int macsec_upd_offload(struct sk_
  	if (ret)
  		goto rollback;
  
@@ -33,6 +31,3 @@ index d4034025c87c1..d0d31cb991803 100644
  	return 0;
  
  rollback:
--- 
-cgit 1.2.3-1.el7
-

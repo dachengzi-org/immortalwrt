@@ -1,5 +1,3 @@
-diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
-index 4f1c0f8..381f28e 100644
 --- a/include/linux/bitfield.h
 +++ b/include/linux/bitfield.h
 @@ -99,6 +99,32 @@

@@ -25,7 +25,7 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -4047,6 +4047,15 @@ static int macsec_newlink(struct net *ne
+@@ -4086,6 +4086,15 @@ static int macsec_newlink(struct net *ne
  	    !macsec_check_offload(macsec->offload, macsec))
  		return -EOPNOTSUPP;
  

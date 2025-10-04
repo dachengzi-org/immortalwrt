@@ -9,8 +9,6 @@ Subject: [PATCH]
  drivers/usb/host/xhci-mtk.h |  1 +
  2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-mtk.c b/drivers/usb/host/xhci-mtk.c
-index 5c0eb35cd..77ddb8c05 100644
 --- a/drivers/usb/host/xhci-mtk.c
 +++ b/drivers/usb/host/xhci-mtk.c
 @@ -22,6 +22,11 @@
@@ -25,7 +23,7 @@ index 5c0eb35cd..77ddb8c05 100644
  /* ip_pw_ctrl0 register */
  #define CTRL0_IP_SW_RST	BIT(0)
  
-@@ -413,6 +418,7 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
+@@ -413,6 +418,7 @@ static int xhci_mtk_setup(struct usb_hcd
  {
  	struct xhci_hcd_mtk *mtk = hcd_to_mtk(hcd);
  	int ret;
@@ -33,7 +31,7 @@ index 5c0eb35cd..77ddb8c05 100644
  
  	if (usb_hcd_is_primary_hcd(hcd)) {
  		ret = xhci_mtk_ssusb_config(mtk);
-@@ -430,6 +436,15 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
+@@ -430,6 +436,15 @@ static int xhci_mtk_setup(struct usb_hcd
  			return ret;
  	}
  
@@ -49,7 +47,7 @@ index 5c0eb35cd..77ddb8c05 100644
  	return ret;
  }
  
-@@ -475,7 +490,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
+@@ -475,7 +490,8 @@ static int xhci_mtk_probe(struct platfor
  	/* optional property, ignore the error if it does not exist */
  	of_property_read_u32(node, "mediatek,u3p-dis-msk",
  			     &mtk->u3p_dis_msk);
@@ -59,8 +57,6 @@ index 5c0eb35cd..77ddb8c05 100644
  	ret = usb_wakeup_of_property_parse(mtk, node);
  	if (ret) {
  		dev_err(dev, "failed to parse uwk property\n");
-diff --git a/drivers/usb/host/xhci-mtk.h b/drivers/usb/host/xhci-mtk.h
-index 2f702342d..8a884e7b4 100644
 --- a/drivers/usb/host/xhci-mtk.h
 +++ b/drivers/usb/host/xhci-mtk.h
 @@ -156,6 +156,7 @@ struct xhci_hcd_mtk {
@@ -71,6 +67,3 @@ index 2f702342d..8a884e7b4 100644
  };
  
  static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
--- 
-2.34.1
-

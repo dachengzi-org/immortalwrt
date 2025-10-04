@@ -9,11 +9,9 @@ Subject: [PATCH]
  include/linux/nvmem-consumer.h |  15 +++
  2 files changed, 150 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 19ac0d055..f65305b6d 100644
 --- a/drivers/nvmem/core.c
 +++ b/drivers/nvmem/core.c
-@@ -1102,16 +1102,8 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
+@@ -1102,16 +1102,8 @@ int nvmem_cell_write(struct nvmem_cell *
  }
  EXPORT_SYMBOL_GPL(nvmem_cell_write);
  
@@ -32,7 +30,7 @@ index 19ac0d055..f65305b6d 100644
  {
  	struct nvmem_cell *cell;
  	void *buf;
-@@ -1126,21 +1118,50 @@ int nvmem_cell_read_u16(struct device *dev, const char *cell_id, u16 *val)
+@@ -1126,21 +1118,50 @@ int nvmem_cell_read_u16(struct device *d
  		nvmem_cell_put(cell);
  		return PTR_ERR(buf);
  	}
@@ -86,11 +84,10 @@ index 19ac0d055..f65305b6d 100644
   *
   * @dev: Device that requests the nvmem cell.
   * @cell_id: Name of nvmem cell to read.
-@@ -1149,32 +1170,120 @@ EXPORT_SYMBOL_GPL(nvmem_cell_read_u16);
-  * Return: 0 on success or negative errno.
+@@ -1150,31 +1171,119 @@ EXPORT_SYMBOL_GPL(nvmem_cell_read_u16);
   */
  int nvmem_cell_read_u32(struct device *dev, const char *cell_id, u32 *val)
-+{
+ {
 +	return nvmem_cell_read_common(dev, cell_id, val, sizeof(*val));
 +}
 +EXPORT_SYMBOL_GPL(nvmem_cell_read_u32);
@@ -113,7 +110,7 @@ index 19ac0d055..f65305b6d 100644
 +static const void *nvmem_cell_read_variable_common(struct device *dev,
 +						   const char *cell_id,
 +						   size_t max_len, size_t *len)
- {
++{
  	struct nvmem_cell *cell;
 +	int nbits;
  	void *buf;
@@ -220,11 +217,9 @@ index 19ac0d055..f65305b6d 100644
  
  /**
   * nvmem_device_cell_read() - Read a given nvmem device and cell
-diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index 0f490b288..227b93158 100644
 --- a/include/linux/nvmem-consumer.h
 +++ b/include/linux/nvmem-consumer.h
-@@ -64,6 +64,10 @@ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
+@@ -64,6 +64,10 @@ void *nvmem_cell_read(struct nvmem_cell
  int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
  int nvmem_cell_read_u16(struct device *dev, const char *cell_id, u16 *val);
  int nvmem_cell_read_u32(struct device *dev, const char *cell_id, u32 *val);
@@ -235,7 +230,7 @@ index 0f490b288..227b93158 100644
  
  /* direct nvmem device read/write interface */
  struct nvmem_device *nvmem_device_get(struct device *dev, const char *name);
-@@ -135,6 +139,17 @@ static inline int nvmem_cell_read_u32(struct device *dev,
+@@ -135,6 +139,17 @@ static inline int nvmem_cell_read_u32(st
  {
  	return -EOPNOTSUPP;
  }
@@ -253,6 +248,3 @@ index 0f490b288..227b93158 100644
  
  static inline struct nvmem_device *nvmem_device_get(struct device *dev,
  						    const char *name)
--- 
-2.34.1
-

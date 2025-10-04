@@ -1,7 +1,5 @@
-Index: linux-5.4.260/drivers/mtd/nand/spi/gigadevice.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/gigadevice.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/gigadevice.c
+--- a/drivers/mtd/nand/spi/gigadevice.c
++++ b/drivers/mtd/nand/spi/gigadevice.c
 @@ -13,7 +13,10 @@
  #define GD5FXGQ4XA_STATUS_ECC_1_7_BITFLIPS	(1 << 4)
  #define GD5FXGQ4XA_STATUS_ECC_8_BITFLIPS	(3 << 4)
@@ -418,10 +416,8 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/gigadevice.c
 +	.nchips = ARRAY_SIZE(gigadevice_spinand_table),
  	.ops = &gigadevice_spinand_manuf_ops,
  };
-Index: linux-5.4.260/drivers/mtd/nand/spi/macronix.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/macronix.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/macronix.c
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
 @@ -99,7 +99,8 @@ static int mx35lf1ge4ab_ecc_get_status(s
  }
  
@@ -631,19 +627,13 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/macronix.c
  };
  
  static int macronix_spinand_detect(struct spinand_device *spinand)
---- a/drivers/mtd/nand/spi/macronix.c
-+++ b/drivers/mtd/nand/spi/macronix.c
-@@ -255,7 +255,6 @@ static int macronix_spinand_detect(struc
+@@ -255,11 +321,12 @@ static int macronix_spinand_detect(struc
  }
  
  static const struct spinand_manufacturer_ops macronix_spinand_manuf_ops = {
 -	.detect = macronix_spinand_detect,
  };
- const struct spinand_manufacturer macronix_spinand_manufacturer = {
  
---- a/drivers/mtd/nand/spi/macronix.c
-+++ b/drivers/mtd/nand/spi/macronix.c
-@@ -326,5 +326,7 @@ static const struct spinand_manufacturer
  const struct spinand_manufacturer macronix_spinand_manufacturer = {
  	.id = SPINAND_MFR_MACRONIX,
  	.name = "Macronix",
@@ -651,11 +641,8 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/macronix.c
 +	.nchips = ARRAY_SIZE(macronix_spinand_table),
  	.ops = &macronix_spinand_manuf_ops,
  };
- 
-Index: linux-5.4.260/drivers/mtd/nand/spi/micron.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/micron.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/micron.c
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
 @@ -12,13 +12,23 @@
  
  #define SPINAND_MFR_MICRON		0x2c
@@ -974,10 +961,8 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/micron.c
 +	.nchips = ARRAY_SIZE(micron_spinand_table),
  	.ops = &micron_spinand_manuf_ops,
  };
-Index: linux-5.4.260/drivers/mtd/nand/spi/paragon.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/paragon.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/paragon.c
+--- a/drivers/mtd/nand/spi/paragon.c
++++ b/drivers/mtd/nand/spi/paragon.c
 @@ -97,7 +97,8 @@ static const struct mtd_ooblayout_ops pn
  
  
@@ -1032,10 +1017,8 @@ Index: linux-5.4.260/drivers/mtd/nand/spi/paragon.c
 +	.nchips = ARRAY_SIZE(paragon_spinand_table),
  	.ops = &paragon_spinand_manuf_ops,
  };
-Index: linux-5.4.260/drivers/mtd/nand/spi/toshiba.c
-===================================================================
---- linux-5.4.260.orig/drivers/mtd/nand/spi/toshiba.c
-+++ linux-5.4.260/drivers/mtd/nand/spi/toshiba.c
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
 @@ -10,6 +10,7 @@
  #include <linux/kernel.h>
  #include <linux/mtd/spinand.h>

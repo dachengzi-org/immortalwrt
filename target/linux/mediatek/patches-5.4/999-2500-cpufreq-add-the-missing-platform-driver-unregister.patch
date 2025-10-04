@@ -8,11 +8,9 @@ Subject: [PATCH]
  drivers/cpufreq/mediatek-cpufreq.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 927ebc582..03bb7b58d 100644
 --- a/drivers/cpufreq/mediatek-cpufreq.c
 +++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -573,6 +573,7 @@ static int __init mtk_cpufreq_driver_init(void)
+@@ -573,6 +573,7 @@ static int __init mtk_cpufreq_driver_ini
  	pdev = platform_device_register_simple("mtk-cpufreq", -1, NULL, 0);
  	if (IS_ERR(pdev)) {
  		pr_err("failed to register mtk-cpufreq platform device\n");
@@ -20,6 +18,3 @@ index 927ebc582..03bb7b58d 100644
  		return PTR_ERR(pdev);
  	}
  
--- 
-2.34.1
-
