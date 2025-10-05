@@ -16,7 +16,7 @@ DATA_BLOCKS=$((${FILE_SIZE} / ${BLOCK_SIZE}))
 
 HASH_OFFSET=$((${DATA_BLOCKS} * ${BLOCK_SIZE}))
 
-${STAGING_DIR_HOST}/bin/veritysetup format \
+veritysetup format \
 	--data-blocks=${DATA_BLOCKS} \
 	--hash-offset=${HASH_OFFSET} \
 	${SQUASHFS_FILE_PATH} ${SQUASHFS_FILE_PATH} \
