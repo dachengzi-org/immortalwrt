@@ -1,0 +1,13 @@
+Index: wappd/include/rtmpiapp.h
+===================================================================
+--- wappd.orig/include/rtmpiapp.h
++++ wappd/include/rtmpiapp.h
+@@ -676,7 +676,7 @@
+ 			__pBufMsg = __pRspBuf;								\
+ 	}
+ 
+-static __inline__ __uint32_t inet_make_mask(int logmask)
++static __inline__ __u32 inet_make_mask(int logmask)
+ {
+ 	if (logmask)
+ 		return htonl(~((1<<(32-logmask))-1));
