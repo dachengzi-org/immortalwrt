@@ -66,7 +66,8 @@ nand_find_ubi() {
 board=$(board_name)
 
 case "$board" in
-mediatek,*-emmc-rfb)
+mediatek,*-emmc-rfb |\
+glinet,gl-mt6000)
 	env_dev=$(cat /sys/module/boot_param/parameters/env_part 2>/dev/null)
 	[ -n "$env_dev" ] && env_dev=$(block_dev_path "${env_dev}")
 	[ -z "$env_dev" ] && env_dev=$(block_dev_path "PARTLABEL=u-boot-env")
