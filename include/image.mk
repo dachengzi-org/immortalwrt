@@ -545,9 +545,11 @@ endif
 
 define Device/Build/kernel
   $$(eval $$(foreach dts,$$(DEVICE_DTS), \
-	$$(call Device/Build/dtb,$$(notdir $$(dts)), \
-		$$(if $$(DEVICE_DTS_DIR),$$(DEVICE_DTS_DIR),$$(DTS_DIR)), \
-		$$(dts) \
+	$$(if $$(_PROFILE_SET), \
+		$$(call Device/Build/dtb,$$(notdir $$(dts)), \
+			$$(if $$(DEVICE_DTS_DIR),$$(DEVICE_DTS_DIR),$$(DTS_DIR)), \
+			$$(dts) \
+		) \
 	) \
   ))
 
@@ -557,23 +559,25 @@ define Device/Build/kernel
   $(BIN_DIR)/$$(KERNEL_IMAGE): $$(KDIR_KERNEL_IMAGE)
 	cp $$^ $$@
   ifndef IB
-    ifdef CONFIG_IB
-      install: $$(KDIR_KERNEL_IMAGE)
+    ifneq ($$(_PROFILE_SET),)
+      ifdef CONFIG_IB
+        install: $$(KDIR_KERNEL_IMAGE)
+      endif
+      ifneq ($$(filter squashfs,$(2)),)
+        # Force squashfs to be built before generating kernel image
+        ROOTFS/squashfs/$(1) := \
+		$(KDIR)/root.squashfs$$(strip \
+			$$(if $$(FS_OPTIONS/squashfs),+fs=$$(call param_mangle,$$(FS_OPTIONS/squashfs))) \
+		)$$(strip \
+			$(if $(TARGET_PER_DEVICE_ROOTFS),+pkg=$$(ROOTFS_ID/$(1))) \
+		)
+        $$(KDIR_KERNEL_IMAGE): $$(ROOTFS/squashfs/$(1))
+      endif
+      $$(KDIR_KERNEL_IMAGE): $(KDIR)/$$(KERNEL_NAME) $(CURDIR)/Makefile $$(KERNEL_DEPENDS) image_prepare
+		@rm -f $$@
+		$$(call concat_cmd,$$(KERNEL))
+		$$(if $$(KERNEL_SIZE),$$(call Build/check-size,$$(KERNEL_SIZE)))
     endif
-    ifneq ($$(filter squashfs,$(2)),)
-      # Force squashfs to be built before generating kernel image
-      ROOTFS/squashfs/$(1) := \
-	$(KDIR)/root.squashfs$$(strip \
-		$$(if $$(FS_OPTIONS/squashfs),+fs=$$(call param_mangle,$$(FS_OPTIONS/squashfs))) \
-	)$$(strip \
-		$(if $(TARGET_PER_DEVICE_ROOTFS),+pkg=$$(ROOTFS_ID/$(1))) \
-	)
-      $$(KDIR_KERNEL_IMAGE): $$(ROOTFS/squashfs/$(1))
-    endif
-    $$(KDIR_KERNEL_IMAGE): $(KDIR)/$$(KERNEL_NAME) $(CURDIR)/Makefile $$(KERNEL_DEPENDS) image_prepare
-	@rm -f $$@
-	$$(call concat_cmd,$$(KERNEL))
-	$$(if $$(KERNEL_SIZE),$$(call Build/check-size,$$(KERNEL_SIZE)))
   endif
 endef
 
@@ -591,7 +595,9 @@ define Device/Build/image
 		$(if $(TARGET_PER_DEVICE_ROOTFS),+pkg=$$(ROOTFS_ID/$(3))) \
 	)
   ifndef IB
-    $$(ROOTFS/$(1)/$(3)): $(if $(TARGET_PER_DEVICE_ROOTFS),target-dir-$$(ROOTFS_ID/$(3)))
+    ifneq ($$(_PROFILE_SET),)
+      $$(ROOTFS/$(1)/$(3)): $(if $(TARGET_PER_DEVICE_ROOTFS),target-dir-$$(ROOTFS_ID/$(3)))
+    endif
   endif
   $(KDIR)/tmp/$(call IMAGE_NAME,$(1),$(2)): $$(KDIR_KERNEL_IMAGE) $$(ROOTFS/$(1)/$(3))
 	@rm -f $$@
