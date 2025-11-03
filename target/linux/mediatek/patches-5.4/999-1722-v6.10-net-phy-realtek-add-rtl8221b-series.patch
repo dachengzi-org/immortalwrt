@@ -556,7 +556,7 @@ Subject: [PATCH] net: phy: realtek add rtl8221b series
 +		.config_intr	= rtl8221b_config_intr,
 +		.handle_interrupt = rtl8221b_handle_interrupt,
 +		.probe          = rtl822x_probe,
-+		/*.soft_reset     = genphy_soft_reset,*/
++		.soft_reset     = genphy_soft_reset,
 +		.config_init    = rtl822xb_config_init,
 +		.get_rate_matching = rtl822xb_get_rate_matching,
 +		.get_features   = rtl822x_c45_get_features,
