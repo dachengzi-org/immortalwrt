@@ -270,7 +270,7 @@
  
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -487,6 +487,8 @@ struct phy_device {
+@@ -489,6 +489,8 @@ struct phy_device {
  	u8 mdix;
  	u8 mdix_ctrl;
  

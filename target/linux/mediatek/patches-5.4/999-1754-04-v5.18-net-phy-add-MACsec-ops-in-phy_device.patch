@@ -15,7 +15,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -363,6 +363,7 @@ struct phy_c45_device_ids {
+@@ -365,6 +365,7 @@ struct phy_c45_device_ids {
  };
  
  struct macsec_context;
@@ -23,7 +23,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  /* phy_device: An instance of a PHY
   *
-@@ -387,6 +388,7 @@ struct macsec_context;
+@@ -389,6 +390,7 @@ struct macsec_context;
   * attached_dev: The attached enet driver's device instance ptr
   * adjust_link: Callback for the enet controller to respond to
   * changes in the link state.
@@ -31,7 +31,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *
   * speed, duplex, pause, supported, advertising, lp_advertising,
   * and autoneg are used like in mii_if_info
-@@ -495,6 +497,11 @@ struct phy_device {
+@@ -497,6 +499,11 @@ struct phy_device {
  
  	void (*phy_link_change)(struct phy_device *, bool up, bool do_carrier);
  	void (*adjust_link)(struct net_device *dev);

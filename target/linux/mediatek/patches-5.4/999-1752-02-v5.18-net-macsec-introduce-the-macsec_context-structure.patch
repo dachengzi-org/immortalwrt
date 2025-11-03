@@ -21,7 +21,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -362,6 +362,8 @@ struct phy_c45_device_ids {
+@@ -364,6 +364,8 @@ struct phy_c45_device_ids {
  	u32 device_ids[8];
  };
  

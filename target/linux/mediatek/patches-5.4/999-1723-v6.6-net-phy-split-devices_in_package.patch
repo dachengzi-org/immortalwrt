@@ -1,0 +1,122 @@
+From 320ed3bf900075614c43499dc01db8d25717b986 Mon Sep 17 00:00:00 2001
+From: Russell King <rmk+kernel@armlinux.org.uk>
+Date: Thu, 18 Jun 2020 14:46:08 +0100
+Subject: [PATCH] net: phy: split devices_in_package
+
+We have two competing requirements for the devices_in_package field.
+We want to use it as a bit array indicating which MMDs are present, but
+we also want to know if the Clause 22 registers are present.
+
+Since "devices in package" is a term used in the 802.3 specification,
+keep this as the as-specified values read from the PHY, and introduce
+a new member "mmds_present" to indicate which MMDs are actually
+present in the PHY, derived from the "devices in package" value.
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ drivers/net/phy/phy-c45.c    | 4 ++--
+ drivers/net/phy/phy_device.c | 8 +++++---
+ drivers/net/phy/phylink.c    | 8 ++++----
+ include/linux/phy.h          | 4 +++-
+ 4 files changed, 14 insertions(+), 10 deletions(-)
+
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -262,7 +262,7 @@ int genphy_c45_read_link(struct phy_devi
+ 	int val, devad;
+ 	bool link = true;
+ 
+-	if (phydev->c45_ids.devices_in_package & MDIO_DEVS_AN) {
++	if (phydev->c45_ids.mmds_present & MDIO_DEVS_AN) {
+ 		val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_CTRL1);
+ 		if (val < 0)
+ 			return val;
+@@ -452,7 +452,7 @@ int genphy_c45_pma_read_abilities(struct
+ 	int val;
+ 
+ 	linkmode_clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, phydev->supported);
+-	if (phydev->c45_ids.devices_in_package & MDIO_DEVS_AN) {
++	if (phydev->c45_ids.mmds_present & MDIO_DEVS_AN) {
+ 		val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_STAT1);
+ 		if (val < 0)
+ 			return val;
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -689,9 +689,6 @@ static int get_phy_c45_devs_in_pkg(struc
+ 		return -EIO;
+ 	*devices_in_package |= phy_reg;
+ 
+-	/* Bit 0 doesn't represent a device, it indicates c22 regs presence */
+-	*devices_in_package &= ~BIT(0);
+-
+ 	return 0;
+ }
+ 
+@@ -759,6 +756,10 @@ static int get_phy_c45_ids(struct mii_bu
+ 			return -EIO;
+ 		c45_ids->device_ids[i] |= phy_reg;
+ 	}
++
++	/* Bit 0 doesn't represent a device, it indicates c22 regs presence */
++	c45_ids->mmds_present = *devs & ~BIT(0);
++
+ 	*phy_id = 0;
+ 	return 0;
+ }
+@@ -825,6 +826,7 @@ struct phy_device *get_phy_device(struct
+ 	int r;
+ 
+ 	c45_ids.devices_in_package = 0;
++	c45_ids.mmds_present = 0;
+ 	memset(c45_ids.device_ids, 0xff, sizeof(c45_ids.device_ids));
+ 
+ 	r = get_phy_id(bus, addr, &phy_id, is_c45, &c45_ids);
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1937,11 +1937,11 @@ static int phylink_phy_read(struct phyli
+ 		case MII_BMSR:
+ 		case MII_PHYSID1:
+ 		case MII_PHYSID2:
+-			devad = __ffs(phydev->c45_ids.devices_in_package);
++			devad = __ffs(phydev->c45_ids.mmds_present);
+ 			break;
+ 		case MII_ADVERTISE:
+ 		case MII_LPA:
+-			if (!(phydev->c45_ids.devices_in_package & MDIO_DEVS_AN))
++			if (!(phydev->c45_ids.mmds_present & MDIO_DEVS_AN))
+ 				return -EINVAL;
+ 			devad = MDIO_MMD_AN;
+ 			if (reg == MII_ADVERTISE)
+@@ -1977,11 +1977,11 @@ static int phylink_phy_write(struct phyl
+ 		case MII_BMSR:
+ 		case MII_PHYSID1:
+ 		case MII_PHYSID2:
+-			devad = __ffs(phydev->c45_ids.devices_in_package);
++			devad = __ffs(phydev->c45_ids.mmds_present);
+ 			break;
+ 		case MII_ADVERTISE:
+ 		case MII_LPA:
+-			if (!(phydev->c45_ids.devices_in_package & MDIO_DEVS_AN))
++			if (!(phydev->c45_ids.mmds_present & MDIO_DEVS_AN))
+ 				return -EINVAL;
+ 			devad = MDIO_MMD_AN;
+ 			if (reg == MII_ADVERTISE)
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -353,11 +353,13 @@ enum phy_state {
+ 
+ /**
+  * struct phy_c45_device_ids - 802.3-c45 Device Identifiers
+- * @devices_in_package: Bit vector of devices present.
++ * @devices_in_package: IEEE 802.3 devices in package register value.
++ * @mmds_present: bit vector of MMDs present.
+  * @device_ids: The device identifer for each present device.
+  */
+ struct phy_c45_device_ids {
+ 	u32 devices_in_package;
++	u32 mmds_present;
+ 	u32 device_ids[8];
+ };
+ 

@@ -32,7 +32,7 @@
  
  	mutex_init(&dev->lock);
  	INIT_DELAYED_WORK(&dev->state_queue, phy_state_machine);
-@@ -2516,6 +2518,208 @@ static bool phy_drv_supports_irq(struct
+@@ -2518,6 +2520,208 @@ static bool phy_drv_supports_irq(struct
  	return phydrv->config_intr && phydrv->ack_interrupt;
  }
  
@@ -241,7 +241,7 @@
  /**
   * phy_probe - probe and init a PHY device
   * @dev: device to probe and init
-@@ -2614,6 +2818,12 @@ static int phy_probe(struct device *dev)
+@@ -2616,6 +2820,12 @@ static int phy_probe(struct device *dev)
  	/* Set the state to READY by default */
  	phydev->state = PHY_READY;
  
@@ -254,7 +254,7 @@
  out:
  	mutex_unlock(&phydev->lock);
  
-@@ -2626,6 +2836,9 @@ static int phy_remove(struct device *dev
+@@ -2628,6 +2838,9 @@ static int phy_remove(struct device *dev
  
  	cancel_delayed_work_sync(&phydev->state_queue);
  
@@ -351,7 +351,7 @@
  #include <linux/linkmode.h>
  #include <linux/mdio.h>
  #include <linux/mii.h>
-@@ -458,6 +459,7 @@ struct phy_device {
+@@ -460,6 +461,7 @@ struct phy_device {
  
  	struct phy_led_trigger *led_link_trigger;
  #endif
@@ -359,7 +359,7 @@
  
  	/*
  	 * Interrupt number for this PHY
-@@ -495,6 +497,33 @@ struct phy_device {
+@@ -497,6 +499,33 @@ struct phy_device {
  #define to_phy_device(d) container_of(to_mdio_device(d), \
  				      struct phy_device, mdio)
  
@@ -393,7 +393,7 @@
  /* struct phy_driver: Driver structure for a particular PHY type
   *
   * driver_data: static driver data
-@@ -698,6 +727,73 @@ struct phy_driver {
+@@ -700,6 +729,73 @@ struct phy_driver {
  			    struct ethtool_tunable *tuna,
  			    const void *data);
  	int (*set_loopback)(struct phy_device *dev, bool enable);
