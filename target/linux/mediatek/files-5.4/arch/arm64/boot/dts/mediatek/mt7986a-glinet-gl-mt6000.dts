@@ -66,14 +66,14 @@
 		regulator-always-on;
 	};
 
-	gpio-export {
-		compatible = "gpio-export";
-
-		usb_power {
-			gpio-export,name = "usb_power";
-			gpio-export,output = <1>;
-			gpios = <&pio 24 GPIO_ACTIVE_HIGH>;
-		};
+	usb_vbus: regulator-usb-vbus {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpios = <&pio 24 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
 	};
 };
 
@@ -210,6 +210,11 @@
 	no-sd;
 	no-sdio;
 	status = "okay";
+};
+
+&xhci {
+	vusb33-supply = <&reg_3p3v>;
+	vbus-supply = <&usb_vbus>;
 };
 
 &wbsys {
