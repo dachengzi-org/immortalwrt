@@ -1168,9 +1168,11 @@ function hi(to) {
                 return false;
             }
         <% end %>
-        if(document.getElementsByName("DfsEnable")[0].checked && document.getElementById("__bw").value == 160){
-            alert("AP may wait 60s at least before it can serve whlie enable DFS with 160MHz bandwitdh in the meanwhile");
-        }
+        <% if mtkwifi.band(string.split(cfgs.WirelessMode,";")[1]) == "5G" then %>
+            if(document.getElementsByName("DfsEnable")[0].checked && document.getElementById("__bw").value == 160){
+                alert("AP may wait 60s at least before it can serve whlie enable DFS with 160MHz bandwitdh in the meanwhile");
+            }
+        <% end %>
         return true;
     }
 
