@@ -1312,7 +1312,7 @@
                                 cfgs_to_display.push("steering");
                                 cfgs_to_display.push("map-cfg-basic-wireless-bh-preference");
                                 cfgs_to_display.push("map-cfg-back-haul-connection-status-settings");
-                                if (document.getElementById("DeviceRole").value !== null) {
+                                if (document.getElementById("DeviceRole") !== null) {
                                     if (document.getElementById("DeviceRole").value == 1) {
                                         cfgs_to_display.pop();
                                         cfgs_to_display.pop();
@@ -2632,13 +2632,17 @@
 
                         <% end %> /* if not appliedMapModeDiff and first_card_cfgs.MapMode == "1" then */
 
-                        <% if mapd_default_cfg.mode then %>
+                        <% if first_card_cfgs.MapMode == "1" and mapd_default_cfg.mode then %>
 
                             getDeviceMode();
 
                         <% end %>
 
-                        prep_channel_dropdown(1);
+                        <% if not appliedMapModeDiff and first_card_cfgs.MapMode == "1" then %>
+
+                            prep_channel_dropdown(1);
+
+                        <% end %> /* if not appliedMapModeDiff and first_card_cfgs.MapMode == "1" then */
 
                     }
 
