@@ -1,0 +1,14 @@
+{
+	"luci-app-mtk-turboacc": {
+		"description": "Grant UCI access for luci-app-mtk-turboacc",
+		"read": {
+			"ubus": {
+				"luci.turboacc": [ "getSystemFeatures", "getFastPathStat", "getFullConeStat", "getTCPCCAStat" ]
+			},
+			"uci": [ "turboacc" ]
+		},
+		"write": {
+			"uci": [ "turboacc" ]
+		}
+	}
+}
