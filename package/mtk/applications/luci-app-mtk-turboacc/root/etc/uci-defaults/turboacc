@@ -14,10 +14,11 @@ EOF
 
 kernel_ver="$(uname -r)"
 
-if [ -e "/lib/modules/$kernel_ver/mtkhnat.ko" ]; then
+if [ -e "/lib/modules/$kernel_ver/mtkhnat.ko" ] && [ -x "/sbin/mtkhnat" ]; then
 	uci -q set "turboacc.config.fastpath"="mediatek_hnat"
 	uci -q set "turboacc.config.fastpath_mh_eth_hnat"="1"
-	uci -q set "turboacc.config.fastpath_mh_eth_hnat_v6"="1"
+	uci -q set "turboacc.config.fastpath_mh_eth_hnat_bind_rate"="30"
+	uci -q set "turboacc.config.fastpath_mh_eth_hnat_nf_conntrack_update"="1"
 elif [ -e "/lib/modules/$kernel_ver/xt_FLOWOFFLOAD.ko" ]; then
 	uci -q set "turboacc.config.fastpath"="flow_offloading"
 	if grep -q "mt762" "/etc/openwrt_release"; then

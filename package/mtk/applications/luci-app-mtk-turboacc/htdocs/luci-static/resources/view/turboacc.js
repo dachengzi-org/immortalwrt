@@ -168,10 +168,17 @@ return view.extend({
 		o.rmempty = false;
 		o.depends('fastpath', 'mediatek_hnat');
 
-		o = s.option(form.Flag, 'fastpath_mh_eth_hnat_v6', _('Enable ethernet IPv6 HNAT'),
-			_('Enable hardware offloading for wired IPv6 connections.'));
+		o = s.option(form.Flag, 'fastpath_mh_eth_hnat_nf_conntrack_update', _('Enable nf_conntrack update'),
+			_('Enable nf_conntrack updates from the HNAT counter.'));
 		o.default = o.enabled;
 		o.rmempty = false;
+		o.depends('fastpath_mh_eth_hnat', '1');
+
+		o = s.option(form.Value, 'fastpath_mh_eth_hnat_bind_rate', _('HNAT binding rate threshold (pps)'),
+			_('Set the packet rate threshold to trigger hardware offloading for a connection. A lower value may help improve network speed.'));
+		o.optional = true;
+		o.datatype = 'range(1,30)';
+		o.placeholder = 30;
 		o.depends('fastpath_mh_eth_hnat', '1');
 
 		o = s.option(form.ListValue, 'fullcone', _('Full cone NAT'),

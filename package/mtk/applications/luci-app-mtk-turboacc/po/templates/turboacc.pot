@@ -5,7 +5,7 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Acceleration Status"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:182
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:189
 msgid "Boardcom fullcone"
 msgstr ""
 
@@ -20,7 +20,7 @@ msgid "Collecting data..."
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:120
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:179
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:186
 msgid "Disable"
 msgstr ""
 
@@ -42,16 +42,16 @@ msgstr ""
 msgid "Enable ethernet HNAT"
 msgstr ""
 
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:166
+msgid "Enable hardware offloading for wired connections."
+msgstr ""
+
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:171
-msgid "Enable ethernet IPv6 HNAT"
+msgid "Enable nf_conntrack update"
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:172
-msgid "Enable hardware offloading for wired IPv6 connections."
-msgstr ""
-
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:166
-msgid "Enable hardware offloading for wired connections."
+msgid "Enable nf_conntrack updates from the HNAT counter."
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:124
@@ -78,16 +78,20 @@ msgstr ""
 msgid "Full Cone NAT"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:177
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:184
 msgid "Full cone NAT"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:178
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:185
 msgid "Full cone NAT (NAT1) can improve gaming performance effectively."
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/root/usr/share/rpcd/acl.d/luci-app-mtk-turboacc.json:3
 msgid "Grant UCI access for luci-app-mtk-turboacc"
+msgstr ""
+
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:177
+msgid "HNAT binding rate threshold (pps)"
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:145
@@ -118,6 +122,10 @@ msgstr ""
 msgid "SFE connection manager"
 msgstr ""
 
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:178
+msgid "Set the packet rate threshold to trigger hardware offloading for a connection. A lower value may help improve network speed."
+msgstr ""
+
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:138
 msgid "Simple connection manager for the shortcut forwarding engine."
 msgstr ""
@@ -127,11 +135,11 @@ msgid "Software based offloading for routing/NAT."
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:102
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:186
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:193
 msgid "TCP CCA"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:187
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:194
 msgid "TCP congestion control algorithm."
 msgstr ""
 
@@ -148,6 +156,6 @@ msgstr ""
 msgid "TurboACC settings"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:181
+#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:188
 msgid "xt_FULLCONENAT"
 msgstr ""
