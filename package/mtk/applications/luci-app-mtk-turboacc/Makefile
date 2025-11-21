@@ -19,6 +19,7 @@ PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
 LUCI_TITLE:=LuCI support for MediaTek FastPath
 LUCI_DEPENDS:= \
+	@!PACKAGE_luci-app-turboacc \
 	+PACKAGE_TURBOACC_INCLUDE_FLOW_OFFLOADING:kmod-ipt-offload \
 	+PACKAGE_TURBOACC_INCLUDE_FAST_CLASSIFIER:kmod-fast-classifier \
 	+PACKAGE_TURBOACC_INCLUDE_SHORTCUT_FE_CM:kmod-shortcut-fe-cm \
