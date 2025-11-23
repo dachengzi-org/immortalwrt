@@ -11,7 +11,7 @@ Subject: [PATCH]
 
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1113,6 +1113,82 @@ static int spi_transfer_wait(struct spi_
+@@ -1117,6 +1117,82 @@ static int spi_transfer_wait(struct spi_
  	return 0;
  }
  
@@ -94,7 +94,7 @@ Subject: [PATCH]
  static void _spi_transfer_delay_ns(u32 ns)
  {
  	if (!ns)
-@@ -1724,6 +1800,75 @@ void spi_flush_queue(struct spi_controll
+@@ -1728,6 +1804,75 @@ void spi_flush_queue(struct spi_controll
  /*-------------------------------------------------------------------------*/
  
  #if defined(CONFIG_OF)
@@ -170,7 +170,7 @@ Subject: [PATCH]
  static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
  			   struct device_node *nc)
  {
-@@ -1845,6 +1990,10 @@ of_register_spi_device(struct spi_contro
+@@ -1849,6 +1994,10 @@ of_register_spi_device(struct spi_contro
  	if (rc)
  		goto err_out;
  
@@ -224,7 +224,7 @@ Subject: [PATCH]
  static inline struct spi_driver *to_spi_driver(struct device_driver *drv)
  {
  	return drv ? container_of(drv, struct spi_driver, driver) : NULL;
-@@ -607,6 +641,11 @@ struct spi_controller {
+@@ -610,6 +644,11 @@ struct spi_controller {
  	void			*dummy_rx;
  	void			*dummy_tx;
  
@@ -236,7 +236,7 @@ Subject: [PATCH]
  	int (*fw_translate_cs)(struct spi_controller *ctlr, unsigned cs);
  };
  
-@@ -1370,6 +1409,9 @@ spi_register_board_info(struct spi_board
+@@ -1373,6 +1412,9 @@ spi_register_board_info(struct spi_board
  	{ return 0; }
  #endif
  

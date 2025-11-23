@@ -12,7 +12,7 @@ Subject: [PATCH]
 
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -2440,6 +2440,8 @@ static int usb_enumerate_device(struct u
+@@ -2479,6 +2479,8 @@ static int usb_enumerate_device(struct u
  			if (err < 0)
  				dev_dbg(&udev->dev, "HNP fail, %d\n", err);
  		}
@@ -21,7 +21,7 @@ Subject: [PATCH]
  		return -ENOTSUPP;
  	}
  
-@@ -4809,9 +4811,10 @@ hub_port_init(struct usb_hub *hub, struc
+@@ -4852,9 +4854,10 @@ hub_port_init(struct usb_hub *hub, struc
  				goto fail;
  			}
  			if (r) {

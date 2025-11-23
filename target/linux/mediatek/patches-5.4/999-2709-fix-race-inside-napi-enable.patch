@@ -9,7 +9,7 @@ Subject: [PATCH] [networking][999-2709-fix-race-inside-napi-enable.patch]
 
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6593,12 +6593,16 @@ EXPORT_SYMBOL(napi_disable);
+@@ -6613,12 +6613,16 @@ EXPORT_SYMBOL(napi_disable);
   */
  void napi_enable(struct napi_struct *n)
  {

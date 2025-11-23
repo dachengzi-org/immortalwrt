@@ -42,7 +42,7 @@
  	}
 --- a/net/xfrm/xfrm_policy.c
 +++ b/net/xfrm/xfrm_policy.c
-@@ -3701,6 +3701,12 @@ int __xfrm_policy_check(struct sock *sk,
+@@ -3704,6 +3704,12 @@ int __xfrm_policy_check(struct sock *sk,
  		}
  	}
  #endif
@@ -55,7 +55,7 @@
  
  	if (pol->action == XFRM_POLICY_ALLOW) {
  		static struct sec_path dummy;
-@@ -3710,6 +3716,16 @@ int __xfrm_policy_check(struct sock *sk,
+@@ -3713,6 +3719,16 @@ int __xfrm_policy_check(struct sock *sk,
  		int ti = 0;
  		int i, k;
  
@@ -87,7 +87,7 @@
  	if (xuo->flags &
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -653,6 +653,9 @@ static netdev_features_t vlan_dev_fix_fe
+@@ -640,6 +640,9 @@ static netdev_features_t vlan_dev_fix_fe
  	features |= old_features & (NETIF_F_SOFT_FEATURES | NETIF_F_GSO_SOFTWARE);
  	features |= NETIF_F_LLTX;
  

@@ -21,7 +21,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -263,7 +263,7 @@ static bool send_sci(const struct macsec
+@@ -250,7 +250,7 @@ static bool send_sci(const struct macsec
  		(secy->n_rx_sc > 1 && !tx_sc->end_station && !tx_sc->scb);
  }
  

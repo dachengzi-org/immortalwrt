@@ -330,7 +330,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -3675,6 +3675,8 @@ static __net_initdata struct pernet_oper
+@@ -3680,6 +3680,8 @@ static __net_initdata struct pernet_oper
  
  static int __init proto_init(void)
  {
@@ -396,7 +396,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  }
 --- a/net/ipv4/route.c
 +++ b/net/ipv4/route.c
-@@ -411,6 +411,9 @@ static struct pernet_operations ip_rt_pr
+@@ -415,6 +415,9 @@ static struct pernet_operations ip_rt_pr
  
  static int __init ip_rt_proc_init(void)
  {

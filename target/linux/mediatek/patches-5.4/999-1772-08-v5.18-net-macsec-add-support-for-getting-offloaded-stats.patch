@@ -35,7 +35,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  #define MACSEC_VALIDATE_DEFAULT MACSEC_VALIDATE_STRICT
  
  struct pcpu_secy_stats {
-@@ -2689,207 +2678,309 @@ rollback:
+@@ -2671,207 +2660,309 @@ rollback:
  	return ret;
  }
  
@@ -424,7 +424,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  			      MACSEC_SECY_STATS_ATTR_PAD))
  		return -EMSGSIZE;
  
-@@ -2950,7 +3041,12 @@ static noinline_for_stack int
+@@ -2932,7 +3023,12 @@ static noinline_for_stack int
  dump_secy(struct macsec_secy *secy, struct net_device *dev,
  	  struct sk_buff *skb, struct netlink_callback *cb)
  {
@@ -437,7 +437,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	struct macsec_tx_sc *tx_sc = &secy->tx_sc;
  	struct nlattr *txsa_list, *rxsc_list;
  	struct macsec_rx_sc *rx_sc;
-@@ -2981,7 +3077,9 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -2963,7 +3059,9 @@ dump_secy(struct macsec_secy *secy, stru
  	attr = nla_nest_start_noflag(skb, MACSEC_ATTR_TXSC_STATS);
  	if (!attr)
  		goto nla_put_failure;
@@ -448,7 +448,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		nla_nest_cancel(skb, attr);
  		goto nla_put_failure;
  	}
-@@ -2990,7 +3088,8 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -2972,7 +3070,8 @@ dump_secy(struct macsec_secy *secy, stru
  	attr = nla_nest_start_noflag(skb, MACSEC_ATTR_SECY_STATS);
  	if (!attr)
  		goto nla_put_failure;
@@ -458,7 +458,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		nla_nest_cancel(skb, attr);
  		goto nla_put_failure;
  	}
-@@ -3014,6 +3113,22 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -2996,6 +3095,22 @@ dump_secy(struct macsec_secy *secy, stru
  			goto nla_put_failure;
  		}
  
@@ -481,7 +481,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		if (secy->xpn) {
  			pn = tx_sa->next_pn;
  			pn_len = MACSEC_XPN_PN_LEN;
-@@ -3032,20 +3147,6 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -3014,20 +3129,6 @@ dump_secy(struct macsec_secy *secy, stru
  			goto nla_put_failure;
  		}
  
@@ -502,7 +502,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		nla_nest_end(skb, txsa_nest);
  	}
  	nla_nest_end(skb, txsa_list);
-@@ -3079,7 +3180,9 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -3061,7 +3162,9 @@ dump_secy(struct macsec_secy *secy, stru
  			nla_nest_cancel(skb, rxsc_list);
  			goto nla_put_failure;
  		}
@@ -513,7 +513,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  			nla_nest_cancel(skb, attr);
  			nla_nest_cancel(skb, rxsc_nest);
  			nla_nest_cancel(skb, rxsc_list);
-@@ -3120,7 +3223,9 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -3102,7 +3205,9 @@ dump_secy(struct macsec_secy *secy, stru
  				nla_nest_cancel(skb, rxsc_list);
  				goto nla_put_failure;
  			}

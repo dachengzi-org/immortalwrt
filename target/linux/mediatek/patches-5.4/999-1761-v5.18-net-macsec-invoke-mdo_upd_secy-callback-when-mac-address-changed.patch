@@ -17,7 +17,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3315,6 +3315,19 @@ static int macsec_set_mac_address(struct
+@@ -3297,6 +3297,19 @@ static int macsec_set_mac_address(struct
  out:
  	ether_addr_copy(dev->dev_addr, addr->sa_data);
  	macsec->secy.sci = dev_to_sci(dev, MACSEC_PORT_ES);

@@ -18,7 +18,7 @@ Subject: [PATCH]
  
  #include <linux/uaccess.h>
  #include <trace/events/skb.h>
-@@ -1666,6 +1667,9 @@ int pskb_expand_head(struct sk_buff *skb
+@@ -1667,6 +1668,9 @@ int pskb_expand_head(struct sk_buff *skb
  	       skb_shinfo(skb),
  	       offsetof(struct skb_shared_info, frags[skb_shinfo(skb)->nr_frags]));
  

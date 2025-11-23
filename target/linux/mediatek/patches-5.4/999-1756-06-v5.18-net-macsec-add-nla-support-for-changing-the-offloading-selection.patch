@@ -20,7 +20,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1525,6 +1525,7 @@ static const struct nla_policy macsec_ge
+@@ -1507,6 +1507,7 @@ static const struct nla_policy macsec_ge
  	[MACSEC_ATTR_IFINDEX] = { .type = NLA_U32 },
  	[MACSEC_ATTR_RXSC_CONFIG] = { .type = NLA_NESTED },
  	[MACSEC_ATTR_SA_CONFIG] = { .type = NLA_NESTED },
@@ -28,7 +28,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  };
  
  static const struct nla_policy macsec_genl_rxsc_policy[NUM_MACSEC_RXSC_ATTR] = {
-@@ -1542,6 +1543,10 @@ static const struct nla_policy macsec_ge
+@@ -1524,6 +1525,10 @@ static const struct nla_policy macsec_ge
  				 .len = MACSEC_MAX_KEY_LEN, },
  };
  
@@ -39,7 +39,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  /* Offloads an operation to a device driver */
  static int macsec_offload(int (* const func)(struct macsec_context *),
  			  struct macsec_context *ctx)
-@@ -2370,6 +2375,126 @@ cleanup:
+@@ -2352,6 +2357,126 @@ cleanup:
  	return ret;
  }
  
@@ -166,7 +166,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int copy_tx_sa_stats(struct sk_buff *skb,
  			    struct macsec_tx_sa_stats __percpu *pstats)
  {
-@@ -2631,12 +2756,13 @@ static noinline_for_stack int
+@@ -2613,12 +2738,13 @@ static noinline_for_stack int
  dump_secy(struct macsec_secy *secy, struct net_device *dev,
  	  struct sk_buff *skb, struct netlink_callback *cb)
  {
@@ -183,7 +183,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg_seq,
  			  &macsec_fam, NLM_F_MULTI, MACSEC_CMD_GET_TXSC);
-@@ -2648,6 +2774,13 @@ dump_secy(struct macsec_secy *secy, stru
+@@ -2630,6 +2756,13 @@ dump_secy(struct macsec_secy *secy, stru
  	if (nla_put_u32(skb, MACSEC_ATTR_IFINDEX, dev->ifindex))
  		goto nla_put_failure;
  
@@ -197,7 +197,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	if (nla_put_secy(secy, skb))
  		goto nla_put_failure;
  
-@@ -2913,6 +3046,12 @@ static const struct genl_ops macsec_genl
+@@ -2895,6 +3028,12 @@ static const struct genl_ops macsec_genl
  		.doit = macsec_upd_rxsa,
  		.flags = GENL_ADMIN_PERM,
  	},

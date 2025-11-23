@@ -19,7 +19,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1505,6 +1505,11 @@ static struct net_device *get_dev_from_n
+@@ -1487,6 +1487,11 @@ static struct net_device *get_dev_from_n
  	return dev;
  }
  
@@ -31,7 +31,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static sci_t nla_get_sci(const struct nlattr *nla)
  {
  	return (__force sci_t)nla_get_u64(nla);
-@@ -4063,8 +4068,16 @@ static int macsec_newlink(struct net *ne
+@@ -4045,8 +4050,16 @@ static int macsec_newlink(struct net *ne
  			return -EINVAL;
  	}
  
@@ -50,7 +50,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (data && data[IFLA_MACSEC_ICV_LEN])
  		icv_len = nla_get_u8(data[IFLA_MACSEC_ICV_LEN]);
-@@ -4111,6 +4124,20 @@ static int macsec_newlink(struct net *ne
+@@ -4093,6 +4106,20 @@ static int macsec_newlink(struct net *ne
  			goto del_dev;
  	}
  

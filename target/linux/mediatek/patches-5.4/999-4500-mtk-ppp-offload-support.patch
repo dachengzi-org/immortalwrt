@@ -1,6 +1,6 @@
 --- a/drivers/net/ppp/ppp_generic.c
 +++ b/drivers/net/ppp/ppp_generic.c
-@@ -297,6 +297,9 @@ static void unit_put(struct idr *p, int
+@@ -308,6 +308,9 @@ static void unit_put(struct idr *p, int
  static void *unit_find(struct idr *p, int n);
  static void ppp_setup(struct net_device *dev);
  
@@ -10,7 +10,7 @@
  static const struct net_device_ops ppp_netdev_ops;
  
  static struct class *ppp_class;
-@@ -1699,6 +1702,40 @@ ppp_send_frame(struct ppp *ppp, struct s
+@@ -1710,6 +1713,40 @@ ppp_send_frame(struct ppp *ppp, struct s
  	++ppp->dev->stats.tx_errors;
  }
  

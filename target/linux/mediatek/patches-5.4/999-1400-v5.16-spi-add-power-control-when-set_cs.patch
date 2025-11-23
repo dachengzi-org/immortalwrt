@@ -10,7 +10,7 @@ Subject: [PATCH]
 
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -3174,7 +3174,29 @@ int spi_setup(struct spi_device *spi)
+@@ -3176,7 +3176,29 @@ int spi_setup(struct spi_device *spi)
  	if (spi->controller->setup)
  		status = spi->controller->setup(spi);
  

@@ -17,7 +17,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2676,11 +2676,12 @@ static int macsec_upd_offload(struct sk_
+@@ -2658,11 +2658,12 @@ static int macsec_upd_offload(struct sk_
  	if (ret)
  		goto rollback;
  

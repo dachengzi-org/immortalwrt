@@ -1,6 +1,6 @@
 --- a/drivers/md/dm-init.c
 +++ b/drivers/md/dm-init.c
-@@ -299,5 +299,5 @@ out:
+@@ -301,5 +301,5 @@ out:
  
  late_initcall(dm_init_init);
  

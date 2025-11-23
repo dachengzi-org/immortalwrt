@@ -9,8 +9,8 @@ Subject: [PATCH] [slow-speed-io][999-2130-pwm-add-mt7986-support.patch]
 
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
-@@ -302,6 +302,11 @@ static const struct pwm_mediatek_of_data
- 	.pwm45_fixup = false,
+@@ -346,6 +346,11 @@ static const struct pwm_mediatek_of_data
+ 	.has_ck_26m_sel = false,
  };
  
 +static const struct pwm_mediatek_of_data mt7986_pwm_data = {
@@ -21,7 +21,7 @@ Subject: [PATCH] [slow-speed-io][999-2130-pwm-add-mt7986-support.patch]
  static const struct pwm_mediatek_of_data mt8516_pwm_data = {
  	.num_pwms = 5,
  	.pwm45_fixup = false,
-@@ -313,6 +318,7 @@ static const struct of_device_id pwm_med
+@@ -358,6 +363,7 @@ static const struct of_device_id pwm_med
  	{ .compatible = "mediatek,mt7623-pwm", .data = &mt7623_pwm_data },
  	{ .compatible = "mediatek,mt7628-pwm", .data = &mt7628_pwm_data },
  	{ .compatible = "mediatek,mt7629-pwm", .data = &mt7629_pwm_data },

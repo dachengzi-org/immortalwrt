@@ -22,7 +22,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1852,7 +1852,7 @@ static int macsec_add_rxsa(struct sk_buf
+@@ -1834,7 +1834,7 @@ static int macsec_add_rxsa(struct sk_buf
  		ctx.sa.rx_sa = rx_sa;
  		ctx.secy = secy;
  		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),
@@ -31,7 +31,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  		err = macsec_offload(ops->mdo_add_rxsa, &ctx);
  		if (err)
-@@ -2094,7 +2094,7 @@ static int macsec_add_txsa(struct sk_buf
+@@ -2076,7 +2076,7 @@ static int macsec_add_txsa(struct sk_buf
  		ctx.sa.tx_sa = tx_sa;
  		ctx.secy = secy;
  		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),

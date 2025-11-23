@@ -31,7 +31,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2669,6 +2669,10 @@ static int macsec_upd_offload(struct sk_
+@@ -2651,6 +2651,10 @@ static int macsec_upd_offload(struct sk_
  		goto rollback;
  
  	rtnl_unlock();
@@ -42,7 +42,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	return 0;
  
  rollback:
-@@ -3435,9 +3439,16 @@ static netdev_tx_t macsec_start_xmit(str
+@@ -3417,9 +3421,16 @@ static netdev_tx_t macsec_start_xmit(str
  	return ret;
  }
  
@@ -60,7 +60,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int macsec_dev_init(struct net_device *dev)
  {
  	struct macsec_dev *macsec = macsec_priv(dev);
-@@ -3454,8 +3465,12 @@ static int macsec_dev_init(struct net_de
+@@ -3436,8 +3447,12 @@ static int macsec_dev_init(struct net_de
  		return err;
  	}
  
@@ -75,7 +75,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	dev->needed_headroom = real_dev->needed_headroom +
  			       MACSEC_NEEDED_HEADROOM;
-@@ -3484,7 +3499,10 @@ static netdev_features_t macsec_fix_feat
+@@ -3466,7 +3481,10 @@ static netdev_features_t macsec_fix_feat
  	struct macsec_dev *macsec = macsec_priv(dev);
  	struct net_device *real_dev = macsec->real_dev;
  

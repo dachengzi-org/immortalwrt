@@ -80,7 +80,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  };
  
  /**
-@@ -331,6 +335,56 @@ static void macsec_set_shortlen(struct m
+@@ -318,6 +322,56 @@ static void macsec_set_shortlen(struct m
  		h->short_length = data_len;
  }
  
@@ -137,7 +137,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  /* validate MACsec packet according to IEEE 802.1AE-2006 9.12 */
  static bool macsec_validate_skb(struct sk_buff *skb, u16 icv_len)
  {
-@@ -896,8 +950,10 @@ static struct macsec_rx_sc *find_rx_sc_r
+@@ -883,8 +937,10 @@ static struct macsec_rx_sc *find_rx_sc_r
  	return NULL;
  }
  
@@ -149,7 +149,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	struct macsec_rxh_data *rxd;
  	struct macsec_dev *macsec;
  
-@@ -912,7 +968,8 @@ static void handle_not_macsec(struct sk_
+@@ -899,7 +955,8 @@ static void handle_not_macsec(struct sk_
  		struct sk_buff *nskb;
  		struct pcpu_secy_stats *secy_stats = this_cpu_ptr(macsec->stats);
  
@@ -159,7 +159,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  			u64_stats_update_begin(&secy_stats->syncp);
  			secy_stats->stats.InPktsNoTag++;
  			u64_stats_update_end(&secy_stats->syncp);
-@@ -932,9 +989,17 @@ static void handle_not_macsec(struct sk_
+@@ -919,9 +976,17 @@ static void handle_not_macsec(struct sk_
  			secy_stats->stats.InPktsUntagged++;
  			u64_stats_update_end(&secy_stats->syncp);
  		}
@@ -177,7 +177,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
-@@ -960,12 +1025,8 @@ static rx_handler_result_t macsec_handle
+@@ -947,12 +1012,8 @@ static rx_handler_result_t macsec_handle
  		goto drop_direct;
  
  	hdr = macsec_ethhdr(skb);
@@ -192,7 +192,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	skb = skb_unshare(skb, GFP_ATOMIC);
  	*pskb = skb;
-@@ -1481,6 +1542,40 @@ static const struct nla_policy macsec_ge
+@@ -1463,6 +1524,40 @@ static const struct nla_policy macsec_ge
  				 .len = MACSEC_MAX_KEY_LEN, },
  };
  
@@ -233,7 +233,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int parse_sa_config(struct nlattr **attrs, struct nlattr **tb_sa)
  {
  	if (!attrs[MACSEC_ATTR_SA_CONFIG])
-@@ -1596,13 +1691,40 @@ static int macsec_add_rxsa(struct sk_buf
+@@ -1578,13 +1673,40 @@ static int macsec_add_rxsa(struct sk_buf
  	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
  		rx_sa->active = !!nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
  
@@ -275,7 +275,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static bool validate_add_rxsc(struct nlattr **attrs)
-@@ -1625,6 +1747,8 @@ static int macsec_add_rxsc(struct sk_buf
+@@ -1607,6 +1729,8 @@ static int macsec_add_rxsc(struct sk_buf
  	struct nlattr **attrs = info->attrs;
  	struct macsec_rx_sc *rx_sc;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
@@ -284,7 +284,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1650,12 +1774,35 @@ static int macsec_add_rxsc(struct sk_buf
+@@ -1632,12 +1756,35 @@ static int macsec_add_rxsc(struct sk_buf
  		return PTR_ERR(rx_sc);
  	}
  
@@ -320,7 +320,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static bool validate_add_txsa(struct nlattr **attrs)
-@@ -1692,6 +1839,7 @@ static int macsec_add_txsa(struct sk_buf
+@@ -1674,6 +1821,7 @@ static int macsec_add_txsa(struct sk_buf
  	struct macsec_tx_sa *tx_sa;
  	unsigned char assoc_num;
  	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
@@ -328,7 +328,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	int err;
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
-@@ -1742,8 +1890,6 @@ static int macsec_add_txsa(struct sk_buf
+@@ -1724,8 +1872,6 @@ static int macsec_add_txsa(struct sk_buf
  		return err;
  	}
  
@@ -337,7 +337,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	spin_lock_bh(&tx_sa->lock);
  	tx_sa->next_pn = nla_get_u32(tb_sa[MACSEC_SA_ATTR_PN]);
  	spin_unlock_bh(&tx_sa->lock);
-@@ -1751,14 +1897,43 @@ static int macsec_add_txsa(struct sk_buf
+@@ -1733,14 +1879,43 @@ static int macsec_add_txsa(struct sk_buf
  	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
  		tx_sa->active = !!nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
  
@@ -381,7 +381,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int macsec_del_rxsa(struct sk_buff *skb, struct genl_info *info)
-@@ -1771,6 +1946,7 @@ static int macsec_del_rxsa(struct sk_buf
+@@ -1753,6 +1928,7 @@ static int macsec_del_rxsa(struct sk_buf
  	u8 assoc_num;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
  	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
@@ -389,7 +389,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1794,12 +1970,35 @@ static int macsec_del_rxsa(struct sk_buf
+@@ -1776,12 +1952,35 @@ static int macsec_del_rxsa(struct sk_buf
  		return -EBUSY;
  	}
  
@@ -425,7 +425,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int macsec_del_rxsc(struct sk_buff *skb, struct genl_info *info)
-@@ -1810,6 +2009,7 @@ static int macsec_del_rxsc(struct sk_buf
+@@ -1792,6 +1991,7 @@ static int macsec_del_rxsc(struct sk_buf
  	struct macsec_rx_sc *rx_sc;
  	sci_t sci;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
@@ -433,7 +433,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1836,10 +2036,31 @@ static int macsec_del_rxsc(struct sk_buf
+@@ -1818,10 +2018,31 @@ static int macsec_del_rxsc(struct sk_buf
  		return -ENODEV;
  	}
  
@@ -465,7 +465,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int macsec_del_txsa(struct sk_buff *skb, struct genl_info *info)
-@@ -1851,6 +2072,7 @@ static int macsec_del_txsa(struct sk_buf
+@@ -1833,6 +2054,7 @@ static int macsec_del_txsa(struct sk_buf
  	struct macsec_tx_sa *tx_sa;
  	u8 assoc_num;
  	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
@@ -473,7 +473,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1871,12 +2093,35 @@ static int macsec_del_txsa(struct sk_buf
+@@ -1853,12 +2075,35 @@ static int macsec_del_txsa(struct sk_buf
  		return -EBUSY;
  	}
  
@@ -509,7 +509,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static bool validate_upd_sa(struct nlattr **attrs)
-@@ -1909,6 +2154,9 @@ static int macsec_upd_txsa(struct sk_buf
+@@ -1891,6 +2136,9 @@ static int macsec_upd_txsa(struct sk_buf
  	struct macsec_tx_sa *tx_sa;
  	u8 assoc_num;
  	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
@@ -519,7 +519,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1929,19 +2177,52 @@ static int macsec_upd_txsa(struct sk_buf
+@@ -1911,19 +2159,52 @@ static int macsec_upd_txsa(struct sk_buf
  
  	if (tb_sa[MACSEC_SA_ATTR_PN]) {
  		spin_lock_bh(&tx_sa->lock);
@@ -572,7 +572,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
-@@ -1954,6 +2235,9 @@ static int macsec_upd_rxsa(struct sk_buf
+@@ -1936,6 +2217,9 @@ static int macsec_upd_rxsa(struct sk_buf
  	u8 assoc_num;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
  	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
@@ -582,7 +582,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -1977,15 +2261,46 @@ static int macsec_upd_rxsa(struct sk_buf
+@@ -1959,15 +2243,46 @@ static int macsec_upd_rxsa(struct sk_buf
  
  	if (tb_sa[MACSEC_SA_ATTR_PN]) {
  		spin_lock_bh(&rx_sa->lock);
@@ -629,7 +629,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
-@@ -1995,6 +2310,9 @@ static int macsec_upd_rxsc(struct sk_buf
+@@ -1977,6 +2292,9 @@ static int macsec_upd_rxsc(struct sk_buf
  	struct macsec_secy *secy;
  	struct macsec_rx_sc *rx_sc;
  	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
@@ -639,7 +639,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
  		return -EINVAL;
-@@ -2012,6 +2330,8 @@ static int macsec_upd_rxsc(struct sk_buf
+@@ -1994,6 +2312,8 @@ static int macsec_upd_rxsc(struct sk_buf
  		return PTR_ERR(rx_sc);
  	}
  
@@ -648,7 +648,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	if (tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]) {
  		bool new = !!nla_get_u8(tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]);
  
-@@ -2021,9 +2341,33 @@ static int macsec_upd_rxsc(struct sk_buf
+@@ -2003,9 +2323,33 @@ static int macsec_upd_rxsc(struct sk_buf
  		rx_sc->active = new;
  	}
  
@@ -682,7 +682,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static int copy_tx_sa_stats(struct sk_buff *skb,
-@@ -2591,6 +2935,11 @@ static netdev_tx_t macsec_start_xmit(str
+@@ -2573,6 +2917,11 @@ static netdev_tx_t macsec_start_xmit(str
  	struct pcpu_secy_stats *secy_stats;
  	int ret, len;
  
@@ -694,7 +694,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	/* 10.5 */
  	if (!secy->protect_frames) {
  		secy_stats = this_cpu_ptr(macsec->stats);
-@@ -2704,6 +3053,22 @@ static int macsec_dev_open(struct net_de
+@@ -2686,6 +3035,22 @@ static int macsec_dev_open(struct net_de
  			goto clear_allmulti;
  	}
  
@@ -717,7 +717,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	if (netif_carrier_ok(real_dev))
  		netif_carrier_on(dev);
  
-@@ -2724,6 +3089,16 @@ static int macsec_dev_stop(struct net_de
+@@ -2706,6 +3071,16 @@ static int macsec_dev_stop(struct net_de
  
  	netif_carrier_off(dev);
  
@@ -734,7 +734,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	dev_mc_unsync(real_dev, dev);
  	dev_uc_unsync(real_dev, dev);
  
-@@ -2963,6 +3338,11 @@ static int macsec_changelink(struct net_
+@@ -2945,6 +3320,11 @@ static int macsec_changelink(struct net_
  			     struct nlattr *data[],
  			     struct netlink_ext_ack *extack)
  {
@@ -746,7 +746,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	if (!data)
  		return 0;
  
-@@ -2972,7 +3352,41 @@ static int macsec_changelink(struct net_
+@@ -2954,7 +3334,41 @@ static int macsec_changelink(struct net_
  	    data[IFLA_MACSEC_PORT])
  		return -EINVAL;
  
@@ -789,7 +789,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  }
  
  static void macsec_del_dev(struct macsec_dev *macsec)
-@@ -3015,6 +3429,18 @@ static void macsec_dellink(struct net_de
+@@ -2997,6 +3411,18 @@ static void macsec_dellink(struct net_de
  	struct net_device *real_dev = macsec->real_dev;
  	struct macsec_rxh_data *rxd = macsec_data_rtnl(real_dev);
  
@@ -808,7 +808,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	macsec_common_dellink(dev, head);
  
  	if (list_empty(&rxd->secys)) {
-@@ -3130,6 +3556,9 @@ static int macsec_newlink(struct net *ne
+@@ -3112,6 +3538,9 @@ static int macsec_newlink(struct net *ne
  			return -EINVAL;
  	}
  

@@ -21,7 +21,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  #define PPP_VERSION	"2.4.2"
  
  /*
-@@ -1416,6 +1421,28 @@ static int ppp_fill_forward_path(struct
+@@ -1427,6 +1432,28 @@ static int ppp_fill_forward_path(struct
  	return chan->ops->fill_forward_path(ctx, path, chan);
  }
  
@@ -50,7 +50,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  static const struct net_device_ops ppp_netdev_ops = {
  	.ndo_init	 = ppp_dev_init,
  	.ndo_uninit      = ppp_dev_uninit,
-@@ -1423,6 +1450,9 @@ static const struct net_device_ops ppp_n
+@@ -1434,6 +1461,9 @@ static const struct net_device_ops ppp_n
  	.ndo_do_ioctl    = ppp_net_ioctl,
  	.ndo_get_stats64 = ppp_get_stats64,
  	.ndo_fill_forward_path = ppp_fill_forward_path,

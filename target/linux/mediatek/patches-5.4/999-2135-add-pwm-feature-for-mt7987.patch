@@ -9,7 +9,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
 
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
-@@ -34,6 +34,7 @@
+@@ -35,6 +35,7 @@
  #define PWM_CLK_DIV_MAX		7
  #define REG_V1			1
  #define REG_V2			2
@@ -17,7 +17,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
  
  struct pwm_mediatek_of_data {
  	unsigned int num_pwms;
-@@ -67,6 +68,10 @@ static const unsigned int mtk_pwm_reg_of
+@@ -69,6 +70,10 @@ static const unsigned int mtk_pwm_reg_of
  	0x0080, 0x00c0, 0x0100, 0x0140, 0x0180, 0x1c0, 0x200, 0x0240
  };
  
@@ -28,7 +28,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
  static inline struct pwm_mediatek_chip *
  to_pwm_mediatek_chip(struct pwm_chip *chip)
  {
-@@ -117,6 +122,10 @@ static inline u32 pwm_mediatek_readl(str
+@@ -119,6 +124,10 @@ static inline u32 pwm_mediatek_readl(str
  	u32 pwm_offset;
  
  	switch (chip->soc->reg_ver) {
@@ -39,7 +39,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
  	case REG_V2:
  		pwm_offset = mtk_pwm_reg_offset_v2[num];
  		break;
-@@ -136,6 +145,10 @@ static inline void pwm_mediatek_writel(s
+@@ -138,6 +147,10 @@ static inline void pwm_mediatek_writel(s
  	u32 pwm_offset;
  
  	switch (chip->soc->reg_ver) {
@@ -50,7 +50,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
  	case REG_V2:
  		pwm_offset = mtk_pwm_reg_offset_v2[num];
  		break;
-@@ -376,6 +389,12 @@ static const struct pwm_mediatek_of_data
+@@ -423,6 +436,12 @@ static const struct pwm_mediatek_of_data
  	.reg_ver = REG_V1,
  };
  
@@ -63,7 +63,7 @@ Subject: [PATCH] add pwm reg-v3 support for mt7987
  static const struct pwm_mediatek_of_data mt7988_pwm_data = {
  	.num_pwms = 8,
  	.pwm45_fixup = false,
-@@ -396,6 +415,7 @@ static const struct of_device_id pwm_med
+@@ -444,6 +463,7 @@ static const struct of_device_id pwm_med
  	{ .compatible = "mediatek,mt7629-pwm", .data = &mt7629_pwm_data },
  	{ .compatible = "mediatek,mt7981-pwm", .data = &mt7981_pwm_data },
  	{ .compatible = "mediatek,mt7986-pwm", .data = &mt7986_pwm_data },

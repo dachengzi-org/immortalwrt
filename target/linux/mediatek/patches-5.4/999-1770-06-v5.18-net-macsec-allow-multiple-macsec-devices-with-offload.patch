@@ -16,7 +16,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2589,11 +2589,10 @@ static int macsec_upd_offload(struct sk_
+@@ -2571,11 +2571,10 @@ static int macsec_upd_offload(struct sk_
  	enum macsec_offload offload, prev_offload;
  	int (*func)(struct macsec_context *ctx);
  	struct nlattr **attrs = info->attrs;
@@ -29,7 +29,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	int ret;
  
  	if (!attrs[MACSEC_ATTR_IFINDEX])
-@@ -2621,28 +2620,6 @@ static int macsec_upd_offload(struct sk_
+@@ -2603,28 +2602,6 @@ static int macsec_upd_offload(struct sk_
  	    !macsec_check_offload(offload, macsec))
  		return -EOPNOTSUPP;
  

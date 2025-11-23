@@ -389,7 +389,7 @@
  	/* layout of link_mode_masks fields:
 --- a/net/core/ethtool.c
 +++ b/net/core/ethtool.c
-@@ -656,6 +656,7 @@ static int ethtool_get_link_ksettings(st
+@@ -659,6 +659,7 @@ static int ethtool_get_link_ksettings(st
  	link_ksettings.base.cmd = ETHTOOL_GLINKSETTINGS;
  	link_ksettings.base.link_mode_masks_nwords
  		= __ETHTOOL_LINK_MODE_MASK_NU32;

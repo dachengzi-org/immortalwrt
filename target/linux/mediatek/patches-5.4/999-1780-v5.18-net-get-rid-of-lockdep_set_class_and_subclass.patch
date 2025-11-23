@@ -25,7 +25,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -4102,9 +4102,8 @@ static int macsec_newlink(struct net *ne
+@@ -4084,9 +4084,8 @@ static int macsec_newlink(struct net *ne
  		return err;
  
  	netdev_lockdep_set_classes(dev);
@@ -53,7 +53,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int macvlan_init(struct net_device *dev)
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -504,11 +504,10 @@ static void vlan_dev_set_lockdep_one(str
+@@ -481,11 +481,10 @@ static void vlan_dev_set_lockdep_one(str
  	lockdep_set_class(&txq->_xmit_lock, &vlan_netdev_xmit_lock_key);
  }
  
@@ -68,7 +68,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	netdev_for_each_tx_queue(dev, vlan_dev_set_lockdep_one, NULL);
  }
  
-@@ -602,7 +601,7 @@ static int vlan_dev_init(struct net_devi
+@@ -579,7 +578,7 @@ static int vlan_dev_init(struct net_devi
  
  	SET_NETDEV_DEVTYPE(dev, &vlan_type);
  

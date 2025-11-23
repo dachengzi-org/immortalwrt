@@ -47,7 +47,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
 --- a/drivers/net/ppp/ppp_generic.c
 +++ b/drivers/net/ppp/ppp_generic.c
-@@ -1393,12 +1393,34 @@ static void ppp_dev_priv_destructor(stru
+@@ -1404,12 +1404,34 @@ static void ppp_dev_priv_destructor(stru
  		ppp_destroy_interface(ppp);
  }
  
@@ -205,7 +205,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  };
  
  /**
-@@ -2673,6 +2731,10 @@ void dev_remove_offload(struct packet_of
+@@ -2679,6 +2737,10 @@ void dev_remove_offload(struct packet_of
  
  int dev_get_iflink(const struct net_device *dev);
  int dev_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb);
@@ -230,7 +230,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  struct ppp_channel {
 --- a/include/net/flow_offload.h
 +++ b/include/net/flow_offload.h
-@@ -138,6 +138,7 @@ enum flow_action_id {
+@@ -144,6 +144,7 @@ enum flow_action_id {
  	FLOW_ACTION_MPLS_PUSH,
  	FLOW_ACTION_MPLS_POP,
  	FLOW_ACTION_MPLS_MANGLE,
@@ -238,7 +238,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	NUM_FLOW_ACTIONS,
  };
  
-@@ -213,6 +214,9 @@ struct flow_action_entry {
+@@ -219,6 +220,9 @@ struct flow_action_entry {
  			u8		bos;
  			u8		ttl;
  		} mpls_mangle;
@@ -757,7 +757,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 +#endif /* _XT_FLOWOFFLOAD_H */
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -747,6 +747,26 @@ static int vlan_dev_get_iflink(const str
+@@ -734,6 +734,26 @@ static int vlan_dev_get_iflink(const str
  	return real_dev->ifindex;
  }
  
@@ -784,7 +784,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static const struct ethtool_ops vlan_ethtool_ops = {
  	.get_link_ksettings	= vlan_ethtool_get_link_ksettings,
  	.get_drvinfo	        = vlan_ethtool_get_drvinfo,
-@@ -785,6 +805,7 @@ static const struct net_device_ops vlan_
+@@ -772,6 +792,7 @@ static const struct net_device_ops vlan_
  #endif
  	.ndo_fix_features	= vlan_dev_fix_features,
  	.ndo_get_iflink		= vlan_dev_get_iflink,
@@ -794,7 +794,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static void vlan_dev_free(struct net_device *dev)
 --- a/net/bridge/br_device.c
 +++ b/net/bridge/br_device.c
-@@ -379,6 +379,54 @@ static int br_del_slave(struct net_devic
+@@ -384,6 +384,54 @@ static int br_del_slave(struct net_devic
  	return br_del_if(br, slave_dev);
  }
  
@@ -849,7 +849,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static const struct ethtool_ops br_ethtool_ops = {
  	.get_drvinfo    = br_getinfo,
  	.get_link	= ethtool_op_get_link,
-@@ -412,6 +460,7 @@ static const struct net_device_ops br_ne
+@@ -417,6 +465,7 @@ static const struct net_device_ops br_ne
  	.ndo_bridge_setlink	 = br_setlink,
  	.ndo_bridge_dellink	 = br_dellink,
  	.ndo_features_check	 = passthru_features_check,
@@ -859,7 +859,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static struct device_type br_type = {
 --- a/net/bridge/br_fdb.c
 +++ b/net/bridge/br_fdb.c
-@@ -99,6 +99,7 @@ static struct net_bridge_fdb_entry *fdb_
+@@ -100,6 +100,7 @@ static struct net_bridge_fdb_entry *fdb_
  
  	return rhashtable_lookup(tbl, &key, br_fdb_rht_params);
  }
@@ -869,7 +869,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static struct net_bridge_fdb_entry *br_fdb_find(struct net_bridge *br,
 --- a/net/bridge/br_private.h
 +++ b/net/bridge/br_private.h
-@@ -912,6 +912,13 @@ void br_vlan_port_event(struct net_bridg
+@@ -918,6 +918,13 @@ void br_vlan_port_event(struct net_bridg
  int br_vlan_bridge_event(struct net_device *dev, unsigned long event,
  			 void *ptr);
  
@@ -883,7 +883,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static inline struct net_bridge_vlan_group *br_vlan_group(
  					const struct net_bridge *br)
  {
-@@ -1065,6 +1072,19 @@ static inline int nbp_get_num_vlan_infos
+@@ -1071,6 +1078,19 @@ static inline int nbp_get_num_vlan_infos
  {
  	return 0;
  }
@@ -1122,7 +1122,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	depends on !NF_CONNTRACK || NF_CONNTRACK
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -613,7 +613,7 @@ int ip6_forward(struct sk_buff *skb)
+@@ -597,7 +597,7 @@ int ip6_forward(struct sk_buff *skb)
  		}
  	}
  
@@ -1161,7 +1161,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static void		ip6_negative_advice(struct sock *sk,
  					    struct dst_entry *dst);
  static void		ip6_dst_destroy(struct dst_entry *);
-@@ -3129,25 +3129,7 @@ static unsigned int ip6_default_advmss(c
+@@ -3135,25 +3135,7 @@ static unsigned int ip6_default_advmss(c
  
  static unsigned int ip6_mtu(const struct dst_entry *dst)
  {
@@ -1386,7 +1386,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	NF_SYSCTL_CT_PROTO_TIMEOUT_ICMP,
  	NF_SYSCTL_CT_PROTO_TIMEOUT_ICMPV6,
  #ifdef CONFIG_NF_CT_PROTO_SCTP
-@@ -811,6 +819,14 @@ static struct ctl_table nf_ct_sysctl_tab
+@@ -815,6 +823,14 @@ static struct ctl_table nf_ct_sysctl_tab
  		.mode		= 0644,
  		.proc_handler	= proc_dointvec_jiffies,
  	},
@@ -1401,7 +1401,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	[NF_SYSCTL_CT_PROTO_TCP_LOOSE] = {
  		.procname	= "nf_conntrack_tcp_loose",
  		.maxlen		= sizeof(int),
-@@ -845,6 +861,14 @@ static struct ctl_table nf_ct_sysctl_tab
+@@ -849,6 +865,14 @@ static struct ctl_table nf_ct_sysctl_tab
  		.mode		= 0644,
  		.proc_handler	= proc_dointvec_jiffies,
  	},
@@ -1416,7 +1416,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	[NF_SYSCTL_CT_PROTO_TIMEOUT_ICMP] = {
  		.procname	= "nf_conntrack_icmp_timeout",
  		.maxlen		= sizeof(unsigned int),
-@@ -1021,6 +1045,11 @@ static void nf_conntrack_standalone_init
+@@ -1027,6 +1051,11 @@ static void nf_conntrack_standalone_init
  	XASSIGN(LIBERAL, &tn->tcp_be_liberal);
  	XASSIGN(MAX_RETRANS, &tn->tcp_max_retrans);
  #undef XASSIGN
@@ -1428,7 +1428,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  }
  
  static void nf_conntrack_standalone_init_sctp_sysctl(struct net *net,
-@@ -1107,6 +1136,9 @@ static int nf_conntrack_standalone_init_
+@@ -1113,6 +1142,9 @@ static int nf_conntrack_standalone_init_
  	table[NF_SYSCTL_CT_PROTO_TIMEOUT_ICMPV6].data = &nf_icmpv6_pernet(net)->timeout;
  	table[NF_SYSCTL_CT_PROTO_TIMEOUT_UDP].data = &un->timeouts[UDP_CT_UNREPLIED];
  	table[NF_SYSCTL_CT_PROTO_TIMEOUT_UDP_STREAM].data = &un->timeouts[UDP_CT_REPLIED];

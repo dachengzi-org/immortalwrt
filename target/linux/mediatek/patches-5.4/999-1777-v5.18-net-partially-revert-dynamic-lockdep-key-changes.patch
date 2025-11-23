@@ -55,7 +55,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -4900,6 +4900,7 @@ static int bond_init(struct net_device *
+@@ -4897,6 +4897,7 @@ static int bond_init(struct net_device *
  	spin_lock_init(&bond->stats_lock);
  	lockdep_register_key(&bond->stats_lock_key);
  	lockdep_set_class(&bond->stats_lock, &bond->stats_lock_key);
@@ -155,7 +155,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		return -ENOMEM;
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -4098,6 +4098,8 @@ static int macsec_newlink(struct net *ne
+@@ -4080,6 +4080,8 @@ static int macsec_newlink(struct net *ne
  	if (err < 0)
  		return err;
  
@@ -177,7 +177,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		return -ENOMEM;
 --- a/drivers/net/ppp/ppp_generic.c
 +++ b/drivers/net/ppp/ppp_generic.c
-@@ -1355,6 +1355,8 @@ static int ppp_dev_init(struct net_devic
+@@ -1366,6 +1366,8 @@ static int ppp_dev_init(struct net_devic
  {
  	struct ppp *ppp;
  
@@ -188,7 +188,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	 * that ppp_destroy_interface() won't run before the device gets
 --- a/drivers/net/team/team.c
 +++ b/drivers/net/team/team.c
-@@ -1654,6 +1654,7 @@ static int team_init(struct net_device *
+@@ -1661,6 +1661,7 @@ static int team_init(struct net_device *
  
  	lockdep_register_key(&team->team_lock_key);
  	__mutex_init(&team->lock, "team->team_lock_key", &team->team_lock_key);
@@ -299,7 +299,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  struct netdev_queue *netdev_core_pick_tx(struct net_device *dev,
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -489,6 +489,25 @@ static void vlan_dev_set_rx_mode(struct
+@@ -466,6 +466,25 @@ static void vlan_dev_set_rx_mode(struct
  	dev_uc_sync(vlan_dev_priv(vlan_dev)->real_dev, vlan_dev);
  }
  
@@ -325,7 +325,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static const struct header_ops vlan_header_ops = {
  	.create	 = vlan_dev_hard_header,
  	.parse	 = eth_header_parse,
-@@ -579,6 +598,8 @@ static int vlan_dev_init(struct net_devi
+@@ -556,6 +575,8 @@ static int vlan_dev_init(struct net_devi
  
  	SET_NETDEV_DEVTYPE(dev, &vlan_type);
  
@@ -475,7 +475,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  /*******************************************************************************
   *
   *		Protocol management and registration routines
-@@ -9321,7 +9389,7 @@ static void netdev_init_one_queue(struct
+@@ -9341,7 +9409,7 @@ static void netdev_init_one_queue(struct
  {
  	/* Initialize queue lock */
  	spin_lock_init(&queue->_xmit_lock);
@@ -484,7 +484,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	queue->xmit_lock_owner = -1;
  	netdev_queue_numa_node_write(queue, NUMA_NO_NODE);
  	queue->dev = dev;
-@@ -9368,22 +9436,6 @@ void netif_tx_stop_all_queues(struct net
+@@ -9388,22 +9456,6 @@ void netif_tx_stop_all_queues(struct net
  }
  EXPORT_SYMBOL(netif_tx_stop_all_queues);
  
@@ -507,7 +507,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  void netdev_update_lockdep_key(struct net_device *dev)
  {
  	lockdep_unregister_key(&dev->addr_list_lock_key);
-@@ -9936,7 +9988,7 @@ struct net_device *alloc_netdev_mqs(int
+@@ -9956,7 +10008,7 @@ struct net_device *alloc_netdev_mqs(int
  
  	dev_net_set(dev, &init_net);
  
@@ -516,7 +516,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	dev->gso_max_size = GSO_MAX_SIZE;
  	dev->gso_max_segs = GSO_MAX_SEGS;
-@@ -10022,7 +10074,7 @@ void free_netdev(struct net_device *dev)
+@@ -10042,7 +10094,7 @@ void free_netdev(struct net_device *dev)
  	free_percpu(dev->pcpu_refcnt);
  	dev->pcpu_refcnt = NULL;
  
@@ -653,7 +653,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *	Convert a ROSE address into text.
   */
  char *rose2asc(char *buf, const rose_address *addr)
-@@ -1557,6 +1577,7 @@ static int __init rose_proto_init(void)
+@@ -1565,6 +1585,7 @@ static int __init rose_proto_init(void)
  			free_netdev(dev);
  			goto fail;
  		}

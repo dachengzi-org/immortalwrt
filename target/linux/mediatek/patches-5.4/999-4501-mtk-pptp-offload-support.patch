@@ -51,9 +51,9 @@
  	unsigned char *data;
 +	u32 seq_sent_hw;
  	__u32 seq_recv;
- 
- 
-@@ -204,7 +229,14 @@ static int pptp_xmit(struct ppp_channel
+ 	struct rtable *rt;
+ 	struct net_device *tdev;
+@@ -206,7 +231,14 @@ static int pptp_xmit(struct ppp_channel
  	hdr->gre_hd.protocol = GRE_PROTO_PPP;
  	hdr->call_id = htons(opt->dst_addr.call_id);
  
@@ -69,7 +69,7 @@
  	if (opt->ack_sent != seq_recv)	{
  		/* send ack with this message */
  		hdr->gre_hd.flags |= GRE_ACK;
-@@ -607,6 +639,9 @@ static int pptp_ppp_ioctl(struct ppp_cha
+@@ -611,6 +643,9 @@ static int pptp_ppp_ioctl(struct ppp_cha
  static const struct ppp_channel_ops pptp_chan_ops = {
  	.start_xmit = pptp_xmit,
  	.ioctl      = pptp_ppp_ioctl,

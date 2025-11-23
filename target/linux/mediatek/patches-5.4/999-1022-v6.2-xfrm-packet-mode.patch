@@ -513,7 +513,7 @@
  		hlist_add_head_rcu(&policy->bydst, chain);
  
  	return delpol;
-@@ -1765,12 +1769,41 @@ xfrm_policy_flush_secctx_check(struct ne
+@@ -1768,12 +1772,41 @@ xfrm_policy_flush_secctx_check(struct ne
  	}
  	return err;
  }
@@ -555,7 +555,7 @@
  #endif
  
  int xfrm_policy_flush(struct net *net, u8 type, bool task_valid)
-@@ -1810,6 +1843,44 @@ out:
+@@ -1813,6 +1846,44 @@ out:
  }
  EXPORT_SYMBOL(xfrm_policy_flush);
  
@@ -600,7 +600,7 @@
  int xfrm_policy_walk(struct net *net, struct xfrm_policy_walk *walk,
  		     int (*func)(struct xfrm_policy *, int, int, void*),
  		     void *data)
-@@ -2111,6 +2182,9 @@ static struct xfrm_policy *xfrm_policy_l
+@@ -2114,6 +2185,9 @@ static struct xfrm_policy *xfrm_policy_l
  			break;
  		}
  	}
@@ -610,7 +610,7 @@
  	bin = xfrm_policy_inexact_lookup_rcu(net, type, family, dir, if_id);
  	if (!bin || !xfrm_policy_find_inexact_candidates(&cand, bin, saddr,
  							 daddr))
-@@ -2244,6 +2318,7 @@ int xfrm_policy_delete(struct xfrm_polic
+@@ -2247,6 +2321,7 @@ int xfrm_policy_delete(struct xfrm_polic
  	pol = __xfrm_policy_unlink(pol, dir);
  	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
  	if (pol) {
@@ -853,7 +853,7 @@
  			x->km.state = XFRM_STATE_DEAD;
  			to_put = x;
  			x = NULL;
-@@ -1246,16 +1382,19 @@ static void __xfrm_state_insert(struct x
+@@ -1249,16 +1385,19 @@ static void __xfrm_state_insert(struct x
  
  	h = xfrm_dst_hash(net, &x->id.daddr, &x->props.saddr,
  			  x->props.reqid, x->props.family);
@@ -876,7 +876,7 @@
  	}
  
  	hrtimer_start(&x->mtimer, ktime_set(1, 0), HRTIMER_MODE_REL_SOFT);
-@@ -1369,9 +1508,11 @@ static struct xfrm_state *__find_acq_cor
+@@ -1372,9 +1511,11 @@ static struct xfrm_state *__find_acq_cor
  			      ktime_set(net->xfrm.sysctl_acq_expires, 0),
  			      HRTIMER_MODE_REL_SOFT);
  		list_add(&x->km.all, &net->xfrm.state_all);
@@ -890,7 +890,7 @@
  
  		net->xfrm.state_num++;
  
-@@ -1742,6 +1883,8 @@ EXPORT_SYMBOL(xfrm_state_update);
+@@ -1745,6 +1886,8 @@ EXPORT_SYMBOL(xfrm_state_update);
  
  int xfrm_state_check_expire(struct xfrm_state *x)
  {
@@ -899,7 +899,7 @@
  	if (!x->curlft.use_time)
  		x->curlft.use_time = ktime_get_real_seconds();
  
-@@ -2043,7 +2186,8 @@ int xfrm_alloc_spi(struct xfrm_state *x,
+@@ -2046,7 +2189,8 @@ int xfrm_alloc_spi(struct xfrm_state *x,
  		spin_lock_bh(&net->xfrm.xfrm_state_lock);
  		x->id.spi = newspi;
  		h = xfrm_spi_hash(net, &x->id.daddr, x->id.spi, x->id.proto, x->props.family);
@@ -911,7 +911,7 @@
  		err = 0;
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -844,6 +844,8 @@ static int copy_user_offload(struct xfrm
+@@ -848,6 +848,8 @@ static int copy_user_offload(struct xfrm
  	memset(xuo, 0, sizeof(*xuo));
  	xuo->ifindex = xso->dev->ifindex;
  	xuo->flags = xso->flags;
@@ -920,7 +920,7 @@
  
  	return 0;
  }
-@@ -1643,6 +1645,15 @@ static struct xfrm_policy *xfrm_policy_c
+@@ -1647,6 +1649,15 @@ static struct xfrm_policy *xfrm_policy_c
  	if (attrs[XFRMA_IF_ID])
  		xp->if_id = nla_get_u32(attrs[XFRMA_IF_ID]);
  
@@ -936,7 +936,7 @@
  	return xp;
   error:
  	*errp = err;
-@@ -1681,6 +1692,7 @@ static int xfrm_add_policy(struct sk_buf
+@@ -1685,6 +1696,7 @@ static int xfrm_add_policy(struct sk_buf
  	xfrm_audit_policy_add(xp, err ? 0 : 1, true);
  
  	if (err) {
@@ -944,7 +944,7 @@
  		security_xfrm_policy_free(xp->security);
  		kfree(xp);
  		return err;
-@@ -1795,6 +1807,8 @@ static int dump_one_policy(struct xfrm_p
+@@ -1799,6 +1811,8 @@ static int dump_one_policy(struct xfrm_p
  		err = xfrm_mark_put(skb, &xp->mark);
  	if (!err)
  		err = xfrm_if_id_put(skb, xp->if_id);
@@ -953,7 +953,7 @@
  	if (err) {
  		nlmsg_cancel(skb, nlh);
  		return err;
-@@ -2970,6 +2984,8 @@ static int build_acquire(struct sk_buff
+@@ -2974,6 +2988,8 @@ static int build_acquire(struct sk_buff
  		err = xfrm_mark_put(skb, &xp->mark);
  	if (!err)
  		err = xfrm_if_id_put(skb, xp->if_id);
@@ -962,7 +962,7 @@
  	if (err) {
  		nlmsg_cancel(skb, nlh);
  		return err;
-@@ -3088,6 +3104,8 @@ static int build_polexpire(struct sk_buf
+@@ -3092,6 +3108,8 @@ static int build_polexpire(struct sk_buf
  		err = xfrm_mark_put(skb, &xp->mark);
  	if (!err)
  		err = xfrm_if_id_put(skb, xp->if_id);
@@ -971,7 +971,7 @@
  	if (err) {
  		nlmsg_cancel(skb, nlh);
  		return err;
-@@ -3171,6 +3189,8 @@ static int xfrm_notify_policy(struct xfr
+@@ -3175,6 +3193,8 @@ static int xfrm_notify_policy(struct xfr
  		err = xfrm_mark_put(skb, &xp->mark);
  	if (!err)
  		err = xfrm_if_id_put(skb, xp->if_id);

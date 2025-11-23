@@ -11,7 +11,7 @@ Subject: [PATCH]
 
 --- a/drivers/nvmem/core.c
 +++ b/drivers/nvmem/core.c
-@@ -1102,16 +1102,8 @@ int nvmem_cell_write(struct nvmem_cell *
+@@ -1104,16 +1104,8 @@ int nvmem_cell_write(struct nvmem_cell *
  }
  EXPORT_SYMBOL_GPL(nvmem_cell_write);
  
@@ -30,7 +30,7 @@ Subject: [PATCH]
  {
  	struct nvmem_cell *cell;
  	void *buf;
-@@ -1126,21 +1118,50 @@ int nvmem_cell_read_u16(struct device *d
+@@ -1128,21 +1120,50 @@ int nvmem_cell_read_u16(struct device *d
  		nvmem_cell_put(cell);
  		return PTR_ERR(buf);
  	}
@@ -84,7 +84,7 @@ Subject: [PATCH]
   *
   * @dev: Device that requests the nvmem cell.
   * @cell_id: Name of nvmem cell to read.
-@@ -1150,31 +1171,119 @@ EXPORT_SYMBOL_GPL(nvmem_cell_read_u16);
+@@ -1152,31 +1173,119 @@ EXPORT_SYMBOL_GPL(nvmem_cell_read_u16);
   */
  int nvmem_cell_read_u32(struct device *dev, const char *cell_id, u32 *val)
  {

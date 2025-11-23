@@ -57,7 +57,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3851,7 +3851,7 @@ static int macsec_changelink(struct net_
+@@ -3833,7 +3833,7 @@ static int macsec_changelink(struct net_
  			     struct netlink_ext_ack *extack)
  {
  	struct macsec_dev *macsec = macsec_priv(dev);

@@ -25,7 +25,7 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -3929,6 +3929,18 @@ static void macsec_common_dellink(struct
+@@ -3911,6 +3911,18 @@ static void macsec_common_dellink(struct
  	struct macsec_dev *macsec = macsec_priv(dev);
  	struct net_device *real_dev = macsec->real_dev;
  
@@ -44,7 +44,7 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
  	unregister_netdevice_queue(dev, head);
  	list_del_rcu(&macsec->secys);
  	macsec_del_dev(macsec);
-@@ -3943,18 +3955,6 @@ static void macsec_dellink(struct net_de
+@@ -3925,18 +3937,6 @@ static void macsec_dellink(struct net_de
  	struct net_device *real_dev = macsec->real_dev;
  	struct macsec_rxh_data *rxd = macsec_data_rtnl(real_dev);
  

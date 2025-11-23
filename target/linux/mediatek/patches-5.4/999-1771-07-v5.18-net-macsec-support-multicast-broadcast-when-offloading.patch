@@ -17,7 +17,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -1030,22 +1030,53 @@ static enum rx_handler_result handle_not
+@@ -1017,22 +1017,53 @@ static enum rx_handler_result handle_not
  {
  	/* Deliver to the uncontrolled port by default */
  	enum rx_handler_result ret = RX_HANDLER_PASS;
@@ -77,7 +77,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  			u64_stats_update_begin(&secy_stats->syncp);
  			secy_stats->stats.InPktsNoTag++;
  			u64_stats_update_end(&secy_stats->syncp);
-@@ -1058,19 +1089,13 @@ static enum rx_handler_result handle_not
+@@ -1045,19 +1076,13 @@ static enum rx_handler_result handle_not
  		if (!nskb)
  			break;
  

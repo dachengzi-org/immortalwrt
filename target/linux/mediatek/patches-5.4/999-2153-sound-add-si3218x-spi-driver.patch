@@ -18,7 +18,7 @@ Subject: [PATCH] sound add si3218x spi driver
  	select SND_SOC_HDMI_CODEC
  	select SND_SOC_PCM1681 if I2C
  	select SND_SOC_PCM1789_I2C if I2C
-@@ -1488,6 +1489,14 @@ config SND_SOC_NAU8824
+@@ -1489,6 +1490,14 @@ config SND_SOC_NAU8824
  config SND_SOC_NAU8825
  	tristate
  

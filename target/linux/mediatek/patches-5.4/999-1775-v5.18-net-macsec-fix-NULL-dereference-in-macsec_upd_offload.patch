@@ -18,7 +18,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2630,6 +2630,9 @@ static int macsec_upd_offload(struct sk_
+@@ -2612,6 +2612,9 @@ static int macsec_upd_offload(struct sk_
  		return PTR_ERR(dev);
  	macsec = macsec_priv(dev);
  

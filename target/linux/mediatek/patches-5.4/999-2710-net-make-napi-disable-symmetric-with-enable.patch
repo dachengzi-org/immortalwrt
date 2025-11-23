@@ -10,7 +10,7 @@ Subject: [PATCH]
 
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6569,18 +6569,25 @@ EXPORT_SYMBOL(netif_napi_add);
+@@ -6589,18 +6589,25 @@ EXPORT_SYMBOL(netif_napi_add);
  
  void napi_disable(struct napi_struct *n)
  {

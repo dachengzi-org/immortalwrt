@@ -10,7 +10,7 @@ Subject: [PATCH]
 
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6574,7 +6574,7 @@ void napi_disable(struct napi_struct *n)
+@@ -6594,7 +6594,7 @@ void napi_disable(struct napi_struct *n)
  	might_sleep();
  	set_bit(NAPI_STATE_DISABLE, &n->state);
  
@@ -19,7 +19,7 @@ Subject: [PATCH]
  		val = READ_ONCE(n->state);
  		if (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
  			usleep_range(20, 200);
-@@ -6583,7 +6583,10 @@ void napi_disable(struct napi_struct *n)
+@@ -6603,7 +6603,10 @@ void napi_disable(struct napi_struct *n)
  
  		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
  		new &= ~(NAPIF_STATE_THREADED);

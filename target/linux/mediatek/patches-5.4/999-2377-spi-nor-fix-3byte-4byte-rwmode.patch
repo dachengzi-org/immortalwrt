@@ -57,7 +57,7 @@
  	info = spi_nor_get_flash_info(nor, name);
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1177,6 +1177,7 @@ int spi_do_calibration(struct spi_contro
+@@ -1181,6 +1181,7 @@ int spi_do_calibration(struct spi_contro
  			 */
  			*target->cal_item = origin;
  			dev_warn(&spi->dev, "calibration failed, fallback to default: 0x%x", origin);

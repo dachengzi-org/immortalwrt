@@ -16,15 +16,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
 --- a/include/net/netfilter/nf_tables.h
 +++ b/include/net/netfilter/nf_tables.h
-@@ -13,6 +13,7 @@
- #include <net/netfilter/nf_flow_table.h>
- #include <net/netlink.h>
- #include <net/flow_offload.h>
-+#include <net/netns/generic.h>
- 
- struct module;
- 
-@@ -26,6 +27,11 @@ struct nft_pktinfo {
+@@ -27,6 +27,11 @@ struct nft_pktinfo {
  	struct xt_action_param		xt;
  };
  
@@ -36,7 +28,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static inline struct net *nft_net(const struct nft_pktinfo *pkt)
  {
  	return pkt->xt.state->net;
-@@ -937,6 +943,12 @@ struct nft_stats {
+@@ -947,6 +952,12 @@ struct nft_stats {
  	struct u64_stats_sync	syncp;
  };
  
@@ -49,7 +41,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  /**
   *	struct nft_base_chain - nf_tables base chain
   *
-@@ -1121,6 +1133,7 @@ struct nft_object_type {
+@@ -1131,6 +1142,7 @@ struct nft_object_type {
   *	@destroy: release existing stateful object
   *	@dump: netlink dump stateful object
   *	@update: update stateful object
@@ -57,7 +49,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
   */
  struct nft_object_ops {
  	void				(*eval)(struct nft_object *obj,
-@@ -1143,7 +1156,7 @@ struct nft_object_ops {
+@@ -1153,7 +1165,7 @@ struct nft_object_ops {
  int nft_register_obj(struct nft_object_type *obj_type);
  void nft_unregister_obj(struct nft_object_type *obj_type);
  
@@ -66,7 +58,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  /**
   *	struct nft_flowtable - nf_tables flow table
-@@ -1152,27 +1165,24 @@ void nft_unregister_obj(struct nft_objec
+@@ -1162,27 +1174,24 @@ void nft_unregister_obj(struct nft_objec
   * 	@table: the table the flow table is contained in
   *	@name: name of this flow table
   *	@hooknum: hook number
@@ -96,7 +88,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nf_flowtable		data;
  };
  
-@@ -1430,12 +1440,21 @@ struct nft_trans_obj {
+@@ -1440,12 +1449,21 @@ struct nft_trans_obj {
  
  struct nft_trans_flowtable {
  	struct nft_flowtable		*flowtable;
@@ -119,9 +111,9 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  struct nft_trans_gc {
  	struct list_head	list;
-@@ -1487,4 +1506,11 @@ struct nftables_pernet {
- 	unsigned int		gc_seq;
- };
+@@ -1507,4 +1525,11 @@ static inline u64 nft_net_tstamp(const s
+ 	return nft_net->tstamp;
+ }
  
 +extern unsigned int nf_tables_net_id;
 +
@@ -172,7 +164,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
   *
   * @NFTA_FLOWTABLE_TABLE: name of the table containing the expression (NLA_STRING)
 @@ -1519,6 +1536,7 @@ enum nft_object_attributes {
-  * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration(NLA_U32)
+  * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration (NLA_NESTED)
   * @NFTA_FLOWTABLE_USE: number of references to this flow table (NLA_U32)
   * @NFTA_FLOWTABLE_HANDLE: object handle (NLA_U64)
 + * @NFTA_FLOWTABLE_FLAGS: flags (NLA_U32)
@@ -507,7 +499,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (family != NFPROTO_UNSPEC && family != table->family)
-@@ -1701,6 +1707,96 @@ static void nf_tables_chain_destroy(stru
+@@ -1699,6 +1705,96 @@ void nf_tables_chain_destroy(struct nft_
  	}
  }
  
@@ -604,7 +596,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  struct nft_chain_hook {
  	u32				num;
  	s32				priority;
-@@ -1713,7 +1809,7 @@ static int nft_chain_parse_hook(struct n
+@@ -1711,7 +1807,7 @@ static int nft_chain_parse_hook(struct n
  				struct nft_chain_hook *hook, u8 family,
  				bool autoload)
  {
@@ -613,7 +605,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nlattr *ha[NFTA_HOOK_MAX + 1];
  	const struct nft_chain_type *type;
  	struct net_device *dev;
-@@ -2010,7 +2106,7 @@ static int nf_tables_updchain(struct nft
+@@ -2008,7 +2104,7 @@ static int nf_tables_updchain(struct nft
  
  	if (nla[NFTA_CHAIN_HANDLE] &&
  	    nla[NFTA_CHAIN_NAME]) {
@@ -622,7 +614,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  		struct nft_trans *tmp;
  		char *name;
  
-@@ -2047,7 +2143,7 @@ static int nf_tables_newchain(struct net
+@@ -2045,7 +2141,7 @@ static int nf_tables_newchain(struct net
  			      const struct nlattr * const nla[],
  			      struct netlink_ext_ack *extack)
  {
@@ -631,7 +623,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	const struct nfgenmsg *nfmsg = nlmsg_data(nlh);
  	u8 genmask = nft_genmask_next(net);
  	int family = nfmsg->nfgen_family;
-@@ -2204,7 +2300,7 @@ static int nf_tables_delchain(struct net
+@@ -2202,7 +2298,7 @@ static int nf_tables_delchain(struct net
  
  /**
   *	nft_register_expr - register nf_tables expr type
@@ -640,7 +632,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
   *
   *	Registers the expr type for use with nf_tables. Returns zero on
   *	success or a negative errno code otherwise.
-@@ -2223,7 +2319,7 @@ EXPORT_SYMBOL_GPL(nft_register_expr);
+@@ -2221,7 +2317,7 @@ EXPORT_SYMBOL_GPL(nft_register_expr);
  
  /**
   *	nft_unregister_expr - unregister nf_tables expr type
@@ -649,7 +641,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
   *
   * 	Unregisters the expr typefor use with nf_tables.
   */
-@@ -2654,8 +2750,8 @@ static int nf_tables_dump_rules(struct s
+@@ -2652,8 +2748,8 @@ static int nf_tables_dump_rules(struct s
  	struct nftables_pernet *nft_net;
  
  	rcu_read_lock();
@@ -660,7 +652,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (family != NFPROTO_UNSPEC && family != table->family)
-@@ -2892,7 +2988,7 @@ static int nf_tables_newrule(struct net
+@@ -2904,7 +3000,7 @@ static int nf_tables_newrule(struct net
  			     const struct nlattr * const nla[],
  			     struct netlink_ext_ack *extack)
  {
@@ -669,7 +661,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	const struct nfgenmsg *nfmsg = nlmsg_data(nlh);
  	u8 genmask = nft_genmask_next(net);
  	struct nft_expr_info *info = NULL;
-@@ -3100,7 +3196,7 @@ static struct nft_rule *nft_rule_lookup_
+@@ -3112,7 +3208,7 @@ static struct nft_rule *nft_rule_lookup_
  					     const struct nft_chain *chain,
  					     const struct nlattr *nla)
  {
@@ -678,7 +670,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	u32 id = ntohl(nla_get_be32(nla));
  	struct nft_trans *trans;
  
-@@ -3223,7 +3319,7 @@ nft_select_set_ops(const struct nft_ctx
+@@ -3235,7 +3331,7 @@ nft_select_set_ops(const struct nft_ctx
  		   const struct nft_set_desc *desc,
  		   enum nft_set_policies policy)
  {
@@ -687,7 +679,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	const struct nft_set_ops *ops, *bops;
  	struct nft_set_estimate est, best;
  	const struct nft_set_type *type;
-@@ -3374,7 +3470,7 @@ static struct nft_set *nft_set_lookup_by
+@@ -3386,7 +3482,7 @@ static struct nft_set *nft_set_lookup_by
  					   const struct nft_table *table,
  					   const struct nlattr *nla, u8 genmask)
  {
@@ -696,7 +688,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_trans *trans;
  	u32 id = ntohl(nla_get_be32(nla));
  
-@@ -3601,8 +3697,8 @@ static int nf_tables_dump_sets(struct sk
+@@ -3613,8 +3709,8 @@ static int nf_tables_dump_sets(struct sk
  		return skb->len;
  
  	rcu_read_lock();
@@ -707,7 +699,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (ctx->family != NFPROTO_UNSPEC &&
-@@ -4397,7 +4493,9 @@ static int nf_tables_dump_set(struct sk_
+@@ -4411,7 +4507,9 @@ static int nf_tables_dump_set(struct sk_
  	int event;
  
  	rcu_read_lock();
@@ -718,7 +710,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (dump_ctx->ctx.family != NFPROTO_UNSPEC &&
  		    dump_ctx->ctx.family != table->family)
-@@ -5037,7 +5135,7 @@ static int nf_tables_newsetelem(struct n
+@@ -5059,7 +5157,7 @@ static int nf_tables_newsetelem(struct n
  				const struct nlattr * const nla[],
  				struct netlink_ext_ack *extack)
  {
@@ -727,7 +719,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	u8 genmask = nft_genmask_next(net);
  	const struct nlattr *attr;
  	struct nft_set *set;
-@@ -5659,8 +5757,8 @@ static int nf_tables_dump_obj(struct sk_
+@@ -5684,8 +5782,8 @@ static int nf_tables_dump_obj(struct sk_
  		reset = true;
  
  	rcu_read_lock();
@@ -738,7 +730,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (family != NFPROTO_UNSPEC && family != table->family)
-@@ -5971,42 +6069,11 @@ nft_flowtable_lookup_byhandle(const stru
+@@ -5996,42 +6094,11 @@ nft_flowtable_lookup_byhandle(const stru
         return ERR_PTR(-ENOENT);
  }
  
@@ -786,7 +778,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  static const struct nla_policy nft_flowtable_hook_policy[NFTA_FLOWTABLE_HOOK_MAX + 1] = {
  	[NFTA_FLOWTABLE_HOOK_NUM]	= { .type = NLA_U32 },
-@@ -6014,53 +6081,69 @@ static const struct nla_policy nft_flowt
+@@ -6039,53 +6106,69 @@ static const struct nla_policy nft_flowt
  	[NFTA_FLOWTABLE_HOOK_DEVS]	= { .type = NLA_NESTED },
  };
  
@@ -889,7 +881,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	}
  
  	return err;
-@@ -6101,26 +6184,173 @@ nft_flowtable_type_get(struct net *net,
+@@ -6126,26 +6209,173 @@ nft_flowtable_type_get(struct net *net,
  	return ERR_PTR(-ENOENT);
  }
  
@@ -1074,7 +1066,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  }
  
  static int nf_tables_newflowtable(struct net *net, struct sock *nlsk,
-@@ -6130,13 +6360,15 @@ static int nf_tables_newflowtable(struct
+@@ -6155,13 +6385,15 @@ static int nf_tables_newflowtable(struct
  				  struct netlink_ext_ack *extack)
  {
  	const struct nfgenmsg *nfmsg = nlmsg_data(nlh);
@@ -1094,7 +1086,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	if (!nla[NFTA_FLOWTABLE_TABLE] ||
  	    !nla[NFTA_FLOWTABLE_NAME] ||
-@@ -6164,7 +6396,9 @@ static int nf_tables_newflowtable(struct
+@@ -6189,7 +6421,9 @@ static int nf_tables_newflowtable(struct
  			return -EEXIST;
  		}
  
@@ -1105,7 +1097,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	}
  
  	nft_ctx_init(&ctx, net, skb, nlh, family, table, NULL, nla);
-@@ -6180,6 +6414,7 @@ static int nf_tables_newflowtable(struct
+@@ -6205,6 +6439,7 @@ static int nf_tables_newflowtable(struct
  
  	flowtable->table = table;
  	flowtable->handle = nf_tables_alloc_handle(table);
@@ -1113,7 +1105,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	flowtable->name = nla_strdup(nla[NFTA_FLOWTABLE_NAME], GFP_KERNEL);
  	if (!flowtable->name) {
-@@ -6193,56 +6428,52 @@ static int nf_tables_newflowtable(struct
+@@ -6218,56 +6453,52 @@ static int nf_tables_newflowtable(struct
  		goto err2;
  	}
  
@@ -1200,7 +1192,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	flowtable->data.type->free(&flowtable->data);
  err3:
  	module_put(type->owner);
-@@ -6256,6 +6487,65 @@ flowtable_alloc:
+@@ -6281,6 +6512,65 @@ flowtable_alloc:
  	return err;
  }
  
@@ -1266,7 +1258,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  static int nf_tables_delflowtable(struct net *net, struct sock *nlsk,
  				  struct sk_buff *skb,
  				  const struct nlmsghdr *nlh,
-@@ -6264,7 +6554,7 @@ static int nf_tables_delflowtable(struct
+@@ -6289,7 +6579,7 @@ static int nf_tables_delflowtable(struct
  {
  	const struct nfgenmsg *nfmsg = nlmsg_data(nlh);
  	u8 genmask = nft_genmask_next(net);
@@ -1275,7 +1267,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_flowtable *flowtable;
  	const struct nlattr *attr;
  	struct nft_table *table;
-@@ -6291,27 +6581,36 @@ static int nf_tables_delflowtable(struct
+@@ -6316,27 +6606,36 @@ static int nf_tables_delflowtable(struct
  	}
  
  	if (IS_ERR(flowtable)) {
@@ -1316,7 +1308,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
  	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
-@@ -6326,22 +6625,27 @@ static int nf_tables_fill_flowtable_info
+@@ -6351,22 +6650,27 @@ static int nf_tables_fill_flowtable_info
  			 NFTA_FLOWTABLE_PAD))
  		goto nla_put_failure;
  
@@ -1349,7 +1341,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			goto nla_put_failure;
  	}
  	nla_nest_end(skb, nest_devs);
-@@ -6367,13 +6671,13 @@ static int nf_tables_dump_flowtable(stru
+@@ -6392,13 +6696,13 @@ static int nf_tables_dump_flowtable(stru
  	unsigned int idx = 0, s_idx = cb->args[0];
  	struct net *net = sock_net(skb->sk);
  	int family = nfmsg->nfgen_family;
@@ -1366,7 +1358,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	list_for_each_entry_rcu(table, &nft_net->tables, list) {
  		if (family != NFPROTO_UNSPEC && family != table->family)
-@@ -6395,7 +6699,8 @@ static int nf_tables_dump_flowtable(stru
+@@ -6420,7 +6724,8 @@ static int nf_tables_dump_flowtable(stru
  							  cb->nlh->nlmsg_seq,
  							  NFT_MSG_NEWFLOWTABLE,
  							  NLM_F_MULTI | NLM_F_APPEND,
@@ -1376,7 +1368,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  				goto done;
  
  			nl_dump_check_consistent(cb, nlmsg_hdr(skb));
-@@ -6492,7 +6797,7 @@ static int nf_tables_getflowtable(struct
+@@ -6517,7 +6822,7 @@ static int nf_tables_getflowtable(struct
  	err = nf_tables_fill_flowtable_info(skb2, net, NETLINK_CB(skb).portid,
  					    nlh->nlmsg_seq,
  					    NFT_MSG_NEWFLOWTABLE, 0, family,
@@ -1385,7 +1377,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	if (err < 0)
  		goto err_fill_flowtable_info;
  
-@@ -6505,7 +6810,7 @@ err_fill_flowtable_info:
+@@ -6530,7 +6835,7 @@ err_fill_flowtable_info:
  
  static void nf_tables_flowtable_notify(struct nft_ctx *ctx,
  				       struct nft_flowtable *flowtable,
@@ -1394,7 +1386,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  {
  	struct sk_buff *skb;
  	int err;
-@@ -6520,7 +6825,7 @@ static void nf_tables_flowtable_notify(s
+@@ -6545,7 +6850,7 @@ static void nf_tables_flowtable_notify(s
  
  	err = nf_tables_fill_flowtable_info(skb, ctx->net, ctx->portid,
  					    ctx->seq, event, 0,
@@ -1403,7 +1395,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	if (err < 0) {
  		kfree_skb(skb);
  		goto err;
-@@ -6535,9 +6840,16 @@ err:
+@@ -6560,9 +6865,16 @@ err:
  
  static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
  {
@@ -1422,7 +1414,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	module_put(flowtable->data.type->owner);
  	kfree(flowtable);
  }
-@@ -6545,7 +6857,7 @@ static void nf_tables_flowtable_destroy(
+@@ -6570,7 +6882,7 @@ static void nf_tables_flowtable_destroy(
  static int nf_tables_fill_gen_info(struct sk_buff *skb, struct net *net,
  				   u32 portid, u32 seq)
  {
@@ -1431,7 +1423,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nlmsghdr *nlh;
  	char buf[TASK_COMM_LEN];
  	int event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, NFT_MSG_NEWGEN);
-@@ -6571,14 +6883,16 @@ nla_put_failure:
+@@ -6596,14 +6908,16 @@ nla_put_failure:
  static void nft_flowtable_event(unsigned long event, struct net_device *dev,
  				struct nft_flowtable *flowtable)
  {
@@ -1453,7 +1445,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  		break;
  	}
  }
-@@ -6596,7 +6910,7 @@ static int nf_tables_flowtable_event(str
+@@ -6621,7 +6935,7 @@ static int nf_tables_flowtable_event(str
  		return 0;
  
  	net = dev_net(dev);
@@ -1462,7 +1454,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	mutex_lock(&nft_net->commit_mutex);
  	list_for_each_entry(table, &nft_net->tables, list) {
  		list_for_each_entry(flowtable, &table->flowtables, list) {
-@@ -6682,6 +6996,11 @@ static const struct nfnl_callback nf_tab
+@@ -6707,6 +7021,11 @@ static const struct nfnl_callback nf_tab
  		.attr_count	= NFTA_TABLE_MAX,
  		.policy		= nft_table_policy,
  	},
@@ -1474,7 +1466,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	[NFT_MSG_NEWCHAIN] = {
  		.call_batch	= nf_tables_newchain,
  		.attr_count	= NFTA_CHAIN_MAX,
-@@ -6780,11 +7099,16 @@ static const struct nfnl_callback nf_tab
+@@ -6805,11 +7124,16 @@ static const struct nfnl_callback nf_tab
  		.attr_count	= NFTA_FLOWTABLE_MAX,
  		.policy		= nft_flowtable_policy,
  	},
@@ -1492,7 +1484,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_table *table;
  
  	switch (nft_net->validate_state) {
-@@ -6875,6 +7199,7 @@ static void nft_commit_release(struct nf
+@@ -6900,6 +7224,7 @@ static void nft_commit_release(struct nf
  {
  	switch (trans->msg_type) {
  	case NFT_MSG_DELTABLE:
@@ -1500,7 +1492,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  		nf_tables_table_destroy(&trans->ctx);
  		break;
  	case NFT_MSG_NEWCHAIN:
-@@ -6899,7 +7224,11 @@ static void nft_commit_release(struct nf
+@@ -6924,7 +7249,11 @@ static void nft_commit_release(struct nf
  		nft_obj_destroy(&trans->ctx, nft_trans_obj(trans));
  		break;
  	case NFT_MSG_DELFLOWTABLE:
@@ -1513,7 +1505,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  		break;
  	}
  
-@@ -6968,7 +7297,7 @@ static int nf_tables_commit_chain_prepar
+@@ -6993,7 +7322,7 @@ static int nf_tables_commit_chain_prepar
  
  static void nf_tables_commit_chain_prepare_cancel(struct net *net)
  {
@@ -1522,7 +1514,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_trans *trans, *next;
  
  	list_for_each_entry_safe(trans, next, &nft_net->commit_list, list) {
-@@ -7116,7 +7445,7 @@ static bool nft_trans_gc_work_done(struc
+@@ -7141,7 +7470,7 @@ static bool nft_trans_gc_work_done(struc
  	struct nftables_pernet *nft_net;
  	struct nft_ctx ctx = {};
  
@@ -1531,7 +1523,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	mutex_lock(&nft_net->commit_mutex);
  
-@@ -7260,7 +7589,7 @@ EXPORT_SYMBOL_GPL(nft_trans_gc_queue_syn
+@@ -7285,7 +7614,7 @@ EXPORT_SYMBOL_GPL(nft_trans_gc_queue_syn
  
  static void nf_tables_module_autoload_cleanup(struct net *net)
  {
@@ -1540,7 +1532,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_module_request *req, *next;
  
  	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
-@@ -7273,7 +7602,7 @@ static void nf_tables_module_autoload_cl
+@@ -7298,7 +7627,7 @@ static void nf_tables_module_autoload_cl
  
  static void nf_tables_commit_release(struct net *net)
  {
@@ -1549,7 +1541,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_trans *trans;
  
  	/* all side effects have to be made visible.
-@@ -7323,7 +7652,7 @@ static void nft_gc_seq_end(struct nftabl
+@@ -7348,7 +7677,7 @@ static void nft_gc_seq_end(struct nftabl
  
  static int nf_tables_commit(struct net *net, struct sk_buff *skb)
  {
@@ -1558,7 +1550,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_trans *trans, *next;
  	struct nft_trans_elem *te;
  	struct nft_chain *chain;
-@@ -7409,8 +7738,9 @@ static int nf_tables_commit(struct net *
+@@ -7434,8 +7763,9 @@ static int nf_tables_commit(struct net *
  			nft_trans_destroy(trans);
  			break;
  		case NFT_MSG_DELTABLE:
@@ -1569,7 +1561,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			break;
  		case NFT_MSG_NEWCHAIN:
  			if (nft_trans_chain_update(trans)) {
-@@ -7445,7 +7775,7 @@ static int nf_tables_commit(struct net *
+@@ -7470,7 +7800,7 @@ static int nf_tables_commit(struct net *
  			list_del_rcu(&nft_trans_rule(trans)->list);
  			nf_tables_rule_notify(&trans->ctx,
  					      nft_trans_rule(trans),
@@ -1578,7 +1570,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			nft_rule_expr_deactivate(&trans->ctx,
  						 nft_trans_rule(trans),
  						 NFT_TRANS_COMMIT);
-@@ -7511,19 +7841,42 @@ static int nf_tables_commit(struct net *
+@@ -7536,19 +7866,42 @@ static int nf_tables_commit(struct net *
  					     NFT_MSG_DELOBJ);
  			break;
  		case NFT_MSG_NEWFLOWTABLE:
@@ -1631,7 +1623,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			break;
  		}
  	}
-@@ -7538,7 +7891,7 @@ static int nf_tables_commit(struct net *
+@@ -7563,7 +7916,7 @@ static int nf_tables_commit(struct net *
  
  static void nf_tables_module_autoload(struct net *net)
  {
@@ -1640,7 +1632,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_module_request *req, *next;
  	LIST_HEAD(module_list);
  
-@@ -7575,7 +7928,10 @@ static void nf_tables_abort_release(stru
+@@ -7600,7 +7953,10 @@ static void nf_tables_abort_release(stru
  		nft_obj_destroy(&trans->ctx, nft_trans_obj(trans));
  		break;
  	case NFT_MSG_NEWFLOWTABLE:
@@ -1652,7 +1644,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  		break;
  	}
  	kfree(trans);
-@@ -7583,7 +7939,7 @@ static void nf_tables_abort_release(stru
+@@ -7608,7 +7964,7 @@ static void nf_tables_abort_release(stru
  
  static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
  {
@@ -1661,7 +1653,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_trans *trans, *next;
  	struct nft_trans_elem *te;
  	int err = 0;
-@@ -7614,6 +7970,7 @@ static int __nf_tables_abort(struct net
+@@ -7639,6 +7995,7 @@ static int __nf_tables_abort(struct net
  			}
  			break;
  		case NFT_MSG_DELTABLE:
@@ -1669,7 +1661,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			nft_clear(trans->ctx.net, trans->ctx.table);
  			nft_trans_destroy(trans);
  			break;
-@@ -7697,14 +8054,25 @@ static int __nf_tables_abort(struct net
+@@ -7722,14 +8079,25 @@ static int __nf_tables_abort(struct net
  			nft_trans_destroy(trans);
  			break;
  		case NFT_MSG_NEWFLOWTABLE:
@@ -1701,7 +1693,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  			nft_trans_destroy(trans);
  			break;
  		}
-@@ -7724,7 +8092,7 @@ static int __nf_tables_abort(struct net
+@@ -7749,7 +8117,7 @@ static int __nf_tables_abort(struct net
  static int nf_tables_abort(struct net *net, struct sk_buff *skb,
  			   enum nfnl_abort_action action)
  {
@@ -1710,7 +1702,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	unsigned int gc_seq;
  	int ret;
  
-@@ -7749,7 +8117,7 @@ static int nf_tables_abort(struct net *n
+@@ -7774,7 +8142,7 @@ static int nf_tables_abort(struct net *n
  
  static bool nf_tables_valid_genid(struct net *net, u32 genid)
  {
@@ -1719,7 +1711,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	bool genid_ok;
  
  	mutex_lock(&nft_net->commit_mutex);
-@@ -8323,12 +8691,13 @@ static void __nft_release_hook(struct ne
+@@ -8269,12 +8637,13 @@ static void __nft_release_hook(struct ne
  	list_for_each_entry(chain, &table->chains, list)
  		__nf_tables_unregister_hook(net, table, chain, true);
  	list_for_each_entry(flowtable, &table->flowtables, list)
@@ -1735,7 +1727,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_table *table;
  
  	list_for_each_entry(table, &nft_net->tables, list)
-@@ -8387,7 +8756,7 @@ static void __nft_release_table(struct n
+@@ -8332,7 +8701,7 @@ static void __nft_release_table(struct n
  
  static void __nft_release_tables(struct net *net)
  {
@@ -1744,7 +1736,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	struct nft_table *table, *nt;
  
  	list_for_each_entry_safe(table, nt, &nft_net->tables, list)
-@@ -8396,7 +8765,7 @@ static void __nft_release_tables(struct
+@@ -8341,7 +8710,7 @@ static void __nft_release_tables(struct
  
  static int __net_init nf_tables_init_net(struct net *net)
  {
@@ -1753,7 +1745,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	INIT_LIST_HEAD(&nft_net->tables);
  	INIT_LIST_HEAD(&nft_net->commit_list);
-@@ -8413,7 +8782,7 @@ static int __net_init nf_tables_init_net
+@@ -8358,7 +8727,7 @@ static int __net_init nf_tables_init_net
  
  static void __net_exit nf_tables_pre_exit_net(struct net *net)
  {
@@ -1762,7 +1754,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  
  	mutex_lock(&nft_net->commit_mutex);
  	__nft_release_hooks(net);
-@@ -8422,7 +8791,7 @@ static void __net_exit nf_tables_pre_exi
+@@ -8367,7 +8736,7 @@ static void __net_exit nf_tables_pre_exi
  
  static void __net_exit nf_tables_exit_net(struct net *net)
  {

@@ -21,7 +21,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  #include "vlan.h"
  #include "vlanproc.h"
  #include <linux/if_vlan.h>
-@@ -791,6 +796,27 @@ static int vlan_dev_fill_forward_path(st
+@@ -778,6 +783,27 @@ static int vlan_dev_fill_forward_path(st
  	return 0;
  }
  
@@ -49,7 +49,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  static const struct ethtool_ops vlan_ethtool_ops = {
  	.get_link_ksettings	= vlan_ethtool_get_link_ksettings,
  	.get_drvinfo	        = vlan_ethtool_get_drvinfo,
-@@ -830,6 +856,9 @@ static const struct net_device_ops vlan_
+@@ -817,6 +843,9 @@ static const struct net_device_ops vlan_
  	.ndo_fix_features	= vlan_dev_fix_features,
  	.ndo_get_iflink		= vlan_dev_get_iflink,
  	.ndo_fill_forward_path	= vlan_dev_fill_forward_path,

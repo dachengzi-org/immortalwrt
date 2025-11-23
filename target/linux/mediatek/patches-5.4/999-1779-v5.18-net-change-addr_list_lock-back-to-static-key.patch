@@ -55,7 +55,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -3664,8 +3664,6 @@ static int bond_do_ioctl(struct net_devi
+@@ -3661,8 +3661,6 @@ static int bond_do_ioctl(struct net_devi
  	case BOND_RELEASE_OLD:
  	case SIOCBONDRELEASE:
  		res = bond_release(bond_dev, slave_dev);
@@ -95,7 +95,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -4040,6 +4040,8 @@ static int macsec_add_dev(struct net_dev
+@@ -4022,6 +4022,8 @@ static int macsec_add_dev(struct net_dev
  	return 0;
  }
  
@@ -104,7 +104,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int macsec_newlink(struct net *net, struct net_device *dev,
  			  struct nlattr *tb[], struct nlattr *data[],
  			  struct netlink_ext_ack *extack)
-@@ -4100,6 +4102,9 @@ static int macsec_newlink(struct net *ne
+@@ -4082,6 +4084,9 @@ static int macsec_newlink(struct net *ne
  		return err;
  
  	netdev_lockdep_set_classes(dev);
@@ -216,7 +216,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	for (i = 0; i < (dev)->num_tx_queues; i++)		\
  		lockdep_set_class(&(dev)->_tx[i]._xmit_lock,	\
  				  &qdisc_xmit_lock_key);	\
-@@ -3276,7 +3276,6 @@ static inline void netif_stop_queue(stru
+@@ -3282,7 +3282,6 @@ static inline void netif_stop_queue(stru
  }
  
  void netif_tx_stop_all_queues(struct net_device *dev);
@@ -224,7 +224,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  static inline bool netif_tx_queue_stopped(const struct netdev_queue *dev_queue)
  {
-@@ -4214,6 +4213,11 @@ static inline void netif_addr_lock(struc
+@@ -4220,6 +4219,11 @@ static inline void netif_addr_lock(struc
  	spin_lock(&dev->addr_list_lock);
  }
  
@@ -238,7 +238,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	spin_lock_bh(&dev->addr_list_lock);
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -495,6 +495,7 @@ static void vlan_dev_set_rx_mode(struct
+@@ -472,6 +472,7 @@ static void vlan_dev_set_rx_mode(struct
   * separate class since they always nest.
   */
  static struct lock_class_key vlan_netdev_xmit_lock_key;
@@ -246,7 +246,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  static void vlan_dev_set_lockdep_one(struct net_device *dev,
  				     struct netdev_queue *txq,
-@@ -503,8 +504,11 @@ static void vlan_dev_set_lockdep_one(str
+@@ -480,8 +481,11 @@ static void vlan_dev_set_lockdep_one(str
  	lockdep_set_class(&txq->_xmit_lock, &vlan_netdev_xmit_lock_key);
  }
  
@@ -259,7 +259,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	netdev_for_each_tx_queue(dev, vlan_dev_set_lockdep_one, NULL);
  }
  
-@@ -598,7 +602,7 @@ static int vlan_dev_init(struct net_devi
+@@ -575,7 +579,7 @@ static int vlan_dev_init(struct net_devi
  
  	SET_NETDEV_DEVTYPE(dev, &vlan_type);
  
@@ -288,7 +288,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/net/bridge/br_device.c
 +++ b/net/bridge/br_device.c
-@@ -108,6 +108,13 @@ out:
+@@ -113,6 +113,13 @@ out:
  	return NETDEV_TX_OK;
  }
  
@@ -302,7 +302,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  static int br_dev_init(struct net_device *dev)
  {
  	struct net_bridge *br = netdev_priv(dev);
-@@ -146,6 +153,7 @@ static int br_dev_init(struct net_device
+@@ -151,6 +158,7 @@ static int br_dev_init(struct net_device
  		br_fdb_hash_fini(br);
  	}
  
@@ -346,7 +346,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  #endif
  
  /*******************************************************************************
-@@ -9436,15 +9451,6 @@ void netif_tx_stop_all_queues(struct net
+@@ -9456,15 +9471,6 @@ void netif_tx_stop_all_queues(struct net
  }
  EXPORT_SYMBOL(netif_tx_stop_all_queues);
  
@@ -362,7 +362,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  /**
   *	register_netdevice	- register a network device
   *	@dev: device to register
-@@ -9479,7 +9485,7 @@ int register_netdevice(struct net_device
+@@ -9499,7 +9505,7 @@ int register_netdevice(struct net_device
  	BUG_ON(!net);
  
  	spin_lock_init(&dev->addr_list_lock);
@@ -371,7 +371,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	ret = dev_get_valid_name(net, dev, dev->name);
  	if (ret < 0)
-@@ -9988,8 +9994,6 @@ struct net_device *alloc_netdev_mqs(int
+@@ -10008,8 +10014,6 @@ struct net_device *alloc_netdev_mqs(int
  
  	dev_net_set(dev, &init_net);
  
@@ -380,7 +380,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	dev->gso_max_size = GSO_MAX_SIZE;
  	dev->gso_max_segs = GSO_MAX_SEGS;
  	dev->upper_level = 1;
-@@ -10074,8 +10078,6 @@ void free_netdev(struct net_device *dev)
+@@ -10094,8 +10098,6 @@ void free_netdev(struct net_device *dev)
  	free_percpu(dev->pcpu_refcnt);
  	dev->pcpu_refcnt = NULL;
  
