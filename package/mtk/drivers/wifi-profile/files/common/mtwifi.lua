@@ -22,12 +22,12 @@ end
 
 function add_vif_into_lan(vif)
     local mtkwifi = require("mtkwifi")
-    local brvifs = mtkwifi.__trim( mtkwifi.read_pipe("uci get network.lan.ifname"))
+    local brvifs = mtkwifi.__trim( mtkwifi.read_pipe("uci get network.lan.device"))
 
     if not string.match(brvifs, esc(vif)) then
         nixio.syslog("debug", "add "..vif.." into lan")
         brvifs = brvifs.." "..vif
-        --os.execute("uci set network.lan.ifname=\""..brvifs.."\"") --netifd will down vif form /etc/config/network
+        --os.execute("uci set network.lan.device=\""..brvifs.."\"") --netifd will down vif form /etc/config/network
         --os.execute("uci commit")
         --os.execute("ubus call network.interface.lan add_device \"{\\\"name\\\":\\\""..vif.."\\\"}\"")
         os.execute("brctl addif br-lan "..vif) -- double insurance for rare failure
@@ -45,11 +45,11 @@ end
 
 function del_vif_from_lan(vif)
     local mtkwifi = require("mtkwifi")
-    local brvifs = mtkwifi.__trim(mtkwifi.read_pipe("uci get network.lan.ifname"))
+    local brvifs = mtkwifi.__trim(mtkwifi.read_pipe("uci get network.lan.device"))
     if string.match(brvifs, esc(vif)) then
         brvifs = mtkwifi.__trim(string.gsub(brvifs, esc(vif), ""))
         nixio.syslog("debug", "del "..vif.." from lan")
-        --os.execute("uci set network.lan.ifname=\""..brvifs.."\"")
+        --os.execute("uci set network.lan.device=\""..brvifs.."\"")
         --os.execute("uci commit")
         --os.execute("ubus call network.interface.lan remove_device \"{\\\"name\\\":\\\""..vif.."\\\"}\"")
         if mtkwifi.exists("/proc/sys/net/ipv6/conf/"..vif.."/disable_ipv6") then
@@ -187,7 +187,9 @@ function mtwifi_down(devname)
             or string.match(vif, esc(dev.mesh_ifname).."[0-9]+")
             then
                 nixio.syslog("debug", "mtwifi_down: ifconfig "..vif.." down")
-                os.execute("killall hostapd")
+                if mtkwifi.exists("/usr/bin/hostapd") then
+                    os.execute("killall hostapd")
+                end
                 os.execute("ifconfig "..vif.." down")
                 del_vif_from_lan(vif)
             -- else nixio.syslog("debug", "mtwifi_down: skip "..vif..", prefix not match "..pre)
