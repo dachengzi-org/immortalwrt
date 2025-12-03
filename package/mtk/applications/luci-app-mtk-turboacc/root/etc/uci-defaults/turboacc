@@ -21,11 +21,6 @@ if [ -e "/lib/modules/$kernel_ver/mtkhnat.ko" ] && [ -x "/sbin/mtkhnat" ]; then
 	uci -q set "turboacc.config.fastpath_mh_eth_hnat_nf_conntrack_update"="1"
 elif [ -e "/lib/modules/$kernel_ver/xt_FLOWOFFLOAD.ko" ]; then
 	uci -q set "turboacc.config.fastpath"="flow_offloading"
-	if grep -q "mt762" "/etc/openwrt_release"; then
-		uci -q set "turboacc.config.fastpath_fo_hw"="1"
-	else
-		uci -q set "turboacc.config.fastpath_fo_hw"="0"
-	fi
 elif [ -e "/lib/modules/$kernel_ver/fast-classifier.ko" ]; then
 	uci -q set "turboacc.config.fastpath"="fast_classifier"
 	uci -q set "turboacc.config.fastpath_fc_br"="1"

@@ -142,12 +142,6 @@ return view.extend({
 				desc.innerHTML = _('The offloading engine for routing/NAT.');
 		}
 
-		o = s.option(form.Flag, 'fastpath_fo_hw', _('Hardware flow offloading'),
-			_('Requires hardware NAT support. Implemented at least for mt7621.'));
-		o.default = o.disabled;
-		o.rmempty = false;
-		o.depends('fastpath', 'flow_offloading');
-
 		o = s.option(form.Flag, 'fastpath_fc_br', _('Bridge Acceleration'),
 			_('Enable bridge acceleration (may be functional conflict with bridge-mode VPN server).'));
 		o.default = o.disabled;

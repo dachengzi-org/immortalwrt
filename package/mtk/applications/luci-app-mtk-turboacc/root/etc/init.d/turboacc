@@ -29,13 +29,9 @@ start() {
 	fi
 
 	local flow_offloading="0"
-	local flow_offloading_hw="0"
 	case "$fastpath" in
 	"flow_offloading")
 		flow_offloading="1"
-		local fastpath_fo_hw flow_offloading_hw
-		config_get_bool fastpath_fo_hw "config" "fastpath_fo_hw" "0"
-		[ "$fastpath_fo_hw" -eq "0" ] || flow_offloading_hw="1"
 		;;
 	"fast_classifier")
 		local fastpath_fc_br fastpath_fc_ipv6
@@ -76,7 +72,6 @@ start() {
 	esac
 
 	uci -q set "firewall.@defaults[0].flow_offloading"="$flow_offloading"
-	uci -q set "firewall.@defaults[0].flow_offloading_hw"="$flow_offloading_hw"
 
 	local fullcone
 	config_get "fullcone" "config" "fullcone" "0"

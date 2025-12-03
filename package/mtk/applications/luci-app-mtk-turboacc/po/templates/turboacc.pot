@@ -94,10 +94,6 @@ msgstr ""
 msgid "HNAT binding rate threshold (pps)"
 msgstr ""
 
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:145
-msgid "Hardware flow offloading"
-msgstr ""
-
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:158
 msgid "IPv6 acceleration"
 msgstr ""
@@ -112,10 +108,6 @@ msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:74
 msgid "Open source flow offloading engine (fast path or hardware NAT)."
-msgstr ""
-
-#: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:146
-msgid "Requires hardware NAT support. Implemented at least for mt7621."
 msgstr ""
 
 #: applications/luci-app-mtk-turboacc/htdocs/luci-static/resources/view/turboacc.js:126
