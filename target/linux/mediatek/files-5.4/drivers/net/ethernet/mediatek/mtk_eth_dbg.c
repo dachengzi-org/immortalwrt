@@ -121,13 +121,51 @@ static ssize_t qdma_sched_show(struct file *file, char __user *user_buf,
 	return ret_cnt;
 }
 
+static int qdma_rate_exp_man_calc(int rate, int *exp_out, int *man_out)
+{
+	const int exp_units_kbps[] = {
+		1,        // EXP 0: 1 kbps
+		10,       // EXP 1: 10 kbps
+		100,      // EXP 2: 100 kbps
+		1000,     // EXP 3: 1 Mbps
+		10000,    // EXP 4: 10 Mbps
+		100000,   // EXP 5: 100 Mbps
+		1000000   // EXP 6: 1 Gbps
+	};
+	const int num_exp_levels = ARRAY_SIZE(exp_units_kbps);
+	int man, exp, unit_rate;
+
+	if (rate == 0) {
+		*exp_out = 0;
+		*man_out = 0;
+		return 0;
+	}
+
+	for (exp = num_exp_levels - 1; exp >= 0; exp--) {
+		unit_rate = exp_units_kbps[exp];
+
+		if (rate % unit_rate > 0)
+			continue;
+
+		man = rate / unit_rate;
+
+		if (man >= 1 && man <= 127) {
+			*exp_out = exp;
+			*man_out = man;
+			return 0;
+		}
+	}
+
+	return -1;
+}
+
 static ssize_t qdma_sched_write(struct file *file, const char __user *buf,
 				size_t length, loff_t *offset)
 {
 	struct mtk_eth *eth = g_eth;
 	long id = (long)file->private_data;
 	char line[64] = {0}, scheduling[32];
-	int enable, rate, exp = 0, shift = 0;
+	int enable, rate, exp, man, shift = 0;
 	size_t size;
 	u32 qdma_tx_sch, val = 0;
 
@@ -149,10 +187,8 @@ static ssize_t qdma_sched_write(struct file *file, const char __user *buf,
 			return -EINVAL;
 	}
 
-	while (rate > 127) {
-		rate /= 10;
-		exp++;
-	}
+	if (qdma_rate_exp_man_calc(rate, &exp, &man) < 0)
+		return -EINVAL;
 
 	line[length] = '\0';
 
@@ -160,7 +196,7 @@ static ssize_t qdma_sched_write(struct file *file, const char __user *buf,
 		val |= MTK_QDMA_TX_SCH_RATE_EN;
 	if (strcmp(scheduling, "sp") != 0)
 		val |= MTK_QDMA_TX_SCH_MAX_WFQ;
-	val |= FIELD_PREP(MTK_QDMA_TX_SCH_RATE_MAN, rate);
+	val |= FIELD_PREP(MTK_QDMA_TX_SCH_RATE_MAN, man);
 	val |= FIELD_PREP(MTK_QDMA_TX_SCH_RATE_EXP, exp);
 	if (id & 0x1)
 		shift = 16;
@@ -297,7 +333,7 @@ static ssize_t qdma_queue_write(struct file *file, const char __user *buf,
 	if (copy_from_user(line, buf, length))
 		return -EFAULT;
 
-	if (sscanf(line, "%d %d %d %d %d %d %d", &scheduler, &min_enable, &min_rate,
+	if (sscanf(line, "%10d %10d %10d %10d %10d %10d %10d", &scheduler, &min_enable, &min_rate,
 		   &max_enable, &max_rate, &weight, &resv) != 7)
 		return -EFAULT;
 
@@ -457,12 +493,12 @@ static enum mt753x_presence mt753x_sw_detect(struct mtk_eth *eth)
 	return MT753X_ABSENT;
 }
 
-static enum mt753x_presence mt7530_exist(struct mtk_eth *eth)
+static bool mt7530_exist(struct mtk_eth *eth)
 {
 	if (mt753x_presence == MT753X_UNKNOWN)
 		mt753x_presence = mt753x_sw_detect(eth);
 
-	return mt753x_presence;
+	return (mt753x_presence == MT753X_PRESENT);
 }
 
 void mt753x_set_port_link_state(bool up)
@@ -867,7 +903,7 @@ static ssize_t eth_debug_level_write(struct file *file, const char __user *ptr,
 	char *p_buf;
 	int ret;
 
-	if ((len > 8) || copy_from_user(buf, ptr, len))
+	if ((len >= sizeof(buf)) || copy_from_user(buf, ptr, len))
 		return -EFAULT;
 
 	buf[len] = '\0';
@@ -1336,7 +1372,7 @@ int mtketh_debugfs_init(struct mtk_eth *eth)
 	eth_debug.root = debugfs_create_dir("mtketh", NULL);
 	if (!eth_debug.root) {
 		dev_notice(eth->dev, "%s:err at %d\n", __func__, __LINE__);
-		ret = -ENOMEM;
+		return -ENOMEM;
 	}
 
 	debugfs_create_file("pse_info", 0444,
