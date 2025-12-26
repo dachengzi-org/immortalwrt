@@ -20,6 +20,12 @@ var getFastPathStat = rpc.declare({
 	expect: { '': {} }
 });
 
+var getMTKHNATStat = rpc.declare({
+	object: 'luci.turboacc',
+	method: 'getMTKHNATStat',
+	expect: { '': {} }
+});
+
 var getFullConeStat = rpc.declare({
 	object: 'luci.turboacc',
 	method: 'getFullConeStat',
@@ -38,6 +44,19 @@ function getServiceStatus() {
 		L.resolveDefault(getFullConeStat(), {}),
 		L.resolveDefault(getTCPCCAStat(), {})
 	]);
+}
+
+function progressbar(value, max, byte) {
+	var vn = parseInt(value) || 0,
+	    mn = parseInt(max) || 100,
+	    fv = byte ? String.format('%1024.2mB', value) : value,
+	    fm = byte ? String.format('%1024.2mB', max) : max,
+	    pc = Math.floor((100 / mn) * vn);
+
+	return E('div', {
+		'class': 'cbi-progressbar',
+		'title': '%s / %s (%d%%)'.format(fv, fm, pc)
+	}, E('div', { 'style': 'width:%.2f%%'.format(pc) }));
 }
 
 function renderStatus(stats) {
@@ -62,13 +81,15 @@ return view.extend({
 	load: function() {
 		return Promise.all([
 			uci.load('turboacc'),
-			L.resolveDefault(getSystemFeatures(), {})
+			L.resolveDefault(getSystemFeatures(), {}),
+			L.resolveDefault(getMTKHNATStat(), {})
 		]);
 	},
 
 	render: function(data) {
 		var m, s, o;
 		var features = data[1];
+		var hnat_stat = data[2];
 
 		m = new form.Map('turboacc', _('TurboACC settings'),
 			_('Open source flow offloading engine (fast path or hardware NAT).'));
@@ -87,22 +108,49 @@ return view.extend({
 				});
 			});
 
-			return E('fieldset', { 'class': 'cbi-section' }, [
-				E('legend', {}, _('Acceleration Status')),
-				E('table', { 'class': 'table', 'width': '100%', 'cellspacing': '10' }, [
-					E('tr', {}, [
-						E('td', { 'width': '33%' }, _('FastPath Engine')),
-						E('td', { 'id': 'fastpath_state' }, E('em', {}, _('Collecting data...')))
-					]),
-					E('tr', {}, [
-						E('td', { 'width': '33%' }, _('Full Cone NAT')),
-						E('td', { 'id': 'fullcone_state' }, E('em', {}, _('Collecting data...')))
-					]),
-					E('tr', {}, [
-						E('td', { 'width': '33%' }, _('TCP CCA')),
-						E('td', { 'id': 'tcpcca_state' }, E('em', {}, _('Collecting data...')))
-					])
+			var status_table = E('table', { 'class': 'table', 'width': '100%', 'cellspacing': '10' }, [
+				E('tr', {}, [
+					E('td', { 'width': '33%' }, _('FastPath Engine')),
+					E('td', { 'id': 'fastpath_state' }, E('em', {}, _('Collecting data...')))
+				]),
+				E('tr', {}, [
+					E('td', { 'width': '33%' }, _('Full Cone NAT')),
+					E('td', { 'id': 'fullcone_state' }, E('em', {}, _('Collecting data...')))
+				]),
+				E('tr', {}, [
+					E('td', { 'width': '33%' }, _('TCP CCA')),
+					E('td', { 'id': 'tcpcca_state' }, E('em', {}, _('Collecting data...')))
 				])
+			]);
+
+			if (features.hasMEDIATEKHNAT) {
+				var max_entry_number = features.hasMTKNEWNETSYS ? 32768 : 16384;
+
+				poll.add(function () {
+					return L.resolveDefault(getMTKHNATStat()).then(function (res) {
+						if (res.ppe) {
+							for (var state of res.ppe) {
+								var view = document.getElementById('ppe%d_state'.format(state.id));
+								view.innerHTML = '';
+								view.appendChild(progressbar(state.count, max_entry_number));
+							}
+						}
+					});
+				});
+
+				if (hnat_stat.ppe) {
+					for (var stat of hnat_stat.ppe) {
+						status_table.appendChild(E('tr', {}, [
+							E('td', { 'width': '33%' }, _('PPE%d Bound Connections').format(stat.id)),
+							E('td', { 'id': 'ppe%d_state'.format(stat.id) }, progressbar(stat.count, max_entry_number))
+						]));
+					}
+				}
+			}
+
+			return E('fieldset', { 'class': 'cbi-section' }, [
+				E('legend', {}, _('Acceleration Status')), 
+				status_table
 			]);
 		}
 

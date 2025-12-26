@@ -25,6 +25,7 @@ local methods = {
 				hasSHORTCUTFECM   = fs.access("/lib/modules/" .. boardinfo.kernel .. "/shortcut-fe-cm.ko"),
 				hasMEDIATEKHNAT   = fs.access("/lib/modules/" .. boardinfo.kernel .. "/mtkhnat.ko"),
 				hasXTFULLCONENAT  = fs.access("/lib/modules/" .. boardinfo.kernel .. "/xt_FULLCONENAT.ko"),
+				hasMTKNEWNETSYS   = sys.call('zcat /proc/config.gz | grep -qE "^CONFIG_MEDIATEK_NETSYS_(RX_V2|V3)=y"') == 0,
 				hasTCPCCA         = readfile("/proc/sys/net/ipv4/tcp_available_congestion_control")
 			}
 			print(json.stringify(features))
@@ -50,6 +51,44 @@ local methods = {
 				end
 			end
 			print(json.stringify({ type = fptype }))
+		end
+	},
+	getMTKHNATStat = {
+		call = function()
+			local fd = io.open("/sys/kernel/debug/hnat/hnat_entry", "r")
+			if not fd then return end
+
+			local BYTE_P = 80 -- 'P' (PPE_ID)
+			local BYTE_T = 84 -- 'T' (Total State)
+
+			local cur_ppe_id = nil
+			local result = { ppe = {} }
+
+			for line in fd:lines() do
+				local b1 = line:byte(1)
+				if b1 == BYTE_P then
+					local id = line:match("PPE_ID = (%d+)")
+					if id then
+						cur_ppe_id = tonumber(id)
+					end
+				elseif b1 == BYTE_T then
+					if cur_ppe_id and line:find("Total State = BIND", 1, true) == 1 then
+						local cnt = line:match("cnt = (%d+)")
+						if cnt then
+							table.insert(result.ppe, {
+								id = cur_ppe_id,
+								count = tonumber(cnt)
+							})
+							cur_ppe_id = nil
+						end
+					end
+				end
+			end
+
+			fd:close()
+
+			if not next(result.ppe) then return end
+			print(json.stringify(result))
 		end
 	},
 	getFullConeStat = {
