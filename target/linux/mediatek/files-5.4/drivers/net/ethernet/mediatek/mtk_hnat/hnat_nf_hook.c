@@ -1466,8 +1466,31 @@ struct foe_entry ppe_fill_L2_info(struct foe_entry entry,
 	return entry;
 }
 
-struct foe_entry ppe_fill_info_blk(struct foe_entry entry,
-				   struct flow_offload_hw_path *hw_path)
+static bool hnat_is_hw_path_bridging(struct flow_offload_hw_path *hw_path)
+{
+	struct net_device *dev = hw_path->virt_dev;
+	struct net_device *br_dev;
+	bool ret = false;
+
+	/* Only check for devices that are bridge slave ports */
+	if (dev && netif_is_bridge_port(dev)) {
+		rcu_read_lock_bh();
+		/* Verify the upper device is indeed a bridge master */
+		br_dev = netdev_master_upper_dev_get_rcu(dev);
+		if (br_dev && netif_is_bridge_master(br_dev)) {
+			/* Not from the bridge master nor the port itself -> bridged frame */
+			if (!ether_addr_equal(hw_path->eth_src, br_dev->dev_addr) &&
+			    !ether_addr_equal(hw_path->eth_src, dev->dev_addr))
+				ret = true;
+		}
+		rcu_read_unlock_bh();
+	}
+
+	return ret;
+}
+
+static struct foe_entry ppe_fill_info_blk(struct foe_entry entry,
+					  struct flow_offload_hw_path *hw_path)
 {
 	entry.bfib1.psn = (hw_path->flags & BIT(DEV_PATH_PPPOE)) ? 1 : 0;
 	entry.bfib1.vlan_layer += (hw_path->flags & BIT(DEV_PATH_VLAN)) ? 1 : 0;
@@ -1475,7 +1498,8 @@ struct foe_entry ppe_fill_info_blk(struct foe_entry entry,
 	entry.bfib1.vpm = 0;
 	entry.bfib1.cah = 1;
 	entry.bfib1.sta = 0;
-	entry.bfib1.ttl = 1;
+	/* TTL should not be decremented in bridge layer forward */
+	entry.bfib1.ttl = hnat_is_hw_path_bridging(hw_path) ? 0 : 1;
 
 	switch ((int)entry.bfib1.pkt_type) {
 	case L2_BRIDGE:
@@ -2768,12 +2792,8 @@ hnat_entry_bind:
 		memset(&hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)],
 		       0, sizeof(struct hnat_accounting));
 		ct = nf_ct_get(skb, &ctinfo);
-		if (ct) {
-			hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)].zone =
-				ct->zone;
-			hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)].dir =
-				CTINFO2DIR(ctinfo);
-		}
+		if (ct)
+			hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)].zone = ct->zone;
 	}
 
 	return 0;
@@ -3090,11 +3110,8 @@ int mtk_sw_nat_hook_tx(struct sk_buff *skb, int gmac_no)
 		memset(&hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)],
 			0, sizeof(struct hnat_accounting));
 		ct = nf_ct_get(skb, &ctinfo);
-		if (ct) {
+		if (ct)
 			hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)].zone = ct->zone;
-			hnat_priv->acct[skb_hnat_ppe(skb)][skb_hnat_entry(skb)].dir =
-										CTINFO2DIR(ctinfo);
-		}
 	}
 
 #if defined(CONFIG_MEDIATEK_NETSYS_V3)
@@ -4100,11 +4117,19 @@ int mtk_hqos_ptype_cb(struct sk_buff *skb, struct net_device *dev,
 
 int mtk_hnat_skb_headroom_copy(struct sk_buff *new, struct sk_buff *old)
 {
-	if (skb_headroom(new) < skb_headroom(old))
-		return -EPERM;
+	if (skb_cow_head(new, skb_headroom(old)))
+		return -ENOMEM;
 
-	if (skb_hnat_reason(old) == HIT_UNBIND_RATE_REACH && skb_hnat_tops(old))
+	if (skb_hnat_reason(old) == HIT_UNBIND_RATE_REACH && skb_hnat_tops(old)) {
 		memcpy(new->head, old->head, skb_headroom(old));
+		return 0;
+	}
+
+	if (old->inner_protocol == IPPROTO_ESP &&
+		skb_hnat_cdrt(old) && is_magic_tag_valid(old)) {
+		memcpy(new->head, old->head, skb_headroom(old));
+		new->inner_protocol = IPPROTO_ESP;
+	}
 
 	return 0;
 }

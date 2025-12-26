@@ -18,12 +18,17 @@
  static inline void dev_base_seq_inc(struct net *net)
  {
  	while (++net->dev_base_seq == 0)
-@@ -3484,6 +3487,9 @@ static struct sk_buff *validate_xmit_skb
+@@ -3484,6 +3487,14 @@ static struct sk_buff *validate_xmit_skb
  		if (IS_ERR(segs)) {
  			goto out_kfree_skb;
  		} else if (segs) {
-+			if (mtk_skb_headroom_copy)
-+				mtk_skb_headroom_copy(segs, skb);
++			if (mtk_skb_headroom_copy) {
++				struct sk_buff *temp = segs;
++				do {
++					mtk_skb_headroom_copy(temp, skb);
++					temp = temp->next;
++				} while (temp != NULL);
++			}
 +
  			consume_skb(skb);
  			skb = segs;
