@@ -132,6 +132,32 @@ static const struct mtk_reg_map mt7628_reg_map = {
 static const struct mtk_reg_map mt7986_reg_map = {
 	.tx_irq_mask		= 0x461c,
 	.tx_irq_status		= 0x4618,
+#if defined(CONFIG_MEDIATEK_NETSYS_RX_V2)
+	.pdma = {
+		.tx_ptr		= 0x6000,
+		.tx_cnt_cfg	= 0x6004,
+		.pctx_ptr	= 0x6008,
+		.pdtx_ptr	= 0x600c,
+		.rx_ptr		= 0x6100,
+		.rx_cnt_cfg	= 0x6104,
+		.pcrx_ptr	= 0x6108,
+		.glo_cfg	= 0x6204,
+		.rst_idx	= 0x6208,
+		.delay_irq	= 0x620c,
+		.irq_status	= 0x6220,
+		.irq_mask	= 0x6228,
+		.int_grp	= 0x6250,
+		.int_grp2	= 0x6254,
+		.lro_ctrl_dw0	= 0x6180,
+		.lro_alt_score_delta	= 0x624c,
+		.lro_rx_dly_int	= 0x6270,
+		.lro_rx_dip_dw0	= 0x6304,
+		.lro_rx_ctrl_dw0	= 0x6324,
+		.rss_glo_cfg    = 0x3000,
+		.rss_hash_key_dw0	= 0x3020,
+		.rss_indr_table_dw0	= 0x3050,
+	},
+#else
 	.pdma = {
 		.tx_ptr		= 0x4000,
 		.tx_cnt_cfg	= 0x4004,
@@ -156,6 +182,7 @@ static const struct mtk_reg_map mt7986_reg_map = {
 		.rss_hash_key_dw0	= 0x2820,
 		.rss_indr_table_dw0	= 0x2850,
 	},
+#endif
 	.qdma = {
 		.qtx_cfg	= 0x4400,
 		.qtx_sch	= 0x4404,
@@ -6930,11 +6957,11 @@ static const struct mtk_soc_data mt7986_data = {
 	.rss_num = 4,
 	.txrx = {
 		.txd_size = sizeof(struct mtk_tx_dma_v2),
-		.rxd_size = sizeof(struct mtk_rx_dma),
+		.rxd_size = sizeof(struct mtk_rx_dma_v2),
 		.tx_dma_size = MTK_DMA_SIZE(4K),
 		.rx_dma_size = MTK_DMA_SIZE(1K),
 		.fq_dma_size = MTK_DMA_SIZE(2K),
-		.rx_dma_l4_valid = RX_DMA_L4_VALID,
+		.rx_dma_l4_valid = RX_DMA_L4_VALID_V2,
 		.dma_max_len = MTK_TX_DMA_BUF_LEN_V2,
 		.dma_len_offset = MTK_TX_DMA_BUF_SHIFT_V2,
 	},
