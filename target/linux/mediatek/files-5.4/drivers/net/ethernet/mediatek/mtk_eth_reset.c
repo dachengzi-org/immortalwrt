@@ -651,7 +651,7 @@ u32 mtk_monitor_wdma_rx(struct mtk_eth *eth)
 	struct wdma_rx_monitor *wdma_rx = &eth->reset.wdma_monitor.rx;
 	bool connsys_busy, netsys_busy;
 	u32 cur_crx, cur_drx, cur_opq, cur_fsm, max_cnt;
-	u32 i, j, err_flag = 0;
+	u32 i, err_flag = 0;
 	bool rx_en, rx_busy, crx_unchanged, drx_unchanged;
 	int rx_cnt;
 
@@ -664,17 +664,13 @@ u32 mtk_monitor_wdma_rx(struct mtk_eth *eth)
 
 		connsys_busy = netsys_busy = false;
 		crx_unchanged = drx_unchanged = true;
-		for (j = 0; j < 3; j++) {
-			cur_crx = mtk_r32(eth, MTK_WDMA_CRX_PTR(i));
-			if (cur_crx != wdma_rx->pre_crx[i])
-				crx_unchanged = false;
 
-			cur_drx = mtk_r32(eth, MTK_WDMA_DRX_PTR(i));
-			if (cur_drx != wdma_rx->pre_drx[i])
-				drx_unchanged = false;
+		cur_crx = mtk_r32(eth, MTK_WDMA_CRX_PTR(i));
+		crx_unchanged = (cur_crx == wdma_rx->pre_crx[i]);
 
-			msleep(50);
-		}
+		cur_drx = mtk_r32(eth, MTK_WDMA_DRX_PTR(i));
+		drx_unchanged = (cur_drx == wdma_rx->pre_drx[i]);
+
 		rx_cnt = (cur_drx > cur_crx) ? (cur_drx - 1 - cur_crx) :
 					       (cur_drx - 1 - cur_crx + max_cnt);
 		cur_opq = MTK_FE_WDMA_OQ(i);
