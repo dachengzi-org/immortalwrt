@@ -242,5 +242,20 @@ define Device/mt7981-emmc-rfb-sb
 endef
 TARGET_DEVICES += mt7981-emmc-rfb-sb
 
+define Device/glinet_gl-mt2500
+  DEVICE_VENDOR := GL.iNet
+  DEVICE_MODEL := GL-MT2500
+  DEVICE_DTS := mt7981-glinet-gl-mt2500
+  SUPPORTED_DEVICES := glinet,gl-mt2500
+  DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+  DEVICE_PACKAGES := automount mkf2fs e2fsprogs blkid blockdev losetup \
+		     kmod-fs-ext4 kmod-mmc kmod-fs-f2fs kmod-fs-vfat \
+		     kmod-nls-cp437 kmod-nls-iso8859-1 kmod-usb3
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-kernel | pad-to 32M | append-rootfs
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += glinet_gl-mt2500
+
 DEFAULT_DEVICE_VARS += FIT_KEY_DIR FIT_KEY_NAME ANTI_ROLLBACK_TABLE AUTO_AR_CONF \
 	HASHED_BOOT_DEVICE BASIC_KERNEL_CMDLINE

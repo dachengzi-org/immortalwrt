@@ -8,7 +8,8 @@ platform_do_upgrade() {
 	*snand*)
 		ubi_do_upgrade "$1"
 		;;
-	*emmc*)
+	*emmc* |\
+	glinet,gl-mt2500)
 		mtk_mmc_do_upgrade "$1"
 		;;
 	*)
@@ -27,7 +28,8 @@ platform_check_image() {
 
 	case "$board" in
 	*snand* |\
-	*emmc*)
+	*emmc* |\
+	glinet,gl-mt2500)
 		# tar magic `ustar`
 		magic="$(dd if="$1" bs=1 skip=257 count=5 2>/dev/null)"
 

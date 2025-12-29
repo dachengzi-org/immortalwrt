@@ -22,6 +22,9 @@ mediatek_setup_interfaces()
 	*2500wan-p5*)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" wan
 		;;
+	glinet,gl-mt2500)
+		ucidef_set_interfaces_lan_wan "eth1" "eth0"
+		;;
 	*)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" eth1
 		;;
@@ -38,14 +41,17 @@ mediatek_setup_macs()
 	local wan_mac_offset=""
 
 	case $board in
+	glinet,gl-mt2500)
+		wan_mac=$(get_mac_binary /dev/mmcblk0boot1 0x0a)
+		lan_mac=$(macaddr_add "$wan_mac" 1)
+		;;
 	*)
 		lan_mac_offset="0x2A"
 		wan_mac_offset="0x24"
+		lan_mac=$(mtd_get_mac_binary $part_name $lan_mac_offset)
+		wan_mac=$(mtd_get_mac_binary $part_name $wan_mac_offset)
 		;;
 	esac
-
-	lan_mac=$(mtd_get_mac_binary $part_name $lan_mac_offset)
-	wan_mac=$(mtd_get_mac_binary $part_name $wan_mac_offset)
 
 	case "$lan_mac" in
 		00:00:00:00:00:00);;
