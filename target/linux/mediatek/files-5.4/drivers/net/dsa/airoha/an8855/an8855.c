@@ -2999,9 +2999,9 @@ an8855_probe(struct mdio_device *mdiodev)
 	struct an8855_priv *priv;
 	struct device_node *dn;
 	struct device_node *switch_node = NULL;
-#if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
+// #if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
 	struct device *dev;
-#endif
+// #endif
 	int ret;
 
 	dn = mdiodev->dev.of_node;
@@ -3009,23 +3009,23 @@ an8855_probe(struct mdio_device *mdiodev)
 	priv = devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
-#if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
+// #if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
 	priv->bus = mdiodev->bus;
 	priv->dev = &mdiodev->dev;
 
 	dev = priv->dev;
 	priv->ds = devm_kzalloc(dev, sizeof(*priv->ds), GFP_KERNEL);
 	if (!priv->ds)
-#else
-	priv->ds = dsa_switch_alloc(&mdiodev->dev, AN8855_NUM_PORTS);
-#endif
+// #else
+// 	priv->ds = dsa_switch_alloc(&mdiodev->dev, AN8855_NUM_PORTS);
+// #endif
 	if (!priv->ds)
 		return -ENOMEM;
 
-#if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
+// #if (KERNEL_VERSION(5, 4, 284) < LINUX_VERSION_CODE)
 	priv->ds->dev = dev;
 	priv->ds->num_ports = AN8855_NUM_PORTS;
-#endif
+// #endif
 	/* Get the hardware identifier from the devicetree node.
 	 * We will need it for some of the clock and regulator setup.
 	 */
