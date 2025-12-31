@@ -801,7 +801,8 @@ setup_model()
 	glinet,gl-mt6000)
 		MT7986_whnat $num_of_wifi
 		;;
-	*7981*)
+	*7981* |\
+	glinet,gl-mt3000)
 		MT7981_whnat $num_of_wifi
 		;;
 	*)

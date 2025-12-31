@@ -257,5 +257,18 @@ define Device/glinet_gl-mt2500
 endef
 TARGET_DEVICES += glinet_gl-mt2500
 
+define Device/glinet_gl-mt3000
+  DEVICE_VENDOR := GL.iNet
+  DEVICE_MODEL := GL-MT3000
+  DEVICE_DTS := mt7981-glinet-gl-mt3000
+  SUPPORTED_DEVICES := glinet,gl-mt3000
+  DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+  DEVICE_PACKAGES := automount kmod-nls-cp437 kmod-nls-iso8859-1 kmod-usb3
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-kernel | pad-to 32M | append-rootfs
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += glinet_gl-mt3000
+
 DEFAULT_DEVICE_VARS += FIT_KEY_DIR FIT_KEY_NAME ANTI_ROLLBACK_TABLE AUTO_AR_CONF \
 	HASHED_BOOT_DEVICE BASIC_KERNEL_CMDLINE

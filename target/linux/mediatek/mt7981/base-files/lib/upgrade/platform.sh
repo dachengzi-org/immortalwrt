@@ -5,7 +5,8 @@ platform_do_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
-	*snand*)
+	*snand* |\
+	glinet,gl-mt3000)
 		ubi_do_upgrade "$1"
 		;;
 	*emmc* |\
@@ -29,7 +30,8 @@ platform_check_image() {
 	case "$board" in
 	*snand* |\
 	*emmc* |\
-	glinet,gl-mt2500)
+	glinet,gl-mt2500 |\
+	glinet,gl-mt3000)
 		# tar magic `ustar`
 		magic="$(dd if="$1" bs=1 skip=257 count=5 2>/dev/null)"
 
