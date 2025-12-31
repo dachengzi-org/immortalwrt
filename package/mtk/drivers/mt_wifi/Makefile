@@ -264,6 +264,7 @@ PKG_KCONFIG:= \
 	DFS_SLAVE_SUPPORT\
 
 PKG_CONFIG_DEPENDS:=$(foreach c, $(PKG_KCONFIG),$(if $(CONFIG_MTK_$c),CONFIG_$(c)))
+PKG_BUILD_DEPENDS:=MTK_WARP_V2:warp
 
 include $(INCLUDE_DIR)/package.mk
 
