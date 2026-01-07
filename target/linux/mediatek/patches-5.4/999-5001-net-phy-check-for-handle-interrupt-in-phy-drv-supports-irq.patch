@@ -1,0 +1,11 @@
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2517,7 +2517,7 @@ EXPORT_SYMBOL(phy_validate_pause);
+ 
+ static bool phy_drv_supports_irq(struct phy_driver *phydrv)
+ {
+-	return phydrv->config_intr && phydrv->ack_interrupt;
++	return phydrv->config_intr && (phydrv->ack_interrupt || phydrv->handle_interrupt);
+ }
+ 
+ static int phy_led_set_brightness(struct led_classdev *led_cdev,
