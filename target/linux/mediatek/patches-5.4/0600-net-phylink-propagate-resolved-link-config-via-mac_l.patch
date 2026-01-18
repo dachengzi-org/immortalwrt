@@ -111,7 +111,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	u32 val;
 --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
 +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1209,9 +1209,10 @@ out:
+@@ -1236,9 +1236,10 @@ out:
  	mtk_w32(eth, val, MTK_QTX_SCH(idx));
  }
  

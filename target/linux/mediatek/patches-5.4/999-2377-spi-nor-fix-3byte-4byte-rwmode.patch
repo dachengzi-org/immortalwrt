@@ -67,7 +67,7 @@
  		list_del(pos);
 --- a/drivers/char/tpm/tpm_tis_core.c
 +++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -888,7 +888,7 @@ int tpm_tis_core_init(struct device *dev
+@@ -890,7 +890,7 @@ int tpm_tis_core_init(struct device *dev
  	if (phy_ops->do_calibration) {
  		rc = priv->phy_ops->do_calibration(priv, dev);
  		if (rc)

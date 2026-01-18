@@ -55,7 +55,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -3661,8 +3661,6 @@ static int bond_do_ioctl(struct net_devi
+@@ -3657,8 +3657,6 @@ static int bond_do_ioctl(struct net_devi
  	case BOND_RELEASE_OLD:
  	case SIOCBONDRELEASE:
  		res = bond_release(bond_dev, slave_dev);
@@ -185,7 +185,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -1841,8 +1841,6 @@ enum netdev_ml_priv_type {
+@@ -1850,8 +1850,6 @@ enum netdev_ml_priv_type {
   *			for hardware timestamping
   *	@sfp_bus:	attached &struct sfp_bus structure.
   *
@@ -194,7 +194,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *	@qdisc_tx_busylock: lockdep class annotating Qdisc->busylock spinlock
   *	@qdisc_running_key: lockdep class annotating Qdisc->running seqcount
   *
-@@ -2150,7 +2148,6 @@ struct net_device {
+@@ -2159,7 +2157,6 @@ struct net_device {
  #endif
  	struct phy_device	*phydev;
  	struct sfp_bus		*sfp_bus;
@@ -202,7 +202,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	struct lock_class_key	*qdisc_tx_busylock;
  	struct lock_class_key	*qdisc_running_key;
  	bool			proto_down;
-@@ -2241,10 +2238,13 @@ static inline void netdev_for_each_tx_qu
+@@ -2250,10 +2247,13 @@ static inline void netdev_for_each_tx_qu
  	static struct lock_class_key qdisc_tx_busylock_key;	\
  	static struct lock_class_key qdisc_running_key;		\
  	static struct lock_class_key qdisc_xmit_lock_key;	\
@@ -216,7 +216,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	for (i = 0; i < (dev)->num_tx_queues; i++)		\
  		lockdep_set_class(&(dev)->_tx[i]._xmit_lock,	\
  				  &qdisc_xmit_lock_key);	\
-@@ -3282,7 +3282,6 @@ static inline void netif_stop_queue(stru
+@@ -3291,7 +3291,6 @@ static inline void netif_stop_queue(stru
  }
  
  void netif_tx_stop_all_queues(struct net_device *dev);
@@ -224,7 +224,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  static inline bool netif_tx_queue_stopped(const struct netdev_queue *dev_queue)
  {
-@@ -4220,6 +4219,11 @@ static inline void netif_addr_lock(struc
+@@ -4229,6 +4228,11 @@ static inline void netif_addr_lock(struc
  	spin_lock(&dev->addr_list_lock);
  }
  
@@ -447,7 +447,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	netif_addr_unlock(to);
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -2398,7 +2398,6 @@ static int do_set_master(struct net_devi
+@@ -2400,7 +2400,6 @@ static int do_set_master(struct net_devi
  			err = ops->ndo_del_slave(upper_dev, dev);
  			if (err)
  				return err;

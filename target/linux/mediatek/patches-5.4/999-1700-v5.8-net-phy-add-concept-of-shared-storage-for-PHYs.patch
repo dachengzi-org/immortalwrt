@@ -12,7 +12,7 @@ Subject: [PATCH]
 
 --- a/drivers/net/phy/mdio_bus.c
 +++ b/drivers/net/phy/mdio_bus.c
-@@ -404,6 +404,7 @@ int __mdiobus_register(struct mii_bus *b
+@@ -407,6 +407,7 @@ int __mdiobus_register(struct mii_bus *b
  	}
  
  	mutex_init(&bus->mdio_lock);

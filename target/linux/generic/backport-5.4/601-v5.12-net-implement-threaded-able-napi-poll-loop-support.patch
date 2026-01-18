@@ -76,7 +76,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  /**
   *	napi_synchronize - wait until NAPI is not running
-@@ -1794,6 +1784,8 @@ enum netdev_ml_priv_type {
+@@ -1803,6 +1793,8 @@ enum netdev_ml_priv_type {
   *
   *	@wol_enabled:	Wake-on-LAN is enabled
   *
@@ -85,7 +85,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *	FIXME: cleanup struct net_device such that network protocol info
   *	moves out.
   */
-@@ -2083,6 +2075,7 @@ struct net_device {
+@@ -2092,6 +2084,7 @@ struct net_device {
  	struct lock_class_key	addr_list_lock_key;
  	bool			proto_down;
  	unsigned		wol_enabled:1;

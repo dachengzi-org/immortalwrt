@@ -187,7 +187,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  };
  
  /* These structures hold the attributes of bpf state that are being passed
-@@ -1255,6 +1309,8 @@ struct tlsdev_ops;
+@@ -1259,6 +1313,8 @@ struct tlsdev_ops;
   *	Get devlink port instance associated with a given netdev.
   *	Called with a reference on the netdevice and devlink locks only,
   *	rtnl_lock is not held.
@@ -196,7 +196,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
   */
  struct net_device_ops {
  	int			(*ndo_init)(struct net_device *dev);
-@@ -1452,6 +1508,8 @@ struct net_device_ops {
+@@ -1461,6 +1517,8 @@ struct net_device_ops {
  	int			(*ndo_xsk_wakeup)(struct net_device *dev,
  						  u32 queue_id, u32 flags);
  	struct devlink_port *	(*ndo_get_devlink_port)(struct net_device *dev);
@@ -205,7 +205,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  };
  
  /**
-@@ -2679,6 +2737,10 @@ void dev_remove_offload(struct packet_of
+@@ -2688,6 +2746,10 @@ void dev_remove_offload(struct packet_of
  
  int dev_get_iflink(const struct net_device *dev);
  int dev_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb);

@@ -55,7 +55,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -4897,6 +4897,7 @@ static int bond_init(struct net_device *
+@@ -4893,6 +4893,7 @@ static int bond_init(struct net_device *
  	spin_lock_init(&bond->stats_lock);
  	lockdep_register_key(&bond->stats_lock_key);
  	lockdep_set_class(&bond->stats_lock, &bond->stats_lock_key);
@@ -246,7 +246,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		printk(KERN_WARNING "%s: register netdevice failed!\n",
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -1840,13 +1840,11 @@ enum netdev_ml_priv_type {
+@@ -1849,13 +1849,11 @@ enum netdev_ml_priv_type {
   *	@phydev:	Physical device may attach itself
   *			for hardware timestamping
   *	@sfp_bus:	attached &struct sfp_bus structure.
@@ -263,7 +263,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
   *
   *	@proto_down:	protocol port state information can be sent to the
   *			switch driver and used to set the phys state of the
-@@ -2152,10 +2150,9 @@ struct net_device {
+@@ -2161,10 +2159,9 @@ struct net_device {
  #endif
  	struct phy_device	*phydev;
  	struct sfp_bus		*sfp_bus;
@@ -276,7 +276,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	bool			proto_down;
  	unsigned		wol_enabled:1;
  	unsigned		threaded:1;
-@@ -2239,6 +2236,20 @@ static inline void netdev_for_each_tx_qu
+@@ -2248,6 +2245,20 @@ static inline void netdev_for_each_tx_qu
  		f(dev, &dev->_tx[i], arg);
  }
  
@@ -382,7 +382,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/net/bluetooth/6lowpan.c
 +++ b/net/bluetooth/6lowpan.c
-@@ -572,7 +572,15 @@ static netdev_tx_t bt_xmit(struct sk_buf
+@@ -580,7 +580,15 @@ static netdev_tx_t bt_xmit(struct sk_buf
  	return err < 0 ? NET_XMIT_DROP : err;
  }
  
@@ -663,7 +663,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/net/sched/sch_generic.c
 +++ b/net/sched/sch_generic.c
-@@ -620,6 +620,9 @@ struct Qdisc_ops noqueue_qdisc_ops __rea
+@@ -618,6 +618,9 @@ struct Qdisc_ops noqueue_qdisc_ops __rea
  	.owner		=	THIS_MODULE,
  };
  
@@ -673,7 +673,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  struct Qdisc *qdisc_alloc(struct netdev_queue *dev_queue,
  			  const struct Qdisc_ops *ops,
  			  struct netlink_ext_ack *extack)
-@@ -672,9 +675,17 @@ struct Qdisc *qdisc_alloc(struct netdev_
+@@ -670,9 +673,17 @@ struct Qdisc *qdisc_alloc(struct netdev_
  	}
  
  	spin_lock_init(&sch->busylock);
@@ -691,7 +691,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	sch->ops = ops;
  	sch->flags = ops->static_flags;
-@@ -685,12 +696,6 @@ struct Qdisc *qdisc_alloc(struct netdev_
+@@ -683,12 +694,6 @@ struct Qdisc *qdisc_alloc(struct netdev_
  	dev_hold(dev);
  	refcount_set(&sch->refcnt, 1);
  

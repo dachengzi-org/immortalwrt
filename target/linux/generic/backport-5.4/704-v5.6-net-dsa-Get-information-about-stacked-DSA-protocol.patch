@@ -58,7 +58,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	u8 hdr_ctl, val;
  	u16 reg;
  
-@@ -1940,7 +1939,8 @@ static bool b53_can_enable_brcm_tags(str
+@@ -1967,7 +1966,8 @@ static bool b53_can_enable_brcm_tags(str
  	return ret;
  }
  
@@ -68,7 +68,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  {
  	struct b53_device *dev = ds->priv;
  
-@@ -1950,16 +1950,22 @@ enum dsa_tag_protocol b53_get_tag_protoc
+@@ -1977,16 +1977,22 @@ enum dsa_tag_protocol b53_get_tag_protoc
  	 * misses on multicast addresses (TBD).
  	 */
  	if (is5325(dev) || is5365(dev) || is539x(dev) || is531x5(dev) ||

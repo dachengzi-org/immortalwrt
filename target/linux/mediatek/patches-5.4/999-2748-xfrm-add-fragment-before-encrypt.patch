@@ -1,6 +1,6 @@
 --- a/net/xfrm/xfrm_device.c
 +++ b/net/xfrm/xfrm_device.c
-@@ -374,6 +374,12 @@ bool xfrm_dev_offload_ok(struct sk_buff
+@@ -375,6 +375,12 @@ bool xfrm_dev_offload_ok(struct sk_buff
  			goto ok;
  	}
  
