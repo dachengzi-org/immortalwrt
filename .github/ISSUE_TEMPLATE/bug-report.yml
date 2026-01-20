@@ -80,5 +80,5 @@ body:
       label: Terms
       description: By submitting this issue, you agree to the terms below.
       options:
-        - label: I am reporting an issue for ImmortalWrt, not an unsupported fork.
+        - label: I am reporting an issue for __ImmortalWrt for MediaTek Filogic__ , not an unsupported fork or official ImmortalWrt.
           required: true
