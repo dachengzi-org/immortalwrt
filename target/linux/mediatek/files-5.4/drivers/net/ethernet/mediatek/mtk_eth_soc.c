@@ -4446,6 +4446,8 @@ static int mtk_start_dma(struct mtk_eth *eth)
 		val = mtk_r32(eth, reg_map->qdma.glo_cfg);
 		if (MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V2) ||
 		    MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V3)) {
+			u32 pkt_rx_wdone = of_property_read_bool(eth->dev->of_node,
+					   "qdma,pkt-rx-wdone") ? MTK_PKT_RX_WDONE : 0;
 			if (MTK_HAS_CAPS(eth->soc->caps, MTK_QDMA_V1_4))
 				mtk_m32(eth, MTK_QDMA_FQ_FASTPATH_EN,
 					MTK_QDMA_FQ_FASTPATH_EN,
@@ -4456,7 +4458,7 @@ static int mtk_start_dma(struct mtk_eth *eth)
 				val | MTK_TX_DMA_EN | MTK_RX_DMA_EN |
 				MTK_DMA_SIZE_32DWORDS | MTK_TX_WB_DDONE |
 				MTK_NDP_CO_PRO | MTK_MUTLI_CNT |
-				MTK_RESV_BUF | MTK_WCOMP_EN |
+				MTK_RESV_BUF | MTK_WCOMP_EN | pkt_rx_wdone |
 				MTK_DMAD_WR_WDONE | MTK_CHK_DDONE_EN |
 				MTK_RX_2B_OFFSET, reg_map->qdma.glo_cfg);
 		} else
@@ -5108,11 +5110,6 @@ static int mtk_hw_init(struct mtk_eth *eth, u32 type)
 			/* enable CDMW0 l3_len_ov_drop */
 			mtk_m32(eth, MTK_CDMW0_L3_LEN_OV_DROP,
 				MTK_CDMW0_L3_LEN_OV_DROP, MTK_CDMW0_IG_CTRL);
-			/* disable GDM page_num_mismatch_det */
-			for (i = 0; i < 3; i++) {
-				mtk_m32(eth, GDM_PAGE_MISMATCH_DET, 0,
-					FE_GDM_DBG_CTRL(i));
-			}
 
 			/* PSE should not drop p8 packets */
 			mtk_w32(eth, 0x00000100, PSE_NO_DROP_CFG);
