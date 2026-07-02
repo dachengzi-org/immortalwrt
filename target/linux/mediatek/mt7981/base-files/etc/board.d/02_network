@@ -22,6 +22,9 @@ mediatek_setup_interfaces()
 	*2500wan-p5*)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" wan
 		;;
+	cmcc,rax3000m-emmc)
+		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3" eth1
+		;;
 	glinet,gl-mt2500 |\
 	glinet,gl-mt3000)
 		ucidef_set_interfaces_lan_wan "eth1" "eth0"
@@ -42,6 +45,10 @@ mediatek_setup_macs()
 	local wan_mac_offset=""
 
 	case $board in
+	cmcc,rax3000m-emmc)
+		wan_mac=$(get_mac_binary /dev/mmcblk0boot1 0x24)
+		lan_mac=$(macaddr_add "$wan_mac" 3)
+		;;
 	glinet,gl-mt2500)
 		wan_mac=$(get_mac_binary /dev/mmcblk0boot1 0x0a)
 		lan_mac=$(macaddr_add "$wan_mac" 1)

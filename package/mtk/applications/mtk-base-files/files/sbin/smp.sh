@@ -802,6 +802,7 @@ setup_model()
 		MT7986_whnat $num_of_wifi
 		;;
 	*7981* |\
+	cmcc,rax3000m-emmc |\
 	glinet,gl-mt3000)
 		MT7981_whnat $num_of_wifi
 		;;

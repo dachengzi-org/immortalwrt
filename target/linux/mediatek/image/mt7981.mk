@@ -242,6 +242,21 @@ define Device/mt7981-emmc-rfb-sb
 endef
 TARGET_DEVICES += mt7981-emmc-rfb-sb
 
+define Device/cmcc_rax3000m-emmc
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := RAX3000M eMMC
+  DEVICE_DTS := mt7981-cmcc-rax3000m-emmc
+  DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+  SUPPORTED_DEVICES := cmcc,rax3000m-emmc
+  DEVICE_PACKAGES := automount mkf2fs e2fsprogs blkid blockdev losetup \
+		     kmod-fs-ext4 kmod-mmc kmod-fs-f2fs kmod-fs-vfat \
+		     kmod-nls-cp437 kmod-nls-iso8859-1 kmod-usb3
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-kernel | pad-to 32M | append-rootfs
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += cmcc_rax3000m-emmc
+
 define Device/glinet_gl-mt2500
   DEVICE_VENDOR := GL.iNet
   DEVICE_MODEL := GL-MT2500

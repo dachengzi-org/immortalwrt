@@ -10,6 +10,7 @@ platform_do_upgrade() {
 		ubi_do_upgrade "$1"
 		;;
 	*emmc* |\
+	cmcc,rax3000m-emmc |\
 	glinet,gl-mt2500)
 		mtk_mmc_do_upgrade "$1"
 		;;

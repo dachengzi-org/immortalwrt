@@ -67,6 +67,7 @@ board=$(board_name)
 
 case "$board" in
 mediatek,*-emmc-rfb |\
+cmcc,rax3000m-emmc |\
 glinet,gl-mt2500 |\
 glinet,gl-mt6000)
 	env_dev=$(cat /sys/module/boot_param/parameters/env_part 2>/dev/null)
