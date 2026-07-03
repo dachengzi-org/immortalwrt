@@ -14,15 +14,17 @@
 
 &mmc0 {
 	bus-width = <8>;
-	max-frequency = <26000000>;
+	max-frequency = <200000000>;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	vmmc-supply = <&reg_3p3v>;
+	vqmmc-supply = <&reg_1p8v>;
 	no-sd;
 	no-sdio;
 	non-removable;
 	pinctrl-names = "default", "state_uhs";
 	pinctrl-0 = <&mmc0_pins_default>;
 	pinctrl-1 = <&mmc0_pins_uhs>;
-	vmmc-supply = <&reg_3p3v>;
-	non-removable;
 	status = "okay";
 };
 
