@@ -22,6 +22,9 @@ mediatek_setup_interfaces()
 	glinet,gl-mt6000)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan5" eth1
 		;;
+	xiaomi,redmi-router-ax6000)
+		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3" eth1
+		;;
 	*)
 		ucidef_set_interfaces_lan_wan "lan0 lan1 lan2 lan3 lan4 lan5" eth1
 		;;
@@ -41,6 +44,10 @@ mediatek_setup_macs()
 	glinet,gl-mt6000)
 		wan_mac=$(get_mac_binary /dev/mmcblk0p2 0x0a)
 		lan_mac=$(macaddr_add "$wan_mac" 2)
+		;;
+	xiaomi,redmi-router-ax6000)
+		lan_mac=$(mtd_get_mac_binary $part_name 0x2a)
+		wan_mac=$(mtd_get_mac_binary $part_name 0x24)
 		;;
 	*)
 		lan_mac_offset="0x2A"

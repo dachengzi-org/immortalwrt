@@ -798,7 +798,8 @@ setup_model()
 		MT7990_whnat $num_of_wifi
 		;;
 	*7986* |\
-	glinet,gl-mt6000)
+	glinet,gl-mt6000 |\
+	xiaomi,redmi-router-ax6000)
 		MT7986_whnat $num_of_wifi
 		;;
 	*7981* |\

@@ -482,5 +482,22 @@ define Device/glinet_gl-mt6000
 endef
 TARGET_DEVICES += glinet_gl-mt6000
 
+define Device/xiaomi_redmi-router-ax6000
+	DEVICE_VENDOR := Xiaomi
+	DEVICE_MODEL := Redmi Router AX6000
+	DEVICE_DTS := mt7986a-xiaomi-redmi-router-ax6000
+	DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+	SUPPORTED_DEVICES := xiaomi,redmi-router-ax6000
+	UBINIZE_OPTS := -E 5
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	IMAGE_SIZE := 112640k
+	KERNEL_IN_UBI := 1
+	IMAGES += factory.bin
+	IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+	IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += xiaomi_redmi-router-ax6000
+
 DEFAULT_DEVICE_VARS += FIT_KEY_DIR FIT_KEY_NAME ANTI_ROLLBACK_TABLE AUTO_AR_CONF \
 	HASHED_BOOT_DEVICE BASIC_KERNEL_CMDLINE

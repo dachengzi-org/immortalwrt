@@ -5,7 +5,8 @@ platform_do_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
-	*snand*)
+	*snand* |\
+	xiaomi,redmi-router-ax6000)
 		ubi_do_upgrade "$1"
 		;;
 	*emmc* |\
@@ -28,6 +29,7 @@ platform_check_image() {
 
 	case "$board" in
 	*snand* |\
+	xiaomi,redmi-router-ax6000 |\
 	*emmc* |\
 	glinet,gl-mt6000)
 		# tar magic `ustar`

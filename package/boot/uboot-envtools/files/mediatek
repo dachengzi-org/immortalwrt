@@ -73,7 +73,7 @@ glinet,gl-mt6000)
 	env_dev=$(cat /sys/module/boot_param/parameters/env_part 2>/dev/null)
 	[ -n "$env_dev" ] && env_dev=$(block_dev_path "${env_dev}")
 	[ -z "$env_dev" ] && env_dev=$(block_dev_path "PARTLABEL=u-boot-env")
-	[ -n "$env_dev" ] && \
+	[ -n "$env_dev" ] && \S
 		ubootenv_add_uci_config "$env_dev" "0" "0x80000"
 	;;
 
@@ -99,6 +99,10 @@ glinet,gl-mt3000)
 			ubootenv_add_uci_config "/dev/$env_ubivol" "0" "0x80000" "0x80000" 1
 		fi
 	fi
+	;;
+
+xiaomi,redmi-router-ax6000)
+	ubootenv_add_uci_config "/dev/mtd2" "0x0" "0x10000" "0x20000" "1"
 	;;
 esac
 
