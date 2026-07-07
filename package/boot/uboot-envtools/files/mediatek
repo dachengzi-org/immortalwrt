@@ -73,7 +73,7 @@ glinet,gl-mt6000)
 	env_dev=$(cat /sys/module/boot_param/parameters/env_part 2>/dev/null)
 	[ -n "$env_dev" ] && env_dev=$(block_dev_path "${env_dev}")
 	[ -z "$env_dev" ] && env_dev=$(block_dev_path "PARTLABEL=u-boot-env")
-	[ -n "$env_dev" ] && \S
+	[ -n "$env_dev" ] && \
 		ubootenv_add_uci_config "$env_dev" "0" "0x80000"
 	;;
 
