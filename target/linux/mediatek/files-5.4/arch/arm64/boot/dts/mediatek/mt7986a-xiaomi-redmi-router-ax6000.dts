@@ -23,8 +23,11 @@
 			    earlycon=uart8250,mmio32,0x11002000";
 	};
 
-	memory {
-		reg = <0 0x40000000 0 0x20000000>;
+	gsw: gsw@0 {
+		compatible = "mediatek,mt753x";
+		mediatek,ethsys = <&ethsys>;
+		#address-cells = <1>;
+		#size-cells = <0>;
 	};
 
 	keys {
@@ -59,7 +62,7 @@
 
 			partition@0 {
 				label = "BL2";
-				reg = <0x0 0x100000>;
+				reg = <0x000000 0x100000>;
 			};
 
 			partition@100000 {
@@ -72,7 +75,7 @@
 				reg = <0x140000 0x40000>;
 			};
 
-			partition@180000 {
+			factory: partition@180000 {
 				label = "Factory";
 				reg = <0x180000 0x200000>;
 			};
@@ -84,7 +87,7 @@
 
 			partition@580000 {
 				label = "ubi";
-				reg = <0x580000 0x7a80000>;
+				reg = <0x580000 0x7280000>;
 			};
 		};
 	};
@@ -117,72 +120,75 @@
 		compatible = "mediatek,eth-mac";
 		reg = <1>;
 		phy-mode = "2500base-x";
-		phy-handle = <&phy5>;
+
+		fixed-link {
+			speed = <2500>;
+			full-duplex;
+			pause;
+		};
 	};
 
 	mdio: mdio-bus {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		phy5: phy@5 {
-			compatible = "ethernet-phy-ieee802.3-c45";
+		phy@5 {
+			compatible = "ethernet-phy-id67c9.de0a";
 			reg = <5>;
-			reset-assert-us = <100000>;
-			reset-deassert-us = <100000>;
-			reset-gpios = <&pio 6 GPIO_ACTIVE_LOW>;
-			interrupt-parent = <&pio>;
-			interrupts = <44 IRQ_TYPE_LEVEL_LOW>;
+			reset-gpios = <&pio 6 1>;
+			reset-deassert-us = <20000>;
+			phy-mode = "2500base-x";
 		};
 
-		switch@0 {
-			compatible = "mediatek,mt7531";
-			reg = <31>;
-			reset-gpios = <&pio 5 GPIO_ACTIVE_HIGH>;
-			interrupt-controller;
-			#interrupt-cells = <1>;
-			interrupt-parent = <&pio>;
-			interrupts = <66 IRQ_TYPE_LEVEL_HIGH>;
+		phy@6 {
+			compatible = "ethernet-phy-id67c9.de0a";
+			reg = <6>;
+			phy-mode = "2500base-x";
+		};
+	};
+};
 
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
+&gsw {
+	compatible = "mediatek,mt753x";
+	#address-cells = <1>;
+    #size-cells = <0>;
+	mediatek,mdio = <&mdio>;
+	mediatek,portmap = "llllw";
+	mediatek,mdio_master_pinmux = <0>;
+	reset-gpios = <&pio 5 0>;
+	interrupt-parent = <&pio>;
+	interrupts = <66 IRQ_TYPE_LEVEL_HIGH>;
+	status = "okay";
 
-				port@0 {
-					reg = <0>;
-					label = "lan1";
-				};
+	port5: port@5 {
+		compatible = "mediatek,mt753x-port";
+		reg = <5>;
+		phy-mode = "2500base-x";
 
-				port@1 {
-					reg = <1>;
-					label = "lan2";
-				};
+		fixed-link {
+			speed = <2500>;
+			full-duplex;
+		};
+	};
 
-				port@2 {
-					reg = <2>;
-					label = "lan3";
-				};
+	port6: port@6 {
+		compatible = "mediatek,mt753x-port";
+		mediatek,ssc-on;
+		reg = <6>;
+		phy-mode = "2500base-x";
 
-				port@6 {
-					reg = <6>;
-					label = "cpu";
-					ethernet = <&gmac0>;
-					phy-mode = "2500base-x";
-
-					fixed-link {
-						speed = <2500>;
-						full-duplex;
-						pause;
-					};
-				};
-			};
+		fixed-link {
+			speed = <2500>;
+			full-duplex;
 		};
 	};
 };
 
 &hnat {
 	mtketh-wan = "eth1";
-	mtketh-lan = "lan";
+	mtketh-lan = "eth0";
 	mtketh-max-gmac = <2>;
+	mtketh-ppe-num = <2>;
 	status = "okay";
 };
 
@@ -236,14 +242,8 @@
 };
 
 &wbsys {
+	mediatek,mtd-eeprom = <&factory 0x0000>;
 	status = "okay";
-	pinctrl-names = "default", "dbdc";
-	pinctrl-0 = <&wf_2g_5g_pins>;
-	pinctrl-1 = <&wf_dbdc_pins>;
-};
-
-&xhci {
-	status = "disabled";
 };
 
 &pio {
@@ -261,40 +261,6 @@
 			pins = "SPI2_CLK", "SPI2_MOSI", "SPI2_MISO";
 			drive-strength = <8>;
 			mediatek,pull-down-adv = <0>;
-		};
-	};
-
-	wf_2g_5g_pins: wf_2g_5g-pins {
-		mux {
-			function = "wifi";
-			groups = "wf_2g", "wf_5g";
-		};
-		conf {
-			pins = "WF0_HB1", "WF0_HB2", "WF0_HB3", "WF0_HB4",
-			       "WF0_HB0", "WF0_HB0_B", "WF0_HB5", "WF0_HB6",
-			       "WF0_HB7", "WF0_HB8", "WF0_HB9", "WF0_HB10",
-			       "WF0_TOP_CLK", "WF0_TOP_DATA", "WF1_HB1",
-			       "WF1_HB2", "WF1_HB3", "WF1_HB4", "WF1_HB0",
-			       "WF1_HB5", "WF1_HB6", "WF1_HB7", "WF1_HB8",
-			       "WF1_TOP_CLK", "WF1_TOP_DATA";
-			drive-strength = <MTK_DRIVE_4mA>;
-		};
-	};
-
-	wf_dbdc_pins: wf_dbdc-pins {
-		mux {
-			function = "wifi";
-			groups = "wf_dbdc";
-		};
-		conf {
-			pins = "WF0_HB1", "WF0_HB2", "WF0_HB3", "WF0_HB4",
-			       "WF0_HB0", "WF0_HB0_B", "WF0_HB5", "WF0_HB6",
-			       "WF0_HB7", "WF0_HB8", "WF0_HB9", "WF0_HB10",
-			       "WF0_TOP_CLK", "WF0_TOP_DATA", "WF1_HB1",
-			       "WF1_HB2", "WF1_HB3", "WF1_HB4", "WF1_HB0",
-			       "WF1_HB5", "WF1_HB6", "WF1_HB7", "WF1_HB8",
-			       "WF1_TOP_CLK", "WF1_TOP_DATA";
-			drive-strength = <MTK_DRIVE_4mA>;
 		};
 	};
 };
