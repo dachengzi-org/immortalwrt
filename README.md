@@ -13,11 +13,8 @@ Compared the official one, we allow to use hacks or non-upstreamable patches / m
 Default login address: http://192.168.1.1 or http://immortalwrt.lan, username: __root__, password: _none_.
 
 ## Download
-The firmware images are available on our download server.
-
-- [ImmortalWrt Downloads](https://downloads.yuxuanzuo.com/immortalwrt/)
-
-If your device is supported, the installation steps is basically the same as the official OpenWrt firmware image. You can find the install instructions on the OpenWrt device page for your device or consult the support resources listed below.
+**The download server is temporally down.** You may be required to build your own image.  
+See build steps below.
 
 ## Development
 To build your own firmware you need a GNU/Linux, BSD or MacOSX system (case sensitive filesystem required). Cygwin is unsupported because of the lack of a case sensitive file system.<br/>
@@ -77,6 +74,8 @@ To build your own firmware you need a GNU/Linux, BSD or MacOSX system (case sens
   - GL.iNet GL-MT2500 (Brume 2)
   - GL.iNet GL-MT3000 (Beryl AX)
   - GL.iNet GL-MT6000 (Flint 2)
+  - CMCC RAX3000M eMMC version
+  - Xiaomi Redmi Router AX6000 (A custom uboot is needed)
 
   ### Documentation
   - [Quick Start Guide](https://openwrt.org/docs/guide-quick-start/start)
