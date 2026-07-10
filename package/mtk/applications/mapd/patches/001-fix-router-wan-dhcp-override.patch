@@ -1,0 +1,11 @@
+--- a/EasyMesh_openwrt5x.sh
++++ b/EasyMesh_openwrt5x.sh
+@@ -1308,8 +1308,6 @@
+ 		`ifconfig ${bridge_name} $br_ip`
+ 	else
+ 		echo "router mode"
+-		uci set network.wan.proto=dhcp
+-		uci commit
+ 	fi
+ 	
+ 	return 1

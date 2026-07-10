@@ -2101,6 +2101,25 @@ function map_cfg()
     save_easymesh_driver_profile(easymesh_cfgs)
     mtkwifi.save_write_easymesh_profile(easymesh_cfgs)
 
+    local mapd_user_path = "/etc/map/mapd_user.cfg"
+    local mapd_user_cfgs = mtkwifi.load_profile(mapd_user_path)
+
+    if type(mapd_user_cfgs) ~= "table" then
+        mapd_user_cfgs = {}
+    end
+
+    local web_mode = http.formvalue("mode")
+    if web_mode then
+        mapd_user_cfgs["mode"] = web_mode
+    end
+    
+    local web_role = http.formvalue("DeviceRole")
+    if web_role then
+        mapd_user_cfgs["DeviceRole"] = web_role
+    end
+
+    mtkwifi.save_profile(mapd_user_cfgs, mapd_user_path)
+
     if http.formvalue("__apply") then
 
         if http.formvalue("__ChangeDeviceRole")=="changed" then
