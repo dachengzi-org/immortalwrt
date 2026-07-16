@@ -1,0 +1,460 @@
+--- a/EasyMesh_openwrt5x.sh
++++ b/EasyMesh_openwrt5x.sh
+@@ -776,36 +776,7 @@
+ #GSW mode with lan interface eth0, wan interface eth1
+ #set switch vlan only if map enabled and bridge mode
+ set_switch_vlan() {
+-	if [ "${MapMode}" != "0" ]; then
+-		if [ $mode = "1" ]; then
+-			if [ $sw_arch = "GSW" ]; then
+-				echo "forward 1905 multicast to cpu port not flooding"
+-				switch reg w 34 8160816
+-				switch reg w 4 60
+-				switch reg w 10 ffffffff
+-				switch vlan clear
+-				echo "lan port(0123) and cpu port(6), vlan id 1"
+-				switch vlan set 0 1 11110010
+-				echo "wan port 4 and 5, vlan id 2"
+-				switch vlan set 1 2 00001100
+-				echo "lan port and cpu port set pvid to 1"
+-				switch vlan pvid 0 1
+-				switch vlan pvid 1 1
+-				switch vlan pvid 2 1
+-				switch vlan pvid 3 1
+-				switch vlan pvid 6 1
+-				echo "wan port set pvid to 2"
+-				switch vlan pvid 4 2
+-				switch vlan pvid 5 2
+-			else
+-				echo "MAP enabled but it's DSA arch, don't need switch vlan setting"
+-			fi
+-		else
+-			echo "MAP enabled but it's not bridge mode, don't need switch vlan setting"
+-		fi
+-	else
+-		echo "MAP not enabled, don't need switch vlan setting"
+-	fi
++	return 0
+ }
+ 
+ #customer requirement
+@@ -813,236 +784,126 @@
+ #port0 used as wan port
+ #port1,2,3,4 used as lan port
+ set_switch_vlan_gmac2_2_7531() {
+-	if [ "${MapMode}" != "0" ]; then
+-		if [ $mode = "1" ]; then
+-			echo "forward 1905 multicast to cpu port not flooding"
+-			switch reg w 34 8160816
+-			switch reg w 4 60
+-			switch reg w 10 ffffffff
+-			switch vlan clear
+-
+-			if [ $sw_arch = "GSW" ];then
+-
+-				echo "lan port(1234) and cpu port(6), vlan id 1"
+-				switch vlan set 0 1 01110010
+-
+-				echo "wan port 0 and 5, vlan id 2"
+-				switch vlan set 1 2 10000100
+-
+-				echo "lan port and cpu port set pvid to 1"
+-				switch vlan pvid 1 1
+-				switch vlan pvid 2 1
+-				switch vlan pvid 3 1
+-				switch vlan pvid 4 1
+-				switch vlan pvid 6 1
+-
+-				echo "wan port set pvid to 2"
+-				switch vlan pvid 0 2
+-				switch vlan pvid 5 2
+-			else
+-				echo "wan port 0 and 5, vlan id 2"
+-				switch vlan set 1 2 10000100
+-
+-				echo "wan port set pvid to 2"
+-				switch vlan pvid 0 2
+-				switch vlan pvid 5 2
+-			fi
+-		else
+-			echo "MAP enabled but router mode, don't need switch vlan setting"
+-		fi
+-	else
+-		echo "MAP not enabled, don't need switch vlan setting"
+-	fi
++	return 0
+ }
+ 
+ #call routine to prepare wapp configuration files
+ #call routine to prepare 1905 config file
+ prepare_1905_config()
+ {
+-		echo "prepare 1905 config"
+-		DeviceRole=`cat /etc/map/mapd_cfg | grep DeviceRole | awk -F "=" '{ print $2 }'`
+-		wan_iface=`uci get network.wan.device`
+-		`ifconfig | grep "br" > br_name`
+-		bridge_name=`cat br_name | awk '{ print $1}'`
+-		####delete all lan= wan=
+-		sed -i '/lan=/d' /etc/map/1905d.cfg
+-		sed -i '/wan=/d' /etc/map/1905d.cfg
+-		#$a indicate append at the end of the file
+-		lastlinestr='$a '
+-		lanstr='lan='
+-		wanstr='wan='
+-		br0_mac=$(cat /sys/class/net/br-lan/address)
+-		first_three_octets=${br0_mac:0:9}
+-		last_two_octets=${br0_mac:11}
+-		modified_octet=${br0_mac:9:2}
+-		let mac=0x$modified_octet
+-		sed -i "/lan=.*/d" /etc/ethernet_cfg.txt
+-		if [ $mode = "1" ];then
+-			sed -i "1i\lan=$lan_iface $wan_iface" /etc/ethernet_cfg.txt
+-		else
+-			sed -i "1i\lan=$lan_iface" /etc/ethernet_cfg.txt
+-		fi
+-		sed -i "/br_lan=.*/d" /etc/ethernet_cfg.txt
+-		sed -i "1i\br_lan=$bridge_name" /etc/ethernet_cfg.txt
+-		#lan0
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $1 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-
+-			let "mac_new=mac+16"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			#brctl addif $bridge_name $lan_per_iface
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-		#lan1
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $2 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-			#brctl addif $bridge_name $lan_per_iface
+-			let "mac_new=mac+32"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-		#lan2
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $3 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-			#brctl addif $bridge_name $lan_per_iface
+-			let "mac_new=mac+48"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-		#lan3
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $4 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-			#brctl addif $bridge_name $lan_per_iface
+-			let "mac_new=mac+64"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-		#lan4
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $5 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-			#brctl addif $bridge_name $lan_per_iface
+-			let "mac_new=mac+80"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-		#lan5
+-		lan_per_iface=`echo $lan_iface | awk -F " " '{ print $6 }'`
+-		exist=`ifconfig $lan_per_iface|grep HWaddr`
+-		if [ $lan_per_iface ] && [ "$exist" != "" ]; then
+-			lan_insert_str=$lastlinestr$lanstr$lan_per_iface
+-			sed -i "$lan_insert_str" /etc/map/1905d.cfg
+-			#brctl addif $bridge_name $lan_per_iface
+-			let "mac_new=mac+96"
+-			mac_str=`printf "%02x" $mac_new`
+-			m_str=${mac_str:0-2}
+-			ifconfig $lan_per_iface down
+-			ifconfig $lan_per_iface hw ether $first_three_octets$m_str$last_two_octets
+-			ifconfig $lan_per_iface up
+-			echo $lan_per_iface
+-			echo $first_three_octets$m_str$last_two_octets
+-		fi
+-
+-		#if [ `grep -c "lan=$lan_iface" /etc/map/1905d.cfg` -ne '0' ]; then
+-		#elif [ `grep -c "lan=" /etc/map/1905d.cfg` -ne '0' ]; then
+-		sed -i "s/radio_band=.*/radio_band=${radio_band}/g" /etc/map/1905d.cfg
+-		sed -i "s/map_controller_alid=.*/map_controller_alid=${ctrlr_al_mac}/g" /etc/map/1905d.cfg
+-		sed -i "s/map_agent_alid=.*/map_agent_alid=${agent_al_mac}/g" /etc/map/1905d.cfg
+-		if [ $DeviceRole = "1" ]
+-		then
+-			sed -i "s/map_agent=.*/map_agent=0/g" /etc/map/1905d.cfg
+-			sed -i "s/map_root=.*/map_root=1/g" /etc/map/1905d.cfg
+-		else
+-			sed -i "s/map_agent=.*/map_agent=1/g" /etc/map/1905d.cfg
+-			sed -i "s/map_root=.*/map_root=0/g" /etc/map/1905d.cfg
+-		fi
++        echo "prepare 1905 config"
++        DeviceRole=`cat /etc/map/mapd_cfg | grep DeviceRole | awk -F "=" '{ print $2 }'`
++        wan_iface=`uci get network.wan.device`
++        `ifconfig | grep "br" > br_name`
++        bridge_name=`cat br_name | awk '{ print $1}'`
++        ####delete all lan= wan=
++        sed -i '/lan=/d' /etc/map/1905d.cfg
++        sed -i '/wan=/d' /etc/map/1905d.cfg
++        #$a indicate append at the end of the file
++        lastlinestr='$a '
++        lanstr='lan='
++        wanstr='wan='
++        br0_mac=$(cat /sys/class/net/br-lan/address)
++        first_three_octets=${br0_mac:0:9}
++        last_two_octets=${br0_mac:11}
++        modified_octet=${br0_mac:9:2}
++        let mac=0x$modified_octet
++        sed -i "/lan=.*/d" /etc/ethernet_cfg.txt
++        if [ $mode = "1" ];then
++            sed -i "1i\lan=$lan_iface $wan_iface" /etc/ethernet_cfg.txt
++        else
++            sed -i "1i\lan=$lan_iface" /etc/ethernet_cfg.txt
++        fi
++        sed -i "/br_lan=.*/d" /etc/ethernet_cfg.txt
++        sed -i "1i\br_lan=$bridge_name" /etc/ethernet_cfg.txt
++        
++        #lan0
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $1 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
++        
++        #lan1
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $2 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
++        
++        #lan2
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $3 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
++        
++        #lan3
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $4 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
++        
++        #lan4
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $5 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
++        
++        #lan5
++        lan_per_iface=`echo $lan_iface | awk -F " " '{ print $6 }'`
++        exist=`ifconfig $lan_per_iface|grep HWaddr`
++        if [ $lan_per_iface ] && [ "$exist" != "" ]; then
++            lan_insert_str=$lastlinestr$lanstr$lan_per_iface
++            sed -i "$lan_insert_str" /etc/map/1905d.cfg
++            echo $lan_per_iface
++        fi
+ 
+-		#######mode
+-		if [ $mode = "1" ]; then
+-			echo "prepare_1905_config bridge mode"
+-			wan_insert_str=$lastlinestr$wanstr$wan_iface
+-			sed -i "$wan_insert_str" /etc/map/1905d.cfg
+-			brctl addif $bridge_name $wan_iface
+-			echo "cmd: brctl addif $bridge_name $wan_iface"
+-		else
+-			echo "prepare_1905_config router mode"
+-			brctl delif $bridge_name $wan_iface
+-			echo "cmd: brctl delif $bridge_name $wan_iface"
+-		fi
++        #if [ `grep -c "lan=$lan_iface" /etc/map/1905d.cfg` -ne '0' ]; then
++        #elif [ `grep -c "lan=" /etc/map/1905d.cfg` -ne '0' ]; then
++        sed -i "s/radio_band=.*/radio_band=${radio_band}/g" /etc/map/1905d.cfg
++        sed -i "s/map_controller_alid=.*/map_controller_alid=${ctrlr_al_mac}/g" /etc/map/1905d.cfg
++        sed -i "s/map_agent_alid=.*/map_agent_alid=${agent_al_mac}/g" /etc/map/1905d.cfg
++        if [ $DeviceRole = "1" ]
++        then
++            sed -i "s/map_agent=.*/map_agent=0/g" /etc/map/1905d.cfg
++            sed -i "s/map_root=.*/map_root=1/g" /etc/map/1905d.cfg
++        else
++            sed -i "s/map_agent=.*/map_agent=1/g" /etc/map/1905d.cfg
++            sed -i "s/map_root=.*/map_root=0/g" /etc/map/1905d.cfg
++        fi
++
++        #######mode
++        if [ $mode = "1" ]; then
++            echo "prepare_1905_config bridge mode"
++            wan_insert_str=$lastlinestr$wanstr$wan_iface
++            sed -i "$wan_insert_str" /etc/map/1905d.cfg
++            brctl addif $bridge_name $wan_iface
++            echo "cmd: brctl addif $bridge_name $wan_iface"
++        else
++            echo "prepare_1905_config router mode"
++            brctl delif $bridge_name $wan_iface
++            echo "cmd: brctl delif $bridge_name $wan_iface"
++        fi
+ }
++
+ reset_lan_interface()
+ {
+-	br0_mac=$(cat /sys/class/net/br-lan/address)
+-	lan_per_iface=`echo $lan_iface | awk -F " " '{ print $1 }'`
+-	if [ $lan_per_iface ]; then
+-		ifconfig $lan_per_iface down
+-		ifconfig $lan_per_iface hw ether $br0_mac
+-		ifconfig $lan_per_iface up
+-	fi
+-	lan_per_iface=`echo $lan_iface | awk -F " " '{ print $2 }'`
+-	if [ $lan_per_iface ]; then
+-		ifconfig $lan_per_iface down
+-		ifconfig $lan_per_iface hw ether $br0_mac
+-		ifconfig $lan_per_iface up
+-	fi
+-	lan_per_iface=`echo $lan_iface | awk -F " " '{ print $3 }'`
+-	if [ $lan_per_iface ]; then
+-		ifconfig $lan_per_iface down
+-		ifconfig $lan_per_iface hw ether $br0_mac
+-		ifconfig $lan_per_iface up
+-	fi
+-	lan_per_iface=`echo $lan_iface | awk -F " " '{ print $4 }'`
+-	if [ $lan_per_iface ]; then
+-		ifconfig $lan_per_iface down
+-		ifconfig $lan_per_iface hw ether $br0_mac
+-		ifconfig $lan_per_iface up
+-	fi
+-	lan_per_iface=`echo $lan_iface | awk -F " " '{ print $5 }'`
+-	if [ $lan_per_iface ]; then
+-		ifconfig $lan_per_iface down
+-		ifconfig $lan_per_iface hw ether $br0_mac
+-		ifconfig $lan_per_iface up
+-	fi
++	return 0
+ }
++
+ prepare_logging_config()
+ {
+ echo "
+@@ -1252,67 +1113,7 @@
+ 
+ DHCP_INIT()
+ {
+-	DeviceRole=`cat /etc/map/mapd_cfg|\
+-		grep DeviceRole|awk -F "=" '{print $2}'`
+-	echo "DeviceRole: $DeviceRole (0: Auto 1:Controller 2:Agent)"
+-	DHCP_CTRL=`cat /etc/map/mapd_cfg|\
+-		grep DhcpCtl| awk -F "=" '{print $2}'`
+-	ThrdPrtCon=`cat /etc/map/mapd_cfg|grep ThirdPartyConnection\
+-		|awk -F "=" '{print $2}'`
+-	echo "DHCP Server setting: $DeviceRole $DHCP_CTRL $ThrdPrtCon $mode ($mode == "1")"
+-	if [ $DHCP_CTRL != "1" ];then
+-		return 0
+-	fi
+-		
+-	if [ $ThrdPrtCon == "1" -a "${MapMode}" = "1"  ];then
+-	echo "Role($DeviceRole ) ThrdPrtCon($ThrdPrtCon):\
+-	Disable DHCP Server!"
+-		uci set dhcp.lan.ignore=1
+-		uci commit
+-		/etc/init.d/dnsmasq reload
+-	else
+-	if [ $mode != "1" ];then
+-		echo "Role($DeviceRole ) ThrdPrtCon($ThrdPrtCon):\
+-		Enable DHCP Server!"
+-			if [ -z "$(uci -q get network.lan.ipaddr)" ];then
+-				echo "no IP, reload network ip to 192.168.1.1"
+-				uci -q set network.lan.ipaddr=192.168.1.1;
+-				`ifconfig ${bridge_name} 192.168.1.1 up`
+-				uci set dhcp.lan.ignore=\"\"
+-				uci commit
+-				/etc/init.d/dnsmasq reload
+-				/etc/init.d/network reload
+-			 else
+-				br_ip=`uci -q get network.lan.ipaddr`
+-				echo "br_ip: $br_ip"
+-				`ifconfig ${bridge_name} $br_ip up`
+-				uci set dhcp.lan.ignore=\"\"
+-				uci commit
+-				/etc/init.d/dnsmasq reload
+-			fi
+-		fi
+-	fi
+-	sleep 1
+-
+-	if [ $mode == "1" ];then
+-		echo "bridge mode"
+-		uci set network.wan.proto=none
+-		uci commit
+-		#Disable DHCP Server
+-		uci set dhcp.lan.ignore=1
+-		uci commit
+-		/etc/init.d/dnsmasq reload
+-		udhcpc -i ${bridge_name} &
+-		br_ip=`uci -q get network.lan.ipaddr`
+-		sleep 1
+-		`ifconfig ${bridge_name} $br_ip`
+-	else
+-		echo "router mode"
+-		uci set network.wan.proto=dhcp
+-		uci commit
+-	fi
+-	
+-	return 1
++	return 0
+ }
+ 
+ Traffic_Separation_Init()
+@@ -1594,4 +1395,3 @@
+ 		sync
+ 	fi
+ fi
+-/etc/init.d/easymesh stop

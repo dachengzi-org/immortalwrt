@@ -146,28 +146,28 @@ function wifi_service_misc()
 	end
         -- 1.Wapp
         if mtkwifi.exists("/usr/bin/wapp_openwrt.sh") then
-            os.execute("./etc/init.d/wapp start")
+            os.execute("/etc/init.d/wapp start")
         end
         -- 2.EasyMesh
         if mtkwifi.exists("/usr/bin/EasyMesh_openwrt.sh") then
             if first_card_cfgs.MapMode == "1" then
                 if (eth_mode == "0" and device_role == "1") or eth_mode == "1" then
-                    os.execute("./etc/init.d/easymesh start")
+                    os.execute("/etc/init.d/easymesh start")
                 else
-                    os.execute("./etc/init.d/easymesh_bridge start")
+                    os.execute("/etc/init.d/easymesh_bridge start")
                 end
             else
-                os.execute("./etc/init.d/easymesh start")
+                os.execute("/etc/init.d/easymesh start")
             end
         end
     else
         -- 1.Wapp
         if mtkwifi.exists("/usr/bin/wapp_openwrt.sh") then
-            os.execute("./etc/init.d/wapp start")
+            os.execute("/etc/init.d/wapp start")
         end
         -- 2.EasyMesh
         if mtkwifi.exists("/usr/bin/EasyMesh_openwrt.sh") then
-            os.execute("./etc/init.d/easymesh start")
+            os.execute("/etc/init.d/easymesh start")
         end 
     end
     -- Start Hostapd if exists
