@@ -1,5 +1,0 @@
-#!/bin/sh
-
-if [ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "wan" -o "$INTERFACE" = "wan_6" ]; then
-    /sbin/wifi reload
-fi

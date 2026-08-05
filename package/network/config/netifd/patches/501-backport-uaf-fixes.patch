@@ -1,0 +1,106 @@
+--- a/interface.c
++++ b/interface.c
+@@ -720,6 +720,20 @@
+ }
+ 
+ static void
++interface_remove_cb(struct uloop_timeout *timeout)
++{
++    struct interface *iface = container_of(timeout, struct interface, remove_timer);
++
++    if (iface->config_state != IFC_REMOVE) {
++        iface->remove_pending = false;
++        iface->remove_timer.cb = NULL;
++        return;
++    }
++
++    interface_do_free(iface);
++}
++
++static void
+ interface_handle_config_change(struct interface *iface)
+ {
+ 	enum interface_config_state state = iface->config_state;
+@@ -732,8 +746,14 @@
+ 		interface_do_reload(iface);
+ 		break;
+ 	case IFC_REMOVE:
+-		interface_do_free(iface);
+-		return;
++        __set_config_state(iface, IFC_REMOVE);
++        if (iface->remove_pending)
++            return;
++
++        iface->remove_pending = true;
++        iface->remove_timer.cb = interface_remove_cb;
++        uloop_timeout_set(&iface->remove_timer, 1);
++        return;
+ 	}
+ 	if (iface->autostart)
+ 		interface_set_up(iface);
+@@ -1116,6 +1136,9 @@
+ 	int ret;
+ 	const char *error = NULL;
+ 
++	if (iface->config_state == IFC_REMOVE)
++        return;
++
+ 	iface->autostart = true;
+ 
+ 	if (iface->state != IFS_DOWN)
+@@ -1266,6 +1289,9 @@
+ 	struct blob_attr *old_config = if_old->config;
+ 	bool reload = false, reload_ip = false, update_prefix_delegation = false;
+ 
++	if (if_old->config_state == IFC_REMOVE)
++        __set_config_state(if_old, IFC_NORMAL);
++	
+ #define FIELD_CHANGED_STR(field)					\
+ 		((!!if_old->field != !!if_new->field) ||		\
+ 		 (if_old->field &&					\
+--- a/interface.h
++++ b/interface.h
+@@ -123,6 +123,7 @@
+ 	bool dynamic;
+ 	bool policy_rules_set;
+ 	bool link_up_event;
++	bool remove_pending;
+ 
+ 	time_t start_time;
+ 	enum interface_state state;
+--- a/device.c
++++ b/device.c
+@@ -1010,20 +1010,22 @@
+ static void
+ device_replace(struct device *dev, struct device *odev)
+ {
+-	struct device_user *dep, *tmp;
++    struct device_user *dep;
+ 
+-	__devlock++;
+-	if (odev->present)
+-		device_set_present(odev, false);
++    __devlock++;
++    if (odev->present)
++        device_set_present(odev, false);
+ 
+-	list_for_each_entry_safe(dep, tmp, &odev->users.list, list.list) {
+-		device_release(dep);
+-		safe_list_del(&dep->list);
+-		__device_add_user(dep, dev);
+-	}
+-	__devlock--;
++    while (!list_empty(&odev->users.list)) {
++        dep = list_first_entry(&odev->users.list, struct device_user, list.list);
++        device_release(dep);
++        if (!dep->dev)
++            continue;
+ 
+-	device_free(odev);
++        safe_list_del(&dep->list);
++        __device_add_user(dep, dev);
++    }
++    __devlock--;
+ }
+ 
+ void
