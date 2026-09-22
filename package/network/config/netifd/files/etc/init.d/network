@@ -30,19 +30,25 @@ reload_service() {
 
 	init_switch
 	ubus call network reload || rv=1
-	[ -x /sbin/wifi ] && /sbin/wifi reload_legacy
+	if [ -f "/lib/wifi/mtwifi.lua" ]; then
+		/sbin/wifi up
+	else
+		/sbin/wifi reload_legacy
+	fi
 	return $rv
 }
 
 stop_service() {
-	[ -x /sbin/wifi ] && /sbin/wifi down
+	/sbin/wifi down
 	ifdown -a
 	sleep 1
 }
 
 service_running() {
-	ubus -t 120 wait_for network.interface
-	[ -x /sbin/wifi ] && /sbin/wifi up
+	if [ -f "/lib/wifi/mtwifi.lua" ]; then
+        ubus -t 120 wait_for network.interface.lan
+        /sbin/wifi reload_legacy
+	fi
 }
 
 validate_atm_bridge_section()
@@ -144,7 +150,7 @@ service_triggers()
 }
 
 shutdown() {
-	[ -x /sbin/wifi ] && /sbin/wifi down
+	/sbin/wifi down
 	ifdown -a
 	sleep 1
 }
